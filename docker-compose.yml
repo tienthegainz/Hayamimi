@@ -1,0 +1,18 @@
+version: "1"
+
+networks:
+  app-networks:
+    driver: bridge
+services:
+  react:
+    container_name: Hayamimi
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app/frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-networks
+    tty: true
