@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
     Form,
     Input,
@@ -41,22 +41,20 @@ function Register() {
     const onFinish = values => {
         console.log('Success:', values);
     };
-
-    const onFinishFailed = errorInfo => {
-        console.log('Failed:', errorInfo);
+    const onFinishFailed = (errorInfo) => {
+        console.log("Failed:", errorInfo);
     };
 
     return (
         <div>
-            <br></br><br></br>
-            < Form
+            <br></br>
+            <br></br>
+            <Form
                 {...layout}
                 name="basic"
-                initialValues={
-                    {
-                        remember: true,
-                    }
-                }
+                initialValues={{
+                    remember: true,
+                }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             >
@@ -66,7 +64,7 @@ function Register() {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your email!',
+                            message: "Please input your email!",
                         },
                     ]}
                 >
@@ -79,48 +77,61 @@ function Register() {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your nickname!',
+                            message: "Please input your nickname!",
                         },
                     ]}
                 >
                     <Input />
                 </Form.Item>
 
-                <Form.Item
-                    label="Password"
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password!',
-                        },
-                    ]}
-                >
-                    <Input.Password />
-                </Form.Item>
-                <Form.Item
-                    label="Birthday"
-                    name="birthday"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please choose your birthday!',
-                        },
-                    ]}
-                >
-                    <DatePicker />
-                </Form.Item>
-                <Form.Item {...tailLayout}>
-                    <Button type="primary" htmlType="submit">
-                        Register
+            <Form.Item
+                label="Nickname"
+                name="nickname"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your nickname!',
+                    },
+                ]}
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Password"
+                name="password"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your password!',
+                    },
+                ]}
+            >
+                <Input.Password />
+            </Form.Item>
+            <Form.Item
+                label="Birthday"
+                name="birthday"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please choose your birthday!',
+                    },
+                ]}
+            >
+                <DatePicker />
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+                <Button type="primary" htmlType="submit">
+                    Register
                     </Button>
                     &emsp;&emsp;
                     <Button type="default" href="/login">
-                        Go to Login
+                    Go to Login
                     </Button>
-                </Form.Item>
+            </Form.Item>
             </Form>
-        </div>
+        </div >
     );
 };
 
