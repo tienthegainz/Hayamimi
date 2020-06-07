@@ -12,6 +12,8 @@ import {
     Switch,
 } from 'antd';
 import { withRouter } from 'react-router-dom'
+import FirebaseController from '../firebase.js'
+
 
 const layout = {
     labelCol: {
@@ -29,6 +31,12 @@ const tailLayout = {
 };
 
 function Register() {
+
+    const [Name, setName] = useState('')
+    const [Birthday, setBirthday] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
 
     const onFinish = values => {
         console.log('Success:', values);
@@ -90,7 +98,16 @@ function Register() {
                 >
                     <Input.Password />
                 </Form.Item>
-                <Form.Item label="Birthday">
+                <Form.Item
+                    label="Birthday"
+                    name="birthday"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please choose your birthday!',
+                        },
+                    ]}
+                >
                     <DatePicker />
                 </Form.Item>
                 <Form.Item {...tailLayout}>
