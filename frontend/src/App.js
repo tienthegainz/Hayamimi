@@ -1,8 +1,8 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Home from './pages/home/Home';
-import './App.css';
-import 'antd/dist/antd.css';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./home/Home";
+import "./App.css";
+import "antd/dist/antd.css";
 
 function App() {
   return (
