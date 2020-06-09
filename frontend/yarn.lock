@@ -2314,10 +2314,12 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
     "@types/color-name" "^1.1.1"
     color-convert "^2.0.1"
 
+
 antd@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.3.1.tgz#e68af822867bc096cc021e8b5077b2ac47ee1c14"
   integrity sha512-Pkf6M/UdMnHA8FFHYNveJ6lhvlulot0bV8z1TAkVIiKm5RVSFvdpHmfsB8oUL4eT010nH3xYQKKSd0DkhxW2Ng==
+
   dependencies:
     "@ant-design/css-animation" "^1.7.2"
     "@ant-design/icons" "^4.2.1"
@@ -5443,7 +5445,9 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
+
 hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
+
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -7015,6 +7019,7 @@ loglevel@^1.6.6:
   version "1.6.7"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.7.tgz#b3e034233188c68b889f5b862415306f565e2c56"
   integrity sha512-cY2eLFrQSAfVPhCgH1s7JI73tMbg9YC3v3+ZHVW67sBS7UxWzNEk/ZBbSfLykBWHp33dqqtOv82gjhKEi81T/A==
+
 
 long@^4.0.0:
   version "4.0.0"
@@ -9199,6 +9204,7 @@ rc-input-number@~5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/rc-input-number/-/rc-input-number-5.0.0.tgz#a0be34bd4cf316203174d7096797c4c36b0e8a67"
   integrity sha512-n4waZmQQs992n7AdLnWkCskneZITGUSvHQ8YxWU/BhoxK8uuqkZtZ/OEOxXIv3eEFDpD/tBRiGPCCVCBVccMtw==
+
   dependencies:
     classnames "^2.2.0"
     rc-util "^5.0.1"
@@ -9288,6 +9294,7 @@ rc-select@^10.1.0, rc-select@~10.4.0:
   version "10.4.0"
   resolved "https://registry.yarnpkg.com/rc-select/-/rc-select-10.4.0.tgz#3ee7237f0b3c619c29c81717880637398a5b2ce3"
   integrity sha512-cgEgBITqjz970AHZBr6rW99lV0ByoTUI/+f7Pi4WvSJxPXRdW4rPQN026sXFjs+88LUdvD3UJhDmAvU7/T8tzQ==
+
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
@@ -9338,10 +9345,12 @@ rc-table@~7.7.2:
     rc-util "^5.0.0"
     shallowequal "^1.1.0"
 
+
 rc-tabs@~11.2.0:
   version "11.2.4"
   resolved "https://registry.yarnpkg.com/rc-tabs/-/rc-tabs-11.2.4.tgz#6004f8f3edc176318bfdd71695fd5e6bed7338ff"
   integrity sha512-d8zuL5L2suY3aqi1IJ6IBRhNI78pXdgkn+L0zxr6h83xJVkg8JyNoQ8JGjtJ0tm+Q17BRNCo7TmSuUHJf5P7Uw==
+
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
@@ -9359,6 +9368,7 @@ rc-tooltip@^4.0.0, rc-tooltip@~4.2.0:
   dependencies:
     rc-trigger "^4.2.1"
 
+
 rc-tree-select@~3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/rc-tree-select/-/rc-tree-select-3.2.0.tgz#d36d8280bc2c3e526bfd68422ebed5e1dd845639"
@@ -9367,6 +9377,7 @@ rc-tree-select@~3.2.0:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
     rc-select "^10.1.0"
+
     rc-tree "^3.1.0"
     rc-util "^5.0.1"
 
@@ -9474,10 +9485,13 @@ react-error-overlay@^6.0.7:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.7.tgz#1dcfb459ab671d53f660a991513cb2f0a0553108"
   integrity sha512-TAv1KJFh3RhqxNvhzxj6LeT5NWklP6rDr2a0jaTfsZ5wSZWHOGeqQyejUp3xxLfPt2UpyJEcVQB/zyPcmonNFA==
 
+
 react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.9.0:
+
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
 
 react-redux@^7.2.0:
   version "7.2.0"
