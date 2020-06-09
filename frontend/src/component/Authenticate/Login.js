@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Checkbox } from "antd";
-// import { QqOutlined } from '@ant-design/icons';
 import { withRouter } from "react-router-dom";
+import FirebaseController from '../../firebase.js'
 
 const layout = {
   labelCol: {
@@ -18,13 +18,28 @@ const tailLayout = {
   },
 };
 
-function Login() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+function Login(props) {
+  if (props.isLoggedIn) {
+    props.history.push('/');
+  }
+  var success = false
+
+  const onFinish = async (values) => {
+    try {
+      await FirebaseController.login(values.email, values.password);
+      success = true;
+    } catch (error) {
+      alert(error.message)
+    }
+
+    if (success === true) {
+      props.login();
+      props.history.push('/');
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    alert("Something went wrong. Try again")
   };
 
   return (
@@ -66,9 +81,9 @@ function Login() {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+        {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
           <Checkbox>Remember me</Checkbox>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
