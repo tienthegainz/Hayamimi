@@ -1,11 +1,14 @@
 import React from 'react';
-import { Col, Card, Avatar, Input, Button } from 'antd';
+import { Layout, Col, Card, Avatar, Input, Button } from 'antd';
+
 import {
   UserOutlined,
   LikeOutlined,
   CommentOutlined,
   ShareAltOutlined
 } from '@ant-design/icons';
+
+const {Header, Footer, Sider, Content} = Layout;
 
 const Feed = () => {
   const { Meta } = Card;

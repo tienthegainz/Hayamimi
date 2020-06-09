@@ -1,93 +1,79 @@
 import React from 'react';
-import { Col, Card, Avatar, Input, Button } from 'antd';
+import { Tabs, PageHeader, Layout, Row, Col, Card, Avatar, Input, Button } from 'antd';
 import {
   UserOutlined,
-  LikeOutlined,
-  CommentOutlined,
-  ShareAltOutlined
+  ArrowLeftOutlined,
+  ScheduleOutlined
 } from '@ant-design/icons';
+import { withRouter } from 'react-router-dom';
+import "./profile.css";
 
-const profile = () => {
+const {Header, Footer, Sider, Content} = Layout;
+const {TabPane} = Tabs;
+
+function callback(key){
+  console.log(key);
+}
+const center = {
+  padding: '8px 0 8px 16px'
+};
+
+
+const Profile = () => {
   const { Meta } = Card;
   const { TextArea } = Input;
   return (
-    <>
-      <Col span={24}>
-        <Card title="Home">
-          <TextArea placeholder="What's happening?" autoSize={{ minRows: 2 }} />
-          <Button type="primary" style={{ float: 'right', marginTop: 15 }}>
-            Tweet
-          </Button>
-        </Card>
-      </Col>
+    <div>
+     <PageHeader
+    className="site-page-header"
+    onBack={()=>null}
+    title="Hiep Tran"
+    subTitle="0 Tweet"
+    />
 
-      <Col span={24}>
-        <Card
-          actions={[
-            <LikeOutlined key="like" />,
-            <CommentOutlined key="comment" />,
-            <ShareAltOutlined key="share" />
-          ]}
-        >
-          <Meta
-            title="Khánh Ly"
-            description="@vukhanhly30"
-            avatar={
-              <Avatar
-                style={{ backgroundColor: '#87d068' }}
-                icon={<UserOutlined />}
-              />
-            }
-          />
-          <div style={{ marginTop: 20 }}>Hello World !</div>
-        </Card>
-      </Col>
+    <Row>
+      <div className="setup-avatar">
+        <div className="background-image">
 
-      <Col span={24}>
-        <Card
-          actions={[
-            <LikeOutlined key="like" />,
-            <CommentOutlined key="comment" />,
-            <ShareAltOutlined key="share" />
-          ]}
-        >
-          <Meta
-            title="Hà Việt Tiến"
-            description="@hvt"
-            avatar={
-              <Avatar
-                style={{ backgroundColor: '#ff4d4f' }}
-                icon={<UserOutlined />}
-              />
-            }
-          />
-          <div style={{ marginTop: 20 }}>Hôm nay trời đẹp nhỉ, đi dạo thôi</div>
-        </Card>
-      </Col>
+        </div>
+        <div className="avatar-image">
+          <Avatar size={150} icon={<UserOutlined/>}/>
+        </div>
+        <Button type="primary" shape="round" className="setup-profile" size="large">
+          Set Up Profile
 
-      <Col span={24}>
-        <Card
-          actions={[
-            <LikeOutlined key="like" />,
-            <CommentOutlined key="comment" />,
-            <ShareAltOutlined key="share" />
-          ]}
-        >
-          <Meta
-            title="Bùi Ngọc Tú"
-            description="@tubuooi"
-            avatar={
-              <Avatar
-                style={{ backgroundColor: '#faad14' }}
-                icon={<UserOutlined />}
-              />
-            }
-          />
-          <div style={{ marginTop: 20 }}>Mình đẹp trai quá</div>
-        </Card>
-      </Col>
-    </>
+        </Button>
+        <div className="information">
+          <div className="my-name">Hiep Tran</div>
+          <div>@HiepTran0343742152</div>
+          <div><ScheduleOutlined /> Joined January 2020</div>
+
+        </div>
+      </div>
+      
+    </Row>
+
+     <Row>
+       <Tabs defaultActiveKey="1" onChange={callback}>
+         <TabPane tab="Tweets" key="1">
+           This is all your Tweet here
+         </TabPane>
+         <TabPane tab="Following" key="2">
+           This is all your Following here
+         </TabPane>
+         <TabPane tab="Followed" key="3">
+           This is all your Followed here
+         </TabPane>
+       </Tabs>
+     </Row>
+      
+        
+        
+      
+      
+      
+    </div>
   );
 };
 
-export default Feed;
+export default Profile;

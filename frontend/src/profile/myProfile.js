@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, Row, Col } from 'antd';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
+import Profile from './Profile';
 
 import './profile.css';
 
@@ -22,12 +23,16 @@ const myProfile = () => {
         <NavBar />
       </Sider>
 
+
+
+      
+
       <Content style={{ margin: '24px 24px 0 224px' }}>
         <Row gutter={[24, 24]}>
           <Col span={16}>
-            <Row gutter={[0, 24]}>
-              
-            </Row>
+            
+              <Profile />
+            
           </Col>
 
           <Col span={8}>
