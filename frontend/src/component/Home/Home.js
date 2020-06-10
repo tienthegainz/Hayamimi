@@ -30,7 +30,7 @@ function Home(props) {
           left: 0,
         }}
       >
-        <NavBar />
+        <NavBar logout={props.logout} />
       </Sider>
 
       <Content style={{ margin: "24px 24px 0 224px" }}>

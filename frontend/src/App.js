@@ -19,6 +19,7 @@ function App() {
 
   function handleLoggedOut() {
     if (isLoggedIn) {
+      FirebaseController.logout()
       setIsLoggedIn(false);
     }
   }
@@ -33,7 +34,7 @@ function App() {
       <Switch>
         <Route exact path="/login" render={() => <Login isLoggedIn={isLoggedIn} login={handleLoggedIn} />} />
         <Route exact path="/register" render={() => <Register isLoggedIn={isLoggedIn} />} />
-        <Route exact path="/" render={() => <Home isLoggedIn={isLoggedIn} />} />
+        <Route exact path="/" render={() => <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut}/>} />
       </Switch>
     </Router>
   );
