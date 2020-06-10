@@ -1,87 +1,82 @@
 {
-    "post": [
+    "posts": [
         {
-            "id": 0,
-            "user_id": 0,
-            "content": "#NewCar #NewWife What a nice day!!!",
-            "image": "https://a.slack-edge.com/dd0405/marketing/img/solutions/remote-work/img-hero-remote.jpg",
-            "date": "2/17/2020, 1:21:34 PM",
-            "hasgtag": [
-                0,
-                1
-            ]
+          "id": 0,
+          "user_id": 0,
+          "content": "#NewCar #NewWife What a nice day!!!",
+          "image": "https://a.slack-edge.com/dd0405/marketing/img/solutions/remote-work/img-hero-remote.jpg",
+          "date": "2/17/2020, 1:21:34 PM",
+          "hashtag": [0, 1]
         },
         {
-            "id": 1,
-            "user_id": 2,
-            "content": "#BadLuck What an awful day!!!",
-            "image": "https://a.slack-edge.com/dd0405/marketing/img/solutions/remote-work/img-hero-remote.jpg",
-            "date": "6/8/2020, 5:21:34 PM",
-            "hasgtag": [
-                2
-            ]
+          "id": 1,
+          "user_id": 2,
+          "content": "#BadLuck What an awful day!!!",
+          "image": "https://a.slack-edge.com/dd0405/marketing/img/solutions/remote-work/img-hero-remote.jpg",
+          "date": "6/8/2020, 5:21:34 PM",
+          "hashtag": [2]
         }
-    ],
-    "hashtag": [
+      ],
+      "hashtags": [
         {
-            "id": 0,
-            "content": "#NewCar"
+          "id": 0,
+          "content": "#NewCar"
         },
         {
-            "id": 1,
-            "content": "#NewWife"
+          "id": 1,
+          "content": "#NewWife"
         },
         {
-            "id": 2,
-            "content": "#BadLuck"
+          "id": 2,
+          "content": "#BadLuck"
         }
-    ],
-    "comment": [
+      ],
+      "comments": [
         {
-            "post_id": 0,
-            "user_id": 2,
-            "comment_id": 0,
-            "parant_id": null,
-            "content": "Hey where's my money????"
+          "post_id": 0,
+          "user_id": 2,
+          "comment_id": 0,
+          "content": "Hey where's my money????"
         },
         {
-            "post_id": 0,
-            "user_id": 0,
-            "comment_id": 1,
-            "parant_id": 0,
-            "content": "Du ma!! I'll pay next week"
+          "post_id": 0,
+          "user_id": 0,
+          "comment_id": 1,
+          "content": "Du ma!! I'll pay next week"
         },
         {
-            "post_id": 1,
-            "user_id": 3,
-            "comment_id": 2,
-            "parant_id": null,
-            "content": "What happened???"
+          "post_id": 1,
+          "user_id": 3,
+          "comment_id": 2,
+          "content": "What happened???"
         },
         {
-            "post_id": 1,
-            "user_id": 1,
-            "comment_id": 3,
-            "parant_id": 2,
-            "content": "I lost my car :(("
+          "post_id": 1,
+          "user_id": 1,
+          "comment_id": 3,
+          "content": "I lost my car :(("
         }
-    ],
-    "user": [
+      ],
+      "users": [
         {
-            "id": 0,
-            "name": "Mr.A"
+          "id": 0,
+          "name": "Mr.A",
+          "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
         },
         {
-            "id": 1,
-            "name": "Mr.B"
+          "id": 1,
+          "name": "Mr.B",
+          "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
         },
         {
-            "id": 2,
-            "name": "Mr.C"
+          "id": 2,
+          "name": "Mr.C",
+          "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
         },
         {
-            "id": 3,
-            "name": "Mr.D"
+          "id": 3,
+          "name": "Mr.D",
+          "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
         }
-    ]
-}
+      ]
+    }
