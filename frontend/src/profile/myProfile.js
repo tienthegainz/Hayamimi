@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Row, Col } from 'antd';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
-import profile from './profile';
+import Profile from './profile';
 
 import './profile.css';
 
@@ -31,7 +31,7 @@ const myProfile = () => {
         <Row gutter={[24, 24]}>
           <Col span={16}>
             
-              <profile />
+              <Profile />
             
           </Col>
 
