@@ -3,10 +3,10 @@ import { Menu } from 'antd';
 import {
   HomeOutlined,
   NotificationOutlined,
-  MessageOutlined
+  LogoutOutlined
 } from '@ant-design/icons';
 
-const NavBar = () => {
+function NavBar(props) {
   return (
     <Menu
       mode="inline"
@@ -20,8 +20,8 @@ const NavBar = () => {
       <Menu.Item key="sub2" icon={<NotificationOutlined />}>
         Notifications
       </Menu.Item>
-      <Menu.Item key="sub3" icon={<MessageOutlined />}>
-        Messages
+      <Menu.Item key="sub3" icon={<LogoutOutlined />} onClick={props.logout}>
+        Logout
       </Menu.Item>
     </Menu>
   );

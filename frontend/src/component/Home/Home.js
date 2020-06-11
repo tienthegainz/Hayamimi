@@ -1,12 +1,22 @@
 import React from "react";
 import { Layout, Row, Col } from "antd";
-import NavBar from "../NavBar";
+import NavBar from "../Bar/NavBar";
 import Feed from "./Feed";
-import SideBar from "./SideBar";
+import SideBar from "../Bar/SideBar";
+import FirebaseController from '../../firebase.js'
+import { withRouter } from 'react-router-dom'
 
 import "./Home.css";
 
-const Home = () => {
+function Home(props) {
+  var isLoggedIn = props.isLoggedIn;
+
+  if (isLoggedIn) {
+    console.log(FirebaseController.getCurrentUser())
+  } else {
+    props.history.replace('/login')
+    return null
+  }
   const { Content, Sider } = Layout;
 
   return (
@@ -20,7 +30,7 @@ const Home = () => {
           left: 0,
         }}
       >
-        <NavBar />
+        <NavBar logout={props.logout} />
       </Sider>
 
       <Content style={{ margin: "24px 24px 0 224px" }}>
@@ -42,4 +52,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withRouter(Home);
