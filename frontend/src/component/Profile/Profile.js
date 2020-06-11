@@ -2,15 +2,15 @@ import React from 'react';
 import { Layout, Row, Col } from 'antd';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
-import Profile from './profile';
+import SubProfile from './SubProfile';
 
 import './profile.css';
 
-const myProfile = () => {
-    const { Content, Sider } = Layout;
+const Profile = () => {
+  const { Content, Sider } = Layout;
 
-    return(
-        <Layout style={{ minHeight: '100vh' }}>
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
       <Sider
         width={200}
         style={{
@@ -25,14 +25,14 @@ const myProfile = () => {
 
 
 
-      
+
 
       <Content style={{ margin: '24px 24px 0 224px' }}>
         <Row gutter={[24, 24]}>
           <Col span={16}>
-            
-              <Profile />
-            
+
+            <SubProfile />
+
           </Col>
 
           <Col span={8}>
@@ -43,7 +43,7 @@ const myProfile = () => {
         </Row>
       </Content>
     </Layout>
-    )
+  )
 }
 
-export default myProfile;
+export default Profile;
