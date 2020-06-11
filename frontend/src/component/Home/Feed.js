@@ -1,7 +1,7 @@
-import React from 'react';
-import { Col, Card, Input, Button } from 'antd';
-import Post from './Post';
-import data from '../../fake_data.json';
+import React from "react";
+import { Col, Card, Input, Button } from "antd";
+import Post from "../Post/Post.js";
+import data from "../../fake_data.json";
 
 const Feed = () => {
   const { TextArea } = Input;
@@ -11,7 +11,7 @@ const Feed = () => {
       <Col span={24}>
         <Card title="Home">
           <TextArea placeholder="What's happening?" autoSize={{ minRows: 2 }} />
-          <Button type="primary" style={{ float: 'right', marginTop: 15 }}>
+          <Button type="primary" style={{ float: "right", marginTop: 15 }}>
             Tweet
           </Button>
         </Card>
@@ -23,7 +23,15 @@ const Feed = () => {
           const user = data.users.find((user) => user.id === cmt.user_id);
           return { ...cmt, author: user.name, avatar: user.avatar };
         });
-        return <Post key={idx} content={post.content} img={post.image} user={user} comments={comments} />;
+        return (
+          <Post
+            key={idx}
+            content={post.content}
+            img={post.image}
+            user={user}
+            comments={comments}
+          />
+        );
       })}
     </>
   );
