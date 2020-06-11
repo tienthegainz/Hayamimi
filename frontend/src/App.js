@@ -34,7 +34,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/user" component={Profile} />
+        <Route exact path="/user" render={() => <Profile isLoggedIn={isLoggedIn} logout={handleLoggedOut} />} />
         <Route exact path="/login" render={() => <Login isLoggedIn={isLoggedIn} login={handleLoggedIn} />} />
         <Route exact path="/register" render={() => <Register isLoggedIn={isLoggedIn} />} />
         <Route exact path="/" render={() => <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />} />

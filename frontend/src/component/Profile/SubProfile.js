@@ -1,8 +1,9 @@
 import React from 'react';
-import { Tabs, PageHeader, Layout, Row, Col, Card, Avatar, Input, Button } from 'antd';
+import Post from "../Post/Post.js";
+import data from "../../fake_data.json";
+import { Tabs, PageHeader, Layout, Row, Card, Avatar, Input, Button } from 'antd';
 import {
   UserOutlined,
-  ArrowLeftOutlined,
   ScheduleOutlined
 } from '@ant-design/icons';
 // import { withRouter } from 'react-router-dom';
@@ -39,10 +40,11 @@ const SubProfile = () => {
           <div className="avatar-image">
             <Avatar size={150} icon={<UserOutlined />} />
           </div>
+          
           <Button type="primary" shape="round" className="setup-profile" size="large">
             Set Up Profile
 
-        </Button>
+          </Button>
           <div className="information">
             <div className="my-name">Hiep Tran</div>
             <div>@HiepTran0343742152</div>
@@ -56,8 +58,24 @@ const SubProfile = () => {
       <Row>
         <Tabs defaultActiveKey="1" onChange={callback}>
           <TabPane tab="Tweets" key="1">
-            This is all your Tweet here
-         </TabPane>
+          {data.posts.map((post, idx) => {
+            const user = data.users.find((user) => user.id === post.user_id);
+            let comments = data.comments.filter((cmts) => cmts.post_id === post.id);
+            comments = comments.map((cmt) => {
+            const user = data.users.find((user) => user.id === cmt.user_id);
+            return { ...cmt, author: user.name, avatar: user.avatar };
+            });
+            return (
+              <Post
+                key={idx}
+                content={post.content}
+                img={post.image}
+                user={user}
+                comments={comments}
+              />
+            );
+          })}
+        </TabPane>
           <TabPane tab="Following" key="2">
             This is all your Following here
          </TabPane>

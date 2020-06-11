@@ -1,12 +1,21 @@
 import React from 'react';
 import { Layout, Row, Col } from 'antd';
-import NavBar from './NavBar';
-import SideBar from './SideBar';
+import NavBar from '../Bar/NavBar';
+import SideBar from '../Bar/SideBar';
 import SubProfile from './SubProfile';
+import FirebaseController from '../../firebase.js'
+import { withRouter } from 'react-router-dom'
 
-import './profile.css';
 
-const Profile = () => {
+function Profile(props){
+  var isLoggedIn = props.isLoggedIn;
+
+  // if (isLoggedIn) {
+  //   console.log(FirebaseController.getCurrentUser())
+  // } else {
+  //   props.history.replace('/login')
+  //   return null
+  // }
   const { Content, Sider } = Layout;
 
   return (
@@ -20,7 +29,7 @@ const Profile = () => {
           left: 0
         }}
       >
-        <NavBar />
+        <NavBar logout={props.logout} />
       </Sider>
 
 
@@ -46,4 +55,4 @@ const Profile = () => {
   )
 }
 
-export default Profile;
+export default withRouter(Profile);
