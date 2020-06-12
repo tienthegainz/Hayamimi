@@ -1,21 +1,25 @@
 import React from "react";
 import { Layout, Row, Col } from "antd";
 import NavBar from "../Bar/NavBar";
-import Feed from "./Feed";
 import SideBar from "../Bar/SideBar";
-import FirebaseController from '../../firebase.js'
-import { withRouter } from 'react-router-dom'
+import PostUpload from "../Post/PostUpload";
+import Post from "../Post/Post";
+
+import FirebaseController from "../../firebase.js";
+import { withRouter } from "react-router-dom";
 
 import "./Home.css";
+
+import data from "../../fake_data.json";
 
 function Home(props) {
   var isLoggedIn = props.isLoggedIn;
 
   if (isLoggedIn) {
-    console.log(FirebaseController.getCurrentUser())
+    console.log(FirebaseController.getCurrentUser());
   } else {
-    props.history.replace('/login')
-    return null
+    props.history.replace("/login");
+    return null;
   }
   const { Content, Sider } = Layout;
 
@@ -37,7 +41,32 @@ function Home(props) {
         <Row gutter={[24, 24]}>
           <Col span={16}>
             <Row gutter={[0, 24]}>
-              <Feed />
+              <Col span={24}>
+                <PostUpload />
+              </Col>
+              {data.posts.map((post, idx) => {
+                const user = data.users.find(
+                  (user) => user.id === post.user_id
+                );
+                let comments = data.comments.filter(
+                  (cmts) => cmts.post_id === post.id
+                );
+                comments = comments.map((cmt) => {
+                  const user = data.users.find(
+                    (user) => user.id === cmt.user_id
+                  );
+                  return { ...cmt, author: user.name, avatar: user.avatar };
+                });
+                return (
+                  <Post
+                    key={idx}
+                    content={post.content}
+                    img={post.image}
+                    user={user}
+                    comments={comments}
+                  />
+                );
+              })}
             </Row>
           </Col>
 
@@ -50,6 +79,6 @@ function Home(props) {
       </Content>
     </Layout>
   );
-};
+}
 
 export default withRouter(Home);
