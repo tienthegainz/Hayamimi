@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom'
 
 function Profile(props){
   var isLoggedIn = props.isLoggedIn;
+  const { currentUser } = props;
 
   // if (isLoggedIn) {
   //   console.log(FirebaseController.getCurrentUser())
@@ -34,12 +35,11 @@ function Profile(props){
 
 
 
-
-
+      
       <Content style={{ margin: '24px 24px 0 224px' }}>
         <Row gutter={[24, 24]}>
           <Col span={16}>
-
+            
             <SubProfile />
 
           </Col>
