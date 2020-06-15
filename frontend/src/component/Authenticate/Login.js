@@ -1,45 +1,46 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Checkbox } from "antd";
-import { withRouter } from "react-router-dom";
-import FirebaseController from '../../firebase.js'
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Button, Checkbox } from 'antd';
+import { withRouter } from 'react-router-dom';
+import FirebaseController from '../../firebase.js';
 
 const layout = {
   labelCol: {
-    span: 8,
+    span: 8
   },
   wrapperCol: {
-    span: 8,
-  },
+    span: 8
+  }
 };
 const tailLayout = {
   wrapperCol: {
     offset: 8,
-    span: 8,
-  },
+    span: 8
+  }
 };
 
-function Login(props) {
-  if (props.isLoggedIn) {
-    props.history.push('/');
-  }
-  var success = false
+const Login = (props) => {
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (props.isLoggedIn) props.history.push('/');
+  });
 
   const onFinish = async (values) => {
     try {
       await FirebaseController.login(values.email, values.password);
-      success = true;
+      setSuccess(true);
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     }
 
-    if (success === true) {
+    if (success) {
       props.login();
       props.history.push('/');
     }
   };
 
   const onFinishFailed = (errorInfo) => {
-    alert("Something went wrong. Try again")
+    alert('Something went wrong. Try again');
   };
 
   return (
@@ -49,21 +50,14 @@ function Login(props) {
       <Form
         {...layout}
         name="basic"
-        initialValues={{
-          remember: true,
-        }}
+        initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
         <Form.Item
           label="Email"
           name="email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your username!",
-            },
-          ]}
+          rules={[{ required: true, message: 'Please input your username!' }]}
         >
           <Input />
         </Form.Item>
@@ -71,12 +65,7 @@ function Login(props) {
         <Form.Item
           label="Password"
           name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
+          rules={[{ required: true, message: 'Please input your password!' }]}
         >
           <Input.Password />
         </Form.Item>
@@ -97,6 +86,6 @@ function Login(props) {
       </Form>
     </div>
   );
-}
+};
 
 export default withRouter(Login);
