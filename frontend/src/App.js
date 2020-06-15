@@ -56,6 +56,20 @@ function App() {
             <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
           )}
         />
+        <Route
+          exact
+          path="/notifications"
+          render={() => (
+            <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
+          )}
+        />
+        <Route
+          exact
+          path="/profile"
+          render={() => (
+            <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
+          )}
+        />
       </Switch>
     </BrowserRouter>
   );

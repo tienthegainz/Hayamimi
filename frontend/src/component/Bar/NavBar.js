@@ -3,10 +3,12 @@ import { Menu } from 'antd';
 import {
   HomeOutlined,
   NotificationOutlined,
+  UserOutlined,
   LogoutOutlined
 } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
-function NavBar(props) {
+const NavBar = (props) => {
   return (
     <Menu
       mode="inline"
@@ -15,13 +17,16 @@ function NavBar(props) {
       style={{ height: '100%' }}
     >
       <Menu.Item key="sub1" icon={<HomeOutlined />}>
-        Home
+        <Link to="/">Home</Link>
       </Menu.Item>
       <Menu.Item key="sub2" icon={<NotificationOutlined />}>
-        Notifications
+        <Link to="/notifications">Notifications</Link>
       </Menu.Item>
-      <Menu.Item key="sub3" icon={<LogoutOutlined />} onClick={props.logout}>
-        Logout
+      <Menu.Item key="sub3" icon={<UserOutlined />}>
+        <Link to="/profile">Profile</Link>
+      </Menu.Item>
+      <Menu.Item key="sub4" icon={<LogoutOutlined />} onClick={props.logout}>
+        Log Out
       </Menu.Item>
     </Menu>
   );
