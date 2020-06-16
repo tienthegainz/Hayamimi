@@ -37,9 +37,6 @@ function beforeUpload(file){
 
 
   class SetupProfile extends Component {
-
-    
-
     state = {
         displayName: '',
         photoURL: '',
@@ -50,12 +47,15 @@ function beforeUpload(file){
         console.log(this.props.user);
         if(this.props.user !== null) {
             console.log(this.props.user);
-            // this.setState({
-            //     displayName: this.props.user.displayName,
-            //     photoURL: this.props.user.photoURL
-            // });
+            this.setState({
+                displayName: this.props.user.displayName,
+                photoURL: this.props.user.photoURL
+            });
+           
         }
     }
+
+
 
     handleChange = infor => {
         if(infor.file.status === 'uploading'){
@@ -90,16 +90,15 @@ function beforeUpload(file){
       this.setState({ current });
     }
 
-    
-  
     render() {
+
+      console.log(this.state.displayName);
     
         const uploadButton = (
             <div>
                 {this.state.loading ? <LoadingOutlined /> : <CameraOutlined />}
                 <div className = "ant-upload-text">Upload</div>
             </div>
-
         );
         const { imageUrl, backgroundUrl } = this.state;
       const { current } = this.state;
@@ -133,17 +132,18 @@ function beforeUpload(file){
       title: 'Pick a Header',
       content: 
       <div>
-          People how visit your Tweet will see it. Show your Style.
+          People who visit your Tweet will see it. Show your Style.
           <div className = "background-image">
-          <Upload 
-            name="avatar"
-            listType="picture-card"
-            className="avatar-upload"
+          {/* <Upload 
+            name="background"
+            listType="picture"
+            className="background-upload"
             showUploadList={false}
             action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             beforeUpload={beforeUpload}
             onChange={this.handleChange}
-        >{backgroundUrl ? <img src={backgroundUrl} alt="avatar" style={{width: '100%'}} /> : uploadButton}</Upload>
+        >{backgroundUrl ? <img src={backgroundUrl} alt="avatar" style={{width: '100%'}} /> : uploadButton}
+        </Upload> */}
         
           </div>
           <div className="avatar-image-header">
