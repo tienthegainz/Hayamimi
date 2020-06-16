@@ -32,7 +32,7 @@ const Home = (props) => {
           left: 0
         }}
       >
-        <NavBar logout={props.logout} />
+        <NavBar isLoggedIn={isLoggedIn} logout={props.logout} />
       </Sider>
 
       <Content style={{ margin: '24px 24px 0 224px' }}>
