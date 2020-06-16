@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Col, Card, Avatar, Button, Modal } from 'antd';
 import { LikeOutlined, LikeTwoTone, CommentOutlined, ShareAltOutlined } from '@ant-design/icons';
-import PostComment from './PostComment';
+import Comments from './Comments';
 
 const Post = (props) => {
   const { user, content, img, comments } = props;
@@ -36,7 +36,7 @@ const Post = (props) => {
         <div style={{ marginTop: 20 }}>{content}</div>
         <img src={img} style={{ display: 'block', margin: 'auto' }} />
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
-          <PostComment listComments={comments} />
+          <Comments listComments={comments} />
         </Modal>
       </Card>
     </Col>

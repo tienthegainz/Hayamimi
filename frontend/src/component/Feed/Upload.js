@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { Card, Input, Button } from "antd";
-import FirebaseController from "../../firebase.js";
+import React, { useState } from 'react';
+import { Card, Input, Button } from 'antd';
+import FirebaseController from '../../firebase.js';
 
-function PostUpload() {
+const Upload = () => {
   const { TextArea } = Input;
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState('');
 
   const uploadPost = () => {
     let data = {
       content: status,
       date: new Date(),
       like: [],
-      uid: FirebaseController.getCurrentUser().uid,
+      uid: FirebaseController.getCurrentUser().uid
     };
     // console.log(data);
     FirebaseController.uploadPost(data);
-    setStatus("");
+    setStatus('');
   };
 
   const handleChange = (event) => {
@@ -33,7 +33,7 @@ function PostUpload() {
         />
         <Button
           type="primary"
-          style={{ float: "right", marginTop: 15 }}
+          style={{ float: 'right', marginTop: 15 }}
           onClick={uploadPost}
         >
           Upload
@@ -41,6 +41,6 @@ function PostUpload() {
       </Card>
     </div>
   );
-}
+};
 
-export default PostUpload;
+export default Upload;

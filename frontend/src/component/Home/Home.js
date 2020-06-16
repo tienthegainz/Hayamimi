@@ -1,84 +1,49 @@
-import React from "react";
-import { Layout, Row, Col } from "antd";
-import NavBar from "../Bar/NavBar";
-import SideBar from "../Bar/SideBar";
-import PostUpload from "../Post/PostUpload";
-import Post from "../Post/Post";
+import React, { useState, useEffect } from 'react';
+import { Layout } from 'antd';
+import NavBar from '../Bar/NavBar';
+import Feed from '../Feed/Feed';
 
-import FirebaseController from "../../firebase.js";
-import { withRouter } from "react-router-dom";
+import FirebaseController from '../../firebase.js';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
-import "./Home.css";
+import './Home.css';
 
-import data from "../../fake_data.json";
+const Home = (props) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn);
 
-function Home(props) {
-  var isLoggedIn = props.isLoggedIn;
+  useEffect(() => {
+    setIsLoggedIn(props.isLoggedIn);
+    if (isLoggedIn) console.log(FirebaseController.getCurrentUser());
+    else {
+      props.history.replace('/login');
+    }
+  });
 
-  if (isLoggedIn) {
-    console.log(FirebaseController.getCurrentUser());
-  } else {
-    props.history.replace("/login");
-    return null;
-  }
   const { Content, Sider } = Layout;
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: '100vh' }}>
       <Sider
         width={200}
         style={{
-          overflow: "auto",
-          height: "100vh",
-          position: "fixed",
-          left: 0,
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0
         }}
       >
         <NavBar logout={props.logout} />
       </Sider>
 
-      <Content style={{ margin: "24px 24px 0 224px" }}>
-        <Row gutter={[24, 24]}>
-          <Col span={16}>
-            <Row gutter={[0, 24]}>
-              <Col span={24}>
-                <PostUpload />
-              </Col>
-              {data.posts.map((post, idx) => {
-                const user = data.users.find(
-                  (user) => user.id === post.user_id
-                );
-                let comments = data.comments.filter(
-                  (cmts) => cmts.post_id === post.id
-                );
-                comments = comments.map((cmt) => {
-                  const user = data.users.find(
-                    (user) => user.id === cmt.user_id
-                  );
-                  return { ...cmt, author: user.name, avatar: user.avatar };
-                });
-                return (
-                  <Post
-                    key={idx}
-                    content={post.content}
-                    img={post.image}
-                    user={user}
-                    comments={comments}
-                  />
-                );
-              })}
-            </Row>
-          </Col>
-
-          <Col span={8}>
-            <Row gutter={[0, 24]}>
-              <SideBar />
-            </Row>
-          </Col>
-        </Row>
+      <Content style={{ margin: '24px 24px 0 224px' }}>
+        <Switch>
+          <Route exact path="/" component={Feed} />
+          <Route exact path="/notifications" component={Feed} />
+          <Route exact path="/profile" component={Feed} />
+        </Switch>
       </Content>
     </Layout>
   );
-}
+};
 
 export default withRouter(Home);

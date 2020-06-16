@@ -1,35 +1,41 @@
-import React, { useState } from "react";
-import "./App.css";
-import Login from "./component/Authenticate/Login.js";
-import Register from "./component/Authenticate/Register.js";
-import Home from "./component/Home/Home.js";
-import FirebaseController from "./firebase.js";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import Login from './component/Authenticate/Login.js';
+import Register from './component/Authenticate/Register.js';
+import Home from './component/Home/Home.js';
+import FirebaseController from './firebase.js';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 function App() {
-  // control the auth
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  function handleLoggedIn() {
-    if (!isLoggedIn) {
-      setIsLoggedIn(true);
-    }
-  }
 
-  function handleLoggedOut() {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange(setIsLoggedIn);
+    return () => {
+      unsubscribe();
+    };
+  });
+
+  const handleLoggedIn = () => {
+    if (!isLoggedIn) setIsLoggedIn(true);
+  };
+
+  const handleLoggedOut = () => {
     if (isLoggedIn) {
       FirebaseController.logout();
       setIsLoggedIn(false);
     }
-  }
+  };
 
-  FirebaseController.auth.onAuthStateChanged(function (user) {
-    if (user) {
-      setIsLoggedIn(true);
-    }
-  });
+  const onAuthStateChange = (callback) => {
+    return FirebaseController.auth.onAuthStateChanged((user) => {
+      if (user) callback(true);
+      else callback(false);
+    });
+  };
 
   return (
-    <Router>
+    <BrowserRouter>
       <Switch>
         <Route
           exact
@@ -50,8 +56,22 @@ function App() {
             <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
           )}
         />
+        <Route
+          exact
+          path="/notifications"
+          render={() => (
+            <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
+          )}
+        />
+        <Route
+          exact
+          path="/profile"
+          render={() => (
+            <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
+          )}
+        />
       </Switch>
-    </Router>
+    </BrowserRouter>
   );
 }
 
