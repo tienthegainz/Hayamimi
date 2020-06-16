@@ -4,7 +4,8 @@ import Login from './component/Authenticate/Login.js';
 import Register from './component/Authenticate/Register.js';
 // import DummyHome from './component/Home/DummyHome.js';
 import Home from './component/Home/Home.js';
-import Profile from './component/Profile/Profile.js';
+import IndexProfile from './component/Profile';
+import SetupProfile from './component/Profile/SetupProfile';
 import { connect } from 'react-redux';
 import { setUser } from './actions';
 
@@ -13,6 +14,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 
 function App(props) {
+
 
   const { currentUser, setUser } = props;
   // control the auth
@@ -29,25 +31,27 @@ function App(props) {
       setIsLoggedIn(false);
     }
   }
+
   FirebaseController.auth.onAuthStateChanged(function (user) {
     if (user) {
       setIsLoggedIn(true);
       setUser(user);
+      let uid = user.uid;
     }
   });
 
-  console.log(currentUser);
-
+  
   return (
 
    
     
     <Router>
       <Switch>
-        <Route exact path="/user" render={() => <Profile currentUser={currentUser} isLoggedIn={isLoggedIn} logout={handleLoggedOut} />} />
+        <Route exact path="/user/:uid" render={() => <IndexProfile currentUser={currentUser} isLoggedIn={isLoggedIn} logout={handleLoggedOut} />} />
         <Route exact path="/login" render={() => <Login isLoggedIn={isLoggedIn} login={handleLoggedIn} />} />
         <Route exact path="/register" render={() => <Register isLoggedIn={isLoggedIn} />} />
         <Route exact path="/" render={() => <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />} />
+        <Route exact path="/Setup_Profile" render={() => <SetupProfile isLoggedIn={isLoggedIn} logout={handleLoggedOut} />} />
       </Switch>
     </Router>
   );

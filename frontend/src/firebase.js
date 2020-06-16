@@ -37,6 +37,18 @@ class FirebaseController {
     getCurrentUser() {
         return this.auth.currentUser
     }
+
+    uploadPost(data) {
+        this.db
+            .collection("posts")
+            .add(data)
+            .then((ref) => {
+                console.log("Added document witd ID: ", ref.id);
+            });
+    }
+
+
 }
+
 
 export default new FirebaseController()

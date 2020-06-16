@@ -1,0 +1,51 @@
+@import '~antd/dist/antd.css';
+
+.steps-content {
+    margin-top: 16px;
+    border: 1px dashed #e9e9e9;
+    border-radius: 2px;
+    background-color: #fafafa;
+    min-height: 200px;
+    text-align: center;
+    padding-top: 40px;
+  }
+  
+  .steps-action {
+    margin-top: 24px;
+  }
+
+  .background-image{
+    
+    width: 100%;
+    height: 200px;
+    background-color: teal;
+    overflow: hidden;
+  }
+  
+  .avatar-image-header{
+    width: 150px;
+    height: 150px;
+    position: relative;
+    z-index: 99;
+    top: -75px;
+    border-radius: 50%;
+    margin-left: 10px;
+  }
+
+  .information{
+    width: 70%;
+    height: 120px;
+    margin-right: auto;
+    position: relative;
+    top: -70px;
+    left: 20px;
+  }
+
+  .avatar-upload{
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    background-color: black;
+  }
+
+ 
