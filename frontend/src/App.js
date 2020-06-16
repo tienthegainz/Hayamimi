@@ -13,10 +13,9 @@ import FirebaseController from './firebase.js';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 
-function App(props) {
+function App() {
 
 
-  const { currentUser, setUser } = props;
   // control the auth
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   function handleLoggedIn() {
@@ -34,20 +33,17 @@ function App(props) {
 
   FirebaseController.auth.onAuthStateChanged(function (user) {
     if (user) {
-      setIsLoggedIn(true);
-      setUser(user);
+      setIsLoggedIn(true);  
       let uid = user.uid;
+      console.log(uid);
     }
   });
 
-  
   return (
-
-   
-    
+ 
     <Router>
       <Switch>
-        <Route exact path="/user/:uid" render={() => <IndexProfile currentUser={currentUser} isLoggedIn={isLoggedIn} logout={handleLoggedOut} />} />
+        <Route exact path="/user/:uid" render={() => <IndexProfile isLoggedIn={isLoggedIn} logout={handleLoggedOut} />} />
         <Route exact path="/login" render={() => <Login isLoggedIn={isLoggedIn} login={handleLoggedIn} />} />
         <Route exact path="/register" render={() => <Register isLoggedIn={isLoggedIn} />} />
         <Route exact path="/" render={() => <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />} />
@@ -57,10 +53,4 @@ function App(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  currentUser: state.user.currentUser,
-})
-
-
-
-export default connect(mapStateToProps, { setUser })(App);
+export default App;
