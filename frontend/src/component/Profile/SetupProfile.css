@@ -6,7 +6,7 @@
     border-radius: 2px;
     background-color: #fafafa;
     min-height: 200px;
-    text-align: center;
+    
     padding-top: 40px;
   }
   
@@ -32,17 +32,16 @@
     margin-left: 10px;
   }
 
-  .information{
-    width: 70%;
-    height: 120px;
-    margin-right: auto;
-    position: relative;
-    top: -70px;
-    left: 20px;
+  .information2{
+    width: 80%;
+
+    height: 100px;
+    margin-left: 10px;
+    margin-top: -50px;
   }
 
   .avatar-upload{
-    margin: auto;
+    margin: 40%; 
     width: 100px;
     height: 100px;
     background-color: black;
@@ -53,6 +52,11 @@
     width: 100%;
     height: 200px;
     background-color: black;
+  }
+
+  .name{
+    font-weight: bold;
+    font-size: 25px;
   }
 
  

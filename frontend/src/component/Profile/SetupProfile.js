@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Steps, Button, message, Avatar, Upload } from 'antd';
+import { Steps, Button, message, Avatar, Upload, Modal, Input, Tooltip } from 'antd';
 import FirebaseController from '../../firebase.js';
 import { withRouter } from 'react-router-dom';
 import './SetupProfile.css';
@@ -7,7 +7,8 @@ import './SetupProfile.css';
 import {
     UserOutlined,
     LoadingOutlined,
-    CameraOutlined
+    CameraOutlined,
+    InfoCircleOutlined
 
   } from '@ant-design/icons';
 import { isImageUrl } from 'antd/lib/upload/utils';
@@ -40,8 +41,11 @@ function beforeUpload(file){
     state = {
         displayName: '',
         photoURL: '',
+        uid: '',
         loading: false,
+        visible: false
     };
+
     
     componentDidMount() {
         console.log(this.props.user);
@@ -49,12 +53,35 @@ function beforeUpload(file){
             console.log(this.props.user);
             this.setState({
                 displayName: this.props.user.displayName,
-                photoURL: this.props.user.photoURL
+                photoURL: this.props.user.photoURL,
+                uid: this.props.user.uid
             });
            
         }
     }
 
+
+
+    showModal = () => {
+      this.setState({
+        visible: true,
+      });
+    };
+  
+    handleOk = e => {
+      
+      this.setState({
+        visible: false,
+        
+      });
+    };
+  
+    handleCancel = e => {
+      console.log(e);
+      this.setState({
+        visible: false,
+      });
+    };
 
 
     handleChange = infor => {
@@ -124,7 +151,7 @@ function beforeUpload(file){
         </Upload>
 
          
-        
+        {FirebaseController.setupProfile(this.state.displayName,imageUrl)}
         </div>
       </div>,
     },
@@ -150,8 +177,32 @@ function beforeUpload(file){
               <Avatar size={150} src={imageUrl} />
               
           </div>
-          <div className="infomation">
-
+          <div className="information2">
+            <div className="name">{this.state.displayName}</div>
+            @{this.state.displayName}{this.state.uid} 
+            <Button type="primary" onClick={this.showModal}>
+              Change your Display Name
+            </Button>
+            <Modal 
+              title="changeDisplayName"
+              visible={this.state.visible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+            >
+               <Input
+                  value = {this.state.displayName}
+                  name="displayName"
+                  onChange={ e => this.setState({[e.target.name]: e.target.value})}
+                  placeholder="Enter your username"
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  suffix={
+                    <Tooltip title="Your display name can only contain letters, number and '_'">
+                      <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                    </Tooltip>
+                  }
+               />
+               {FirebaseController.setupProfile(this.state.displayName)}
+            </Modal>
           </div>
       </div>,
     },

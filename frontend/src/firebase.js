@@ -28,6 +28,17 @@ class FirebaseController {
         })
     }
 
+    setupProfile(nickName, avatarURL, backgroundURL) {
+        this.auth.currentUser.updateProfile({
+            displayName: nickName,
+            photoURL: avatarURL
+        }).then(function() {
+            console.log("Update Success!");
+        } ).catch(error => {
+            console.log(error);
+        } )      
+    }
+
     isInitialized() {
         return new Promise(resolve => {
             this.auth.onAuthStateChanged(resolve)

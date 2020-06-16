@@ -6,8 +6,6 @@ import Register from './component/Authenticate/Register.js';
 import Home from './component/Home/Home.js';
 import IndexProfile from './component/Profile';
 import SetupProfile from './component/Profile/SetupProfile';
-import { connect } from 'react-redux';
-import { setUser } from './actions';
 
 import FirebaseController from './firebase.js';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -35,7 +33,6 @@ function App() {
     if (user) {
       setIsLoggedIn(true);  
       let uid = user.uid;
-      console.log(uid);
     }
   });
 

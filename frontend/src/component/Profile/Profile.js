@@ -78,7 +78,7 @@ const Profile = (props) => {
             onOk={handleOk}
             onCancel={handleCancel}
           >
-            <SetupProfile  user = {user} />
+            <SetupProfile  user = {user} isLoggedIn = { isLoggedIn }/>
           </Modal>
           <div className="information">
             <div className="my-name">{user.displayName}</div>
