@@ -18,6 +18,13 @@ const App = () => {
   });
   // control the auth
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isCurrentUser, setIsCurrentUser] = useState(false)
+
+  let uids = [];
+  let currentUid = null;
+  uids = FirebaseController.getAllUid();
+
+
 
   const handleLoggedIn = () => {
     if (!isLoggedIn) setIsLoggedIn(true);
@@ -35,16 +42,25 @@ const App = () => {
     return FirebaseController.auth.onAuthStateChanged((user) => {
       if (user) {
         callback(true);
-        let uid = user.uid;
+        currentUid = user.uid;
+        
         // console.log(uid);
       }
       else callback(false);
     });
   };
 
+  function handleCurrentUser(id) {
+    if(currentUid === null) setIsLoggedIn(false);
+    else if(currentUid === id) setIsCurrentUser(true);
+    else setIsCurrentUser(false)
+  };
+
+
+
   return (
     
-
+    
     <BrowserRouter>
       <Switch>
         <Route
@@ -75,7 +91,7 @@ const App = () => {
         />
         <Route
           exact
-          path="/user/:uid"
+          path="/user/:currentUid"
           render={() => (
             <IndexProfile isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
           )}

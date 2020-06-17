@@ -1,4 +1,4 @@
-import app from "firebase/app";
+import app, { firestore } from "firebase/app";
 import "firebase/auth";
 import "firebase/firebase-firestore";
 import 'firebase/storage';
@@ -24,12 +24,16 @@ class FirebaseController {
   async register(email, password, nickName, birthday) {
     await this.auth.createUserWithEmailAndPassword(email, password);
     await this.db.collection("followings").doc(this.auth.currentUser.uid).set({
-      following: [this.auth.currentUser.uid]
+      following: [this.auth.currentUser.uid],
+      avatarURL: "https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg",
+      backgroundURL: "https://giaysg.com/wp-content/uploads/2017/06/grey-background.png",
+      displayName: nickName,
+      uid: this.auth.currentUser.uid
     })
     return this.auth.currentUser.updateProfile({
       displayName: nickName,
-      photoUrl:
-        "https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg",
+      photoURL:
+      "https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg",
     });
   }
 
@@ -38,10 +42,45 @@ class FirebaseController {
       displayName: nickName,
       photoURL: avatarURL
     }).then(function () {
-      console.log("Update Success!");
+      console.log("Update Auth Success!");
     }).catch(error => {
       console.log(error);
     })
+  }
+
+  setupProfileDB(nickName, avatarURL, backgroundURL){
+    this.db.collection("followings").doc(this.auth.currentUser.uid).update({
+      displayName: nickName,
+      avatarURL: avatarURL,
+      backgroundURL: backgroundURL
+    }).then(() => {
+      console.log("Update database success");
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
+  getAllUid(){ //Get uid by followings uid
+    let users = [];
+    this.db.collection("followings").get().then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        users.push(doc.id);
+      });
+    });
+
+    return users;
+  }
+
+  getAllUserData(){
+    let users = [];
+    this.db.collection("followings").get().then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        users.push(doc.data());
+      });
+    });
+
+    return users;
+
   }
 
 
@@ -55,6 +94,34 @@ class FirebaseController {
     return this.auth.currentUser;
   }
 
+  handleChangeName(newName){
+    this.db.collection("followings").doc(this.auth.currentUser.uid).update({
+      displayName: newName
+    })
+  }
+
+
+
+  handleFollowing(otherID){
+    this.db.collection("followings").doc(this.auth.currentUser.uid)
+    .update({
+      following: firestore.FieldValue.arrayUnion(otherID)
+    })
+      .then(() => {
+        console.log("Followed!");
+      });
+  }
+
+  handleUnFollow(otherID){
+    this.db.collection("followings").doc(this.auth.currentUser.uid)
+    .update({
+      following: firestore.FieldValue.arrayRemove(otherID)
+    })
+    .then(() => {
+      console.log("unFollowed!");
+    });
+  }
+
   uploadPost(data) {
     this.db
       .collection("posts")
@@ -64,23 +131,24 @@ class FirebaseController {
       });
   }
 
-  // async uploadImage(image) {
-  //   const random_name = (Math.random().toString(36) + '00000000000000000').slice(2, 10) + '.' + (image.name).split(".").slice(-1);
-  //   // console.log(random_name)
-  //   return this.storage.ref(`images/${random_name}`).put(image.originFileObj), random_name;
-  //   // await uploadTask.on('state_changed',
-  //   //   (snapshot) => {
-  //   //   },
-  //   //   (error) => {
-  //   //     // error function ....
-  //   //     console.log('Error: ', error);
-  //   //   },
-  //   //   () => {
-  //   //     // complete function ....
-  //   //     url = this.storage.ref('images').child(random_name).getDownloadURL()
-  //   //   });
-  //   // return url
-  // }
+  async uploadImage(image) {
+    let url = null;
+    const random_name = (Math.random().toString(36) + '00000000000000000').slice(2, 10) + '.' + (image.name).split(".").slice(-1);
+    // console.log(random_name)
+    const uploadTask = this.storage.ref(`images/${random_name}`).put(image.originFileObj);
+     await uploadTask.on('state_changed',
+      (snapshot) => {
+      },
+      (error) => {
+        // error function ....
+        console.log('Error: ', error);
+      },
+      () => {
+        // complete function ....
+        url = this.storage.ref('images').child(random_name).getDownloadURL()
+      });
+    return url;
+  }
 }
 
 export default new FirebaseController();

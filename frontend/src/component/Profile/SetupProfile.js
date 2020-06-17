@@ -40,7 +40,8 @@ function beforeUpload(file){
   class SetupProfile extends Component {
     state = {
         displayName: '',
-        photoURL: '',
+        backgroundURL: '',
+        avatarURL: '',
         uid: '',
         loading: false,
         visible: false
@@ -91,11 +92,11 @@ function beforeUpload(file){
         }
     
         if(infor.file.status === 'done'){
-            getBase64(infor.file.originFileObj, imageUrl => this.setState({
-                imageUrl,
+            this.setState({
+                avatarURL: FirebaseController.uploadImage(),
                 loading: false,
             })
-            );
+            
     
         }
     };
@@ -143,7 +144,6 @@ function beforeUpload(file){
             listType="picture-card"
             className="avatar-upload"
             showUploadList={false}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             beforeUpload={beforeUpload}
             onChange={this.handleChange}
         >{imageUrl ? <img src={imageUrl} alt="avatar" style={{width: '100%'}} /> : uploadButton}

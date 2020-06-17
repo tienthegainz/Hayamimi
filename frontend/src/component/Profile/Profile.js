@@ -1,9 +1,8 @@
 import React from 'react';
 import Post from "../Feed/Post.js";
 import data from "../../fake_data.json";
-import { Modal, Tabs, PageHeader, Layout, Row, Card, Avatar, Input, Button } from 'antd';
+import { Modal, Tabs, PageHeader, Row, Card, Avatar, Input, Button } from 'antd';
 import {
-  UserOutlined,
   ScheduleOutlined
 } from '@ant-design/icons';
 // import { withRouter } from 'react-router-dom';
@@ -38,19 +37,8 @@ const Profile = (props) => {
     console.log(e);
     setVisible(false);
   };
-  let user = null;
-
+  let user = props.user;
   let isLoggedIn = props.isLoggedIn;
-  if (isLoggedIn) {
-    user = FirebaseController.getCurrentUser();
-    console.log(user);
-  } else {
-    props.history.replace('/login')
-    return null
-  }
-
-  const { Meta } = Card;
-  const { TextArea } = Input;
   return (
     <div>
       <PageHeader
@@ -58,7 +46,9 @@ const Profile = (props) => {
         onBack={() => null}
         title={user.displayName}
         subTitle="0 Tweet"
-      />
+      >
+       
+      </PageHeader>
 
       <Row>
         <div className="setup-avatar">
@@ -113,6 +103,7 @@ const Profile = (props) => {
           </TabPane>
           <TabPane tab="Following" key="2">
             This is all your Following here
+            <Button type="primary" onClick={FirebaseController.handleFollowing("ZgEAllAei4TloNxoYN9jmNhyvRi1")}>click</Button>
          </TabPane>
           <TabPane tab="Followed" key="3">
             This is all your Followed here

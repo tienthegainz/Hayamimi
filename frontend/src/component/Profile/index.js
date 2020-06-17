@@ -9,12 +9,7 @@ import { withRouter } from 'react-router-dom'
 
 function IndexProfile(props) {
   const isLoggedIn = props.isLoggedIn;
-  // const { currentUser } = props;
-
   let user = null;
-  // if(currentUser !== null){
-  //   user = currentUser;
-  // }
 
   if (isLoggedIn) {
     user = FirebaseController.getCurrentUser();
