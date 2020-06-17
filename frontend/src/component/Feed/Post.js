@@ -34,7 +34,7 @@ const Post = (props) => {
       >
         <Meta title={user.name} avatar={<Avatar src={user.avatar} />} />
         <div style={{ marginTop: 20 }}>{content}</div>
-        <img src={img} style={{ display: 'block', margin: 'auto' }} />
+        <img src={img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img'/>
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
           <Comments listComments={comments} />
         </Modal>
