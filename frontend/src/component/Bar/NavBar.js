@@ -1,25 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Menu } from 'antd';
 import {
   HomeOutlined,
-  NotificationOutlined,
+  BellOutlined,
   LogoutOutlined,
   UserOutlined
 } from '@ant-design/icons';
 import FirebaseController from '../../firebase.js';
-import { withRouter } from 'react-router-dom';
 
 function NavBar(props) {
-  const isLoggedIn = props.isLoggedIn;
-  let users = null;
-  let uid = '';
-  if (isLoggedIn) {
-    users = FirebaseController.getCurrentUser();
-    uid = users.uid;
-    // console.log(uid);
-  }
+  const [user, setUser] = useState({});
 
-
+  useEffect(() => {
+    setUser(FirebaseController.getCurrentUser());
+  }, []);
 
   return (
     <Menu
@@ -31,17 +26,17 @@ function NavBar(props) {
       <Menu.Item key="sub1" icon={<HomeOutlined />} onClick={() => props.history.push("/")}>
         Home
       </Menu.Item>
-      <Menu.Item key="sub2" icon={<NotificationOutlined />} onClick={() => props.history.push("/notifications")}>
+      <Menu.Item key="sub2" icon={<BellOutlined />} onClick={() => props.history.push("/notifications")}>
         Notifications
       </Menu.Item>
-      <Menu.Item key="sub3" icon={<UserOutlined />} onClick={() => props.history.push(`/user/${uid}`)}>
+      <Menu.Item key="sub3" icon={<UserOutlined />} onClick={() => props.history.push(`/user/${user.uid}`)}>
         My Profile
       </Menu.Item>
       <Menu.Item key="sub4" icon={<LogoutOutlined />} onClick={props.logout}>
-        Logout
+        Log Out
       </Menu.Item>
     </Menu>
   );
-};
+}
 
 export default withRouter(NavBar);

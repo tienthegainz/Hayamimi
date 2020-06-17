@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, DatePicker } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { withRouter } from 'react-router-dom';
 import FirebaseController from '../../firebase.js';
 
-const layout = {
-  labelCol: {
-    span: 8
-  },
-  wrapperCol: {
-    span: 8
-  }
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 8
-  }
-};
+const layout = { labelCol: { span: 8 }, wrapperCol: { span: 8 } };
+
+const tailLayout = { wrapperCol: { offset: 8, span: 8 } };
 
 const Register = (props) => {
   const [success, setSuccess] = useState(false);

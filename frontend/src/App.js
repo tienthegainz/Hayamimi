@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import FirebaseController from './firebase.js';
 import Login from './component/Authenticate/Login.js';
 import Register from './component/Authenticate/Register.js';
 import Home from './component/Home/Home.js';
 import IndexProfile from './component/Profile'
-import FirebaseController from './firebase.js';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import './App.css';
 
 
 const App = () => {
@@ -25,7 +25,6 @@ const App = () => {
   uids = FirebaseController.getAllUid();
 
 
-
   const handleLoggedIn = () => {
     if (!isLoggedIn) setIsLoggedIn(true);
   };
@@ -35,7 +34,6 @@ const App = () => {
       FirebaseController.logout();
       setIsLoggedIn(false);
     }
-
   };
 
   const onAuthStateChange = (callback) => {
@@ -46,6 +44,7 @@ const App = () => {
         
         // console.log(uid);
       }
+
       else callback(false);
     });
   };
@@ -92,14 +91,14 @@ const App = () => {
         <Route
           exact
           path="/user/:currentUid"
+
           render={() => (
             <IndexProfile isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
           )}
         />
-
       </Switch>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

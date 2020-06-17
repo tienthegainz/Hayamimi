@@ -151,4 +151,5 @@ class FirebaseController {
   }
 }
 
+
 export default new FirebaseController();
