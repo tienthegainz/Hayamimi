@@ -7,8 +7,9 @@ import IndexProfile from './component/Profile'
 import FirebaseController from './firebase.js';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-function App() {
-  
+
+const App = () => {
+
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setIsLoggedIn);
     return () => {
@@ -35,7 +36,7 @@ function App() {
       if (user) {
         callback(true);
         let uid = user.uid;
-        console.log(uid);
+        // console.log(uid);
       }
       else callback(false);
     });
