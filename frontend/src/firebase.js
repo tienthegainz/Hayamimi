@@ -63,24 +63,6 @@ class FirebaseController {
         console.log("Added document with ID: ", ref.id);
       });
   }
-
-  // async uploadImage(image) {
-  //   const random_name = (Math.random().toString(36) + '00000000000000000').slice(2, 10) + '.' + (image.name).split(".").slice(-1);
-  //   // console.log(random_name)
-  //   return this.storage.ref(`images/${random_name}`).put(image.originFileObj), random_name;
-  //   // await uploadTask.on('state_changed',
-  //   //   (snapshot) => {
-  //   //   },
-  //   //   (error) => {
-  //   //     // error function ....
-  //   //     console.log('Error: ', error);
-  //   //   },
-  //   //   () => {
-  //   //     // complete function ....
-  //   //     url = this.storage.ref('images').child(random_name).getDownloadURL()
-  //   //   });
-  //   // return url
-  // }
 }
 
 export default new FirebaseController();

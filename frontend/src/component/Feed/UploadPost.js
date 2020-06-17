@@ -48,6 +48,7 @@ const UploadPost = () => {
     FirebaseController.uploadPost(data);
     setStatus('');
     setImage(null);
+    setImageList([]);
   };
 
 
