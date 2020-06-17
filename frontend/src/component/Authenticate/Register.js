@@ -83,13 +83,6 @@ const Register = (props) => {
         >
           <Input.Password />
         </Form.Item>
-        <Form.Item
-          label="Birthday"
-          name="birthday"
-          rules={[{ required: true, message: 'Please choose your birthday!' }]}
-        >
-          <DatePicker />
-        </Form.Item>
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
             Register

@@ -21,20 +21,20 @@ function callback(key) {
 const Profile = (props) => {
 
   const [visible, setVisible] = useState(false)
-  
-  function showModal(){  
-    if(!visible){
-      setVisible(true); 
-    }  
-    
+
+  function showModal() {
+    if (!visible) {
+      setVisible(true);
+    }
+
   };
-  
-  function handleOk(e){
-    console.log(e);   
-    setVisible(false);  
+
+  function handleOk(e) {
+    console.log(e);
+    setVisible(false);
   };
-  
-  function handleCancel(e){
+
+  function handleCancel(e) {
     console.log(e);
     setVisible(false);
   };
@@ -42,13 +42,12 @@ const Profile = (props) => {
 
   let isLoggedIn = props.isLoggedIn;
   if (isLoggedIn) {
-    user = FirebaseController.getCurrentUser();
-    console.log(FirebaseController.getCurrentUser())
+    user = FirebaseController.getCurrentUser()
   } else {
     props.history.replace('/login')
     return null
   }
-  
+
   const { Meta } = Card;
   const { TextArea } = Input;
   return (
@@ -68,17 +67,17 @@ const Profile = (props) => {
           <div className="avatar-image">
             <Avatar size={150} src={user.photoURL} />
           </div>
-          
+
           <Button type="primary" shape="round" className="setup-profile" size="large" onClick={showModal}>
             Set Up Profile
           </Button>
-          <Modal 
+          <Modal
             title="SetupProfile"
             visible={visible}
             onOk={handleOk}
             onCancel={handleCancel}
           >
-            <SetupProfile  user = {user} isLoggedIn = { isLoggedIn }/>
+            <SetupProfile user={user} isLoggedIn={isLoggedIn} />
           </Modal>
           <div className="information">
             <div className="my-name">{user.displayName}</div>
@@ -93,24 +92,24 @@ const Profile = (props) => {
       <Row>
         <Tabs defaultActiveKey="1" onChange={callback}>
           <TabPane tab="Tweets" key="1">
-          {data.posts.map((post, idx) => {
-            const user = data.users.find((user) => user.id === post.user_id);
-            let comments = data.comments.filter((cmts) => cmts.post_id === post.id);
-            comments = comments.map((cmt) => {
-            const user = data.users.find((user) => user.id === cmt.user_id);
-            return { ...cmt, author: user.name, avatar: user.avatar };
-            });
-            return (
-              <Post
-                key={idx}
-                content={post.content}
-                img={post.image}
-                user={user}
-                comments={comments}
-              />
-            );
-          })}
-        </TabPane>
+            {data.posts.map((post, idx) => {
+              const user = data.users.find((user) => user.id === post.user_id);
+              let comments = data.comments.filter((cmts) => cmts.post_id === post.id);
+              comments = comments.map((cmt) => {
+                const user = data.users.find((user) => user.id === cmt.user_id);
+                return { ...cmt, author: user.name, avatar: user.avatar };
+              });
+              return (
+                <Post
+                  key={idx}
+                  content={post.content}
+                  img={post.image}
+                  user={user}
+                  comments={comments}
+                />
+              );
+            })}
+          </TabPane>
           <TabPane tab="Following" key="2">
             This is all your Following here
          </TabPane>

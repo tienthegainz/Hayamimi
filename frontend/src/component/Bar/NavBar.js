@@ -4,19 +4,19 @@ import {
   HomeOutlined,
   NotificationOutlined,
   LogoutOutlined,
-  UserOutlined 
+  UserOutlined
 } from '@ant-design/icons';
 import FirebaseController from '../../firebase.js';
 import { withRouter } from 'react-router-dom';
 
 function NavBar(props) {
-  var isLoggedIn = props.isLoggedIn;
+  const isLoggedIn = props.isLoggedIn;
   let users = null;
   let uid = '';
   if (isLoggedIn) {
     users = FirebaseController.getCurrentUser();
     uid = users.uid;
-    console.log(uid);
+    // console.log(uid);
   }
 
 
@@ -28,10 +28,10 @@ function NavBar(props) {
       defaultOpenKeys={['sub1']}
       style={{ height: '100%' }}
     >
-      <Menu.Item key="sub1" icon={<HomeOutlined />} onClick = {() => props.history.push("/")}>
+      <Menu.Item key="sub1" icon={<HomeOutlined />} onClick={() => props.history.push("/")}>
         Home
       </Menu.Item>
-      <Menu.Item key="sub2" icon={<NotificationOutlined />} onClick = {() => props.history.push("/notifications")}>
+      <Menu.Item key="sub2" icon={<NotificationOutlined />} onClick={() => props.history.push("/notifications")}>
         Notifications
       </Menu.Item>
       <Menu.Item key="sub3" icon={<UserOutlined />} onClick={() => props.history.push(`/user/${uid}`)}>
