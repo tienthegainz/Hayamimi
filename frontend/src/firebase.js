@@ -2,6 +2,7 @@ import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firebase-firestore";
 import 'firebase/storage';
+import 'firebase';
 
 const config = require("./firebase_config.json");
 
@@ -62,6 +63,16 @@ class FirebaseController {
       .then((ref) => {
         console.log("Added document with ID: ", ref.id);
       });
+  }
+
+  uploadComment(data){    
+    let updatePost = this.db.collection("post").doc(data.post_id);
+    updatePost.update({
+      comments: app.firestore.FieldValue.arrayUnion(data)
+    });
+  }
+  updateLike(data){
+    
   }
 }
 

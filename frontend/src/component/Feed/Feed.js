@@ -20,14 +20,20 @@ const Feed = () => {
             );
             comments = comments.map((cmt) => {
               const user = data.users.find((user) => user.id === cmt.user_id);
-              return { ...cmt, author: user.name, avatar: user.avatar };
+              return { ...cmt,
+                 author: user.name,
+                 avatar: user.avatar, 
+                 date: post.date,
+                };
             });
             return (
               <Post
                 key={idx}
+                id={post.id}
                 content={post.content}
                 img={post.image}
                 user={user}
+                like={post.like}
                 comments={comments}
               />
             );
