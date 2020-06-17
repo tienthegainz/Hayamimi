@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import FirebaseController from './firebase.js';
 import Login from './component/Authenticate/Login.js';
 import Register from './component/Authenticate/Register.js';
 import Home from './component/Home/Home.js';
-import IndexProfile from './component/Profile'
-import FirebaseController from './firebase.js';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import './App.css';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setIsLoggedIn);
     return () => {
       unsubscribe();
     };
-  });
-  // control the auth
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  }, []);
 
   const handleLoggedIn = () => {
     if (!isLoggedIn) setIsLoggedIn(true);
@@ -27,16 +25,11 @@ function App() {
       FirebaseController.logout();
       setIsLoggedIn(false);
     }
-
   };
 
   const onAuthStateChange = (callback) => {
     return FirebaseController.auth.onAuthStateChanged((user) => {
-      if (user) {
-        callback(true);
-        let uid = user.uid;
-        console.log(uid);
-      }
+      if (user) callback(true);
       else callback(false);
     });
   };
@@ -72,12 +65,11 @@ function App() {
         />
         <Route
           exact
-          path="/user/:uid"
+          path="/profile"
           render={() => (
-            <IndexProfile isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
+            <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
           )}
         />
-
       </Switch>
     </BrowserRouter>
   );

@@ -1,22 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Layout } from 'antd';
+import React, { useEffect } from 'react';
+import { Switch, Route, withRouter } from 'react-router-dom';
+import { Layout, Row, Col } from 'antd';
+
 import NavBar from '../Bar/NavBar';
 import Feed from '../Feed/Feed';
-
-import FirebaseController from '../../firebase.js';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import SideBar from '../Bar/SideBar';
+import Profile from '../Profile/Profile';
 
 import './Home.css';
 
 const Home = (props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn);
-
   useEffect(() => {
-    setIsLoggedIn(props.isLoggedIn);
-    if (isLoggedIn) console.log(FirebaseController.getCurrentUser());
-    else {
-      props.history.replace('/login');
-    }
+    if (!props.isLoggedIn) props.history.replace('/login');
   });
 
   const { Content, Sider } = Layout;
@@ -32,15 +27,25 @@ const Home = (props) => {
           left: 0
         }}
       >
-        <NavBar isLoggedIn={isLoggedIn} logout={props.logout} />
+        <NavBar logout={props.logout} />
       </Sider>
 
       <Content style={{ margin: '24px 24px 0 224px' }}>
-        <Switch>
-          <Route exact path="/" component={Feed} />
-          <Route exact path="/notifications" component={Feed} />
-          <Route exact path="/profile" component={Feed} />
-        </Switch>
+        <Row gutter={[24, 24]}>
+          <Col span={16}>
+            <Switch>
+              <Route exact path="/" component={Feed} />
+              <Route exact path="/notifications" component={Feed} />
+              <Route exact path="/profile" component={Profile} />
+            </Switch>
+          </Col>
+
+          <Col span={8}>
+            <Row gutter={[0, 24]}>
+              <SideBar />
+            </Row>
+          </Col>
+        </Row>
       </Content>
     </Layout>
   );
