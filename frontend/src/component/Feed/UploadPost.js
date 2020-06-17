@@ -11,27 +11,34 @@ const UploadPost = () => {
 
   const uploadPost = async () => {
     if (image) {
-      const random_name = (Math.random().toString(36) + '00000000000000000').slice(2, 10) + '.' + (image.name).split(".").slice(-1);
+      const random_name =
+        (Math.random().toString(36) + '00000000000000000').slice(2, 10) +
+        '.' +
+        image.name.split('.').slice(-1);
       // console.log(random_name)
-      const uploadTask = FirebaseController.storage.ref(`images/${random_name}`).put(image.originFileObj);
+      const uploadTask = FirebaseController.storage
+        .ref(`images/${random_name}`)
+        .put(image.originFileObj);
 
-      uploadTask.on('state_changed',
-        (snapshot) => {
-        },
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {},
         (error) => {
           // error function ....
           console.log('Error: ', error);
         },
         () => {
           // complete function ....
-          FirebaseController.storage.ref('images').child(random_name).getDownloadURL().then(url => {
-            uploadPosttoFireStore(url);
-          });
-
+          FirebaseController.storage
+            .ref('images')
+            .child(random_name)
+            .getDownloadURL()
+            .then((url) => {
+              uploadPosttoFireStore(url);
+            });
         }
       );
-    }
-    else {
+    } else {
       uploadPosttoFireStore(null);
     }
   };
@@ -51,19 +58,18 @@ const UploadPost = () => {
     setImageList([]);
   };
 
-
   const handleChange = (event) => {
     setStatus(event.target.value);
   };
 
   const dummyRequest = ({ file, onSuccess }) => {
     setTimeout(() => {
-      onSuccess("ok");
+      onSuccess('ok');
     }, 0);
   };
 
   const onChange = (e) => {
-    console.log("onChange: ", e.file);
+    console.log('onChange: ', e.file);
     if (e.file) {
       setImage(e.file);
     }
@@ -74,7 +80,7 @@ const UploadPost = () => {
 
   const onRemove = (file) => {
     setImage(null);
-  }
+  };
 
   return (
     <div>
@@ -85,7 +91,7 @@ const UploadPost = () => {
           autoSize={{ minRows: 2 }}
           onChange={handleChange}
         />
-        <div style={{ display: 'flex', 'justify-content': 'space-between' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Upload
             customRequest={dummyRequest}
             onChange={onChange}
@@ -95,11 +101,11 @@ const UploadPost = () => {
             <Button
               type="ghost"
               style={{ float: 'left', marginTop: 15 }}
-              listType='picture'
-              className='upload-list-inline'
+              listtype="picture"
+              className="upload-list-inline"
             >
               <UploadOutlined /> Add Image
-          </Button>
+            </Button>
           </Upload>
           <Button
             type="primary"
@@ -107,10 +113,10 @@ const UploadPost = () => {
             onClick={uploadPost}
           >
             Upload
-        </Button>
+          </Button>
         </div>
       </Card>
-    </div >
+    </div>
   );
 };
 

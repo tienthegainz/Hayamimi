@@ -1,100 +1,89 @@
-import React from 'react';
-import Post from "../Feed/Post.js";
-import data from "../../fake_data.json";
-import { Modal, Tabs, PageHeader, Layout, Row, Card, Avatar, Input, Button } from 'antd';
-import {
-  UserOutlined,
-  ScheduleOutlined
-} from '@ant-design/icons';
-// import { withRouter } from 'react-router-dom';
-import "./profile.css";
-import FirebaseController from '../../firebase.js'
-
+import React, { useState, useEffect } from 'react';
+import { Modal, Tabs, PageHeader, Row, Avatar, Button, Card } from 'antd';
+import { ScheduleOutlined, MailOutlined } from '@ant-design/icons';
+import FirebaseController from '../../firebase.js';
+import data from '../../fake_data.json';
+import Post from '../Feed/Post.js';
 import SetupProfile from './SetupProfile.js';
-import { useState } from "react";
+import './Profile.css';
+
 const { TabPane } = Tabs;
 
-function callback(key) {
-  console.log(key);
-}
-
 const Profile = (props) => {
+  const [user, setUser] = useState({});
+  const [visible, setVisible] = useState(false);
 
-  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    setUser(FirebaseController.getCurrentUser());
+  }, []);
 
-  function showModal() {
-    if (!visible) {
-      setVisible(true);
-    }
-
+  const showModal = () => {
+    if (!visible) setVisible(true);
   };
 
-  function handleOk(e) {
-    console.log(e);
+  const handleOk = (e) => {
     setVisible(false);
   };
 
-  function handleCancel(e) {
-    console.log(e);
+  const handleCancel = (e) => {
     setVisible(false);
   };
-  let user = null;
 
-  let isLoggedIn = props.isLoggedIn;
-  if (isLoggedIn) {
-    user = FirebaseController.getCurrentUser()
-  } else {
-    props.history.replace('/login')
-    return null
-  }
-
-  const { Meta } = Card;
-  const { TextArea } = Input;
   return (
     <div>
       <PageHeader
-        className="site-page-header"
-        onBack={() => null}
+        ghost={false}
+        onBack={() => props.history.push('/')}
         title={user.displayName}
         subTitle="0 Tweet"
       />
 
       <Row>
-        <div className="setup-avatar">
-          <div className="background-image">
+        <Card style={{ width: '100%' }}>
+          <div className="setup-avatar">
+            <div className="background-image"></div>
+            <div className="avatar-image">
+              <Avatar size={150} src={user.photoURL} />
+            </div>
 
+            <Button
+              type="primary"
+              shape="round"
+              className="setup-profile"
+              size="large"
+              onClick={showModal}
+            >
+              Set Up Profile
+            </Button>
+            <Modal
+              title="SetupProfile"
+              visible={visible}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <SetupProfile user={user} />
+            </Modal>
+            <div className="information">
+              <div className="my-name">{user.displayName}</div>
+              <div>
+                <MailOutlined /> {user.email}
+              </div>
+              <div>
+                <ScheduleOutlined /> Joined January 2020
+              </div>
+            </div>
           </div>
-          <div className="avatar-image">
-            <Avatar size={150} src={user.photoURL} />
-          </div>
-
-          <Button type="primary" shape="round" className="setup-profile" size="large" onClick={showModal}>
-            Set Up Profile
-          </Button>
-          <Modal
-            title="SetupProfile"
-            visible={visible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-          >
-            <SetupProfile user={user} isLoggedIn={isLoggedIn} />
-          </Modal>
-          <div className="information">
-            <div className="my-name">{user.displayName}</div>
-            <div>@{user.displayName}{user.uid}</div>
-            <div><ScheduleOutlined /> Joined January 2020</div>
-
-          </div>
-        </div>
-
+        </Card>
       </Row>
 
       <Row>
-        <Tabs defaultActiveKey="1" onChange={callback}>
+        <Tabs defaultActiveKey="1">
           <TabPane tab="Tweets" key="1">
             {data.posts.map((post, idx) => {
               const user = data.users.find((user) => user.id === post.user_id);
-              let comments = data.comments.filter((cmts) => cmts.post_id === post.id);
+              let comments = data.comments.filter(
+                (cmts) => cmts.post_id === post.id
+              );
               comments = comments.map((cmt) => {
                 const user = data.users.find((user) => user.id === cmt.user_id);
                 return { ...cmt, author: user.name, avatar: user.avatar };
@@ -111,19 +100,13 @@ const Profile = (props) => {
             })}
           </TabPane>
           <TabPane tab="Following" key="2">
-            This is all your Following here
-         </TabPane>
-          <TabPane tab="Followed" key="3">
-            This is all your Followed here
-         </TabPane>
+            This is all your following here
+          </TabPane>
+          <TabPane tab="Followers" key="3">
+            This is all your followers here
+          </TabPane>
         </Tabs>
       </Row>
-
-
-
-
-
-
     </div>
   );
 };
