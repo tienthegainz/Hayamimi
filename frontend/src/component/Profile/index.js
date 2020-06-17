@@ -7,8 +7,8 @@ import FirebaseController from '../../firebase.js'
 import { withRouter } from 'react-router-dom'
 
 
-function IndexProfile(props){
-  var isLoggedIn = props.isLoggedIn;
+function IndexProfile(props) {
+  const isLoggedIn = props.isLoggedIn;
   // const { currentUser } = props;
 
   let user = null;
@@ -18,7 +18,7 @@ function IndexProfile(props){
 
   if (isLoggedIn) {
     user = FirebaseController.getCurrentUser();
-    console.log(FirebaseController.getCurrentUser())
+    // console.log(FirebaseController.getCurrentUser())
   } else {
     props.history.replace('/login')
     return null
@@ -41,12 +41,12 @@ function IndexProfile(props){
 
 
 
-      
+
       <Content style={{ margin: '24px 24px 0 224px' }}>
         <Row gutter={[24, 24]}>
           <Col span={16}>
-            
-            <Profile isLoggedIn={isLoggedIn} user={user}/>
+
+            <Profile isLoggedIn={isLoggedIn} user={user} />
 
           </Col>
 

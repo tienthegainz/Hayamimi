@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 import SideBar from '../Bar/SideBar';
-import Upload from './Upload';
+import UploadPost from './UploadPost';
 import Post from './Post';
 import data from '../../fake_data.json';
 
@@ -11,7 +11,7 @@ const Feed = () => {
       <Col span={16}>
         <Row gutter={[0, 24]}>
           <Col span={24}>
-            <Upload />
+            <UploadPost />
           </Col>
           {data.posts.map((post, idx) => {
             const user = data.users.find((user) => user.id === post.user_id);
