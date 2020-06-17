@@ -6,20 +6,50 @@ import FirebaseController from '../../firebase.js';
 const UploadPost = () => {
   const { TextArea } = Input;
   const [status, setStatus] = useState('');
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState();
   const [imageList, setImageList] = useState([]);
 
-  const uploadPost = () => {
+  const uploadPost = async () => {
+    if (image) {
+      const random_name = (Math.random().toString(36) + '00000000000000000').slice(2, 10) + '.' + (image.name).split(".").slice(-1);
+      // console.log(random_name)
+      const uploadTask = FirebaseController.storage.ref(`images/${random_name}`).put(image.originFileObj);
+
+      uploadTask.on('state_changed',
+        (snapshot) => {
+        },
+        (error) => {
+          // error function ....
+          console.log('Error: ', error);
+        },
+        () => {
+          // complete function ....
+          FirebaseController.storage.ref('images').child(random_name).getDownloadURL().then(url => {
+            uploadPosttoFireStore(url);
+          });
+
+        }
+      );
+    }
+    else {
+      uploadPosttoFireStore(null);
+    }
+  };
+  const uploadPosttoFireStore = async (url) => {
     let data = {
       content: status,
       date: new Date(),
       like: [],
+      commentID: [],
+      image: url,
       uid: FirebaseController.getCurrentUser().uid
     };
-    // console.log(data);
-    FirebaseController.uploadPost(data, image);
+    console.log(data);
+    FirebaseController.uploadPost(data);
     setStatus('');
+    setImage(null);
   };
+
 
   const handleChange = (event) => {
     setStatus(event.target.value);
@@ -32,8 +62,9 @@ const UploadPost = () => {
   };
 
   const onChange = (e) => {
-    if (e.files) {
-      setImage(e.files);
+    console.log("onChange: ", e.file);
+    if (e.file) {
+      setImage(e.file);
     }
     let fileList = [...e.fileList];
     fileList = fileList.slice(-1);
