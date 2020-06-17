@@ -8,7 +8,7 @@ import FirebaseController from './firebase.js';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 function App() {
-
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setIsLoggedIn);
     return () => {
@@ -42,6 +42,8 @@ function App() {
   };
 
   return (
+    
+
     <BrowserRouter>
       <Switch>
         <Route
