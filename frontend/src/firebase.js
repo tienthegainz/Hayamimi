@@ -21,19 +21,17 @@ class FirebaseController {
     return this.auth.signOut();
   }
 
-  async register(email, password, nickName, birthday) {
+  async register(email, password, nickName) {
     await this.auth.createUserWithEmailAndPassword(email, password);
-    await this.db.collection("followings").doc(this.auth.currentUser.uid).set({
+    await this.db.collection("users").doc(this.auth.currentUser.uid).set({
       following: [this.auth.currentUser.uid],
       avatarURL: "https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg",
       backgroundURL: "https://giaysg.com/wp-content/uploads/2017/06/grey-background.png",
       displayName: nickName,
-      uid: this.auth.currentUser.uid
+      uid: this.auth.currentUser.uid,
     })
     return this.auth.currentUser.updateProfile({
-      displayName: nickName,
-      photoURL:
-      "https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg",
+      displayName: nickName
     });
   }
 
@@ -48,8 +46,8 @@ class FirebaseController {
     })
   }
 
-  setupProfileDB(nickName, avatarURL, backgroundURL){
-    this.db.collection("followings").doc(this.auth.currentUser.uid).update({
+  setupProfileDB(nickName, avatarURL, backgroundURL) {
+    this.db.collection("users").doc(this.auth.currentUser.uid).update({
       displayName: nickName,
       avatarURL: avatarURL,
       backgroundURL: backgroundURL
@@ -60,10 +58,10 @@ class FirebaseController {
     })
   }
 
-  getAllUid(){ //Get uid by followings uid
+  getAllUid() { //Get uid by followings uid
     const users = [];
-    const uidRef = this.db.collection("followings").get().then(function(querySnapshot){
-      querySnapshot.forEach(function(doc){
+    const uidRef = this.db.collection("users").get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
         users.push(doc.id);
       });
     });
@@ -71,24 +69,24 @@ class FirebaseController {
     return users;
   }
 
-  getUserByUid(uid){
-    this.db.collection("followings").get().then(function(querySnapshot){
-      querySnapshot.forEach(function(doc){
-        if(doc.id === uid) return doc.data(uid);
+  getUserByUid(uid) {
+    this.db.collection("users").get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        if (doc.id === uid) return doc.data(uid);
       });
     });
   }
 
-  getAllUserData(){
+  getAllUserData() {
     let users = [];
-    this.db.collection("followings").get().then(function(querySnapshot){
-      querySnapshot.forEach(function(doc){
+    this.db.collection("users").get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
         users.push(doc.data());
       });
     });
     console.log(users);
     return users;
-    
+
 
   }
 
@@ -103,32 +101,32 @@ class FirebaseController {
     return this.auth.currentUser;
   }
 
-  handleChangeName(newName){
-    this.db.collection("followings").doc(this.auth.currentUser.uid).update({
+  handleChangeName(newName) {
+    this.db.collection("users").doc(this.auth.currentUser.uid).update({
       displayName: newName
     })
   }
 
 
 
-  handleFollowing(otherID){
-    this.db.collection("followings").doc(this.auth.currentUser.uid)
-    .update({
-      following: firestore.FieldValue.arrayUnion(otherID)
-    })
+  handleFollowing(otherID) {
+    this.db.collection("users").doc(this.auth.currentUser.uid)
+      .update({
+        following: firestore.FieldValue.arrayUnion(otherID)
+      })
       .then(() => {
         console.log("Followed!");
       });
   }
 
-  handleUnFollow(otherID){
-    this.db.collection("followings").doc(this.auth.currentUser.uid)
-    .update({
-      following: firestore.FieldValue.arrayRemove(otherID)
-    })
-    .then(() => {
-      console.log("unFollowed!");
-    });
+  handleUnFollow(otherID) {
+    this.db.collection("users").doc(this.auth.currentUser.uid)
+      .update({
+        following: firestore.FieldValue.arrayRemove(otherID)
+      })
+      .then(() => {
+        console.log("unFollowed!");
+      });
   }
 
   uploadPost(data) {
@@ -145,7 +143,7 @@ class FirebaseController {
     const random_name = (Math.random().toString(36) + '00000000000000000').slice(2, 10) + '.' + (image.name).split(".").slice(-1);
     // console.log(random_name)
     const uploadTask = this.storage.ref(`images/${random_name}`).put(image.originFileObj);
-     await uploadTask.on('state_changed',
+    await uploadTask.on('state_changed',
       (snapshot) => {
       },
       (error) => {
