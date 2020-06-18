@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Comment, Avatar, Form, Button, List, Input } from 'antd';
+import FirebaseController from '../../firebase.js'
 
 const { TextArea } = Input;
 
@@ -41,6 +42,18 @@ const Comments = (props) => {
     if (!value) {
       return;
     }
+    let user = null;
+    user = FirebaseController.getCurrentUser();
+    setSubmitting(true);
+     
+    let data = {
+      post_id: "b4ZN02bZHLPC9sE0MZGAe615HmC2",
+      user_id: user.uid,
+      content: value,
+      date: new Date(),         
+    };
+      FirebaseController.uploadComment(data);
+      
     setSubmitting(true);
 
     setTimeout(() => {

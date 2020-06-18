@@ -158,6 +158,16 @@ class FirebaseController {
       });
     return url;
   }
+
+  uploadComment(data){    
+    let updatePost = this.db.collection("post").doc(data.post_id);
+    updatePost.update({
+      comments: app.firestore.FieldValue.arrayUnion(data)
+    });
+  }
+  updateLike(data){
+    
+  }
 }
 
 
