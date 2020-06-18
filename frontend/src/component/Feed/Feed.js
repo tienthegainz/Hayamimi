@@ -6,9 +6,11 @@ import FirebaseController from '../../firebase.js';
 
 const Feed = () => {
   const [Posts, setPosts] = useState([]);
+  const [currentUID, setCurrentUID] = useState(null);
 
   useEffect(() => {
     getPosts();
+    getCurrentUID();
   }, []);
 
   const getPosts = async () => {
@@ -26,12 +28,21 @@ const Feed = () => {
     setPosts(data);
   };
 
+  const getCurrentUID = async () => {
+    FirebaseController.auth.onAuthStateChanged((user) => {
+      if (user) {
+        setCurrentUID(user.uid);
+      }
+    });
+  };
+
   return (
     <Row gutter={[0, 24]}>
       <Col span={24}>
         <UploadPost />
       </Col>
       {Posts.map((post, idx) => {
+        const permission = (post.uid === currentUID) ? true : false;
         return (
           <Post
             key={idx}
@@ -39,6 +50,7 @@ const Feed = () => {
             img={post.image}
             date={post.date}
             uid={post.uid}
+            permission={permission}
           // user={user}
           // comments={post.commentID}
           />
