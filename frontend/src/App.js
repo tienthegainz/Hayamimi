@@ -4,17 +4,27 @@ import FirebaseController from './firebase.js';
 import Login from './component/Authenticate/Login.js';
 import Register from './component/Authenticate/Register.js';
 import Home from './component/Home/Home.js';
+import IndexProfile from './component/Profile'
 import './App.css';
 
+
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setIsLoggedIn);
     return () => {
       unsubscribe();
     };
-  }, []);
+  });
+  // control the auth
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isCurrentUser, setIsCurrentUser] = useState(false)
+
+  let uids = [];
+  let currentUid = null;
+  uids = FirebaseController.getAllUid();
+  console.log(uids);
+
 
   const handleLoggedIn = () => {
     if (!isLoggedIn) setIsLoggedIn(true);
@@ -29,12 +39,28 @@ const App = () => {
 
   const onAuthStateChange = (callback) => {
     return FirebaseController.auth.onAuthStateChanged((user) => {
-      if (user) callback(true);
+      if (user) {
+        callback(true);
+        currentUid = user.uid;
+        
+        // console.log(uid);
+      }
+
       else callback(false);
     });
   };
 
+  function handleCurrentUser(id) {
+    if(currentUid === null) setIsLoggedIn(false);
+    else if(currentUid === id) setIsCurrentUser(true);
+    else setIsCurrentUser(false)
+  };
+
+
+
   return (
+    
+    
     <BrowserRouter>
       <Switch>
         <Route
@@ -65,9 +91,10 @@ const App = () => {
         />
         <Route
           exact
-          path="/profile/:uid"
+          path="/user/:currentUid"
+
           render={() => (
-            <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
+            <IndexProfile isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
           )}
         />
       </Switch>

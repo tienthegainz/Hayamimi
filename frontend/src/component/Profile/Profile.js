@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Tabs, PageHeader, Row, Avatar, Button, Card } from 'antd';
-import { ScheduleOutlined, MailOutlined } from '@ant-design/icons';
-import FirebaseController from '../../firebase.js';
-import data from '../../fake_data.json';
-import Post from '../Feed/Post.js';
+import Post from "../Feed/Post.js";
+import data from "../../fake_data.json";
+import { Modal, Tabs, PageHeader, Row, Card, Avatar, Input, Button } from 'antd';
+import {
+  ScheduleOutlined,
+  MailOutlined
+} from '@ant-design/icons';
+// import { withRouter } from 'react-router-dom';
+import FirebaseController from '../../firebase.js'
+
 import SetupProfile from './SetupProfile.js';
 import './Profile.css';
 
@@ -12,6 +17,30 @@ const { TabPane } = Tabs;
 const Profile = (props) => {
   const [user, setUser] = useState({});
   const [visible, setVisible] = useState(false);
+
+  const [Posts, setPosts] = useState([]);
+  
+  useEffect(() => {
+    getPosts();
+  }, []);
+  const getPosts = async () => {
+    
+    const followingsRef = await FirebaseController.db
+      .collection('followings')
+      .get();
+    const followingsSnapshot = followingsRef.docs.map((doc) => doc.id);
+    const postsRef = await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
+    const postsSnapshot = postsRef.docs.map((doc) => doc.data());
+
+    const data = [];
+    postsSnapshot.forEach((snapshot) => {
+      if (followingsSnapshot.includes(snapshot.uid) && snapshot.uid === props.user.uid){
+       data.push(snapshot);
+      }
+    });
+    setPosts(data);
+  };
+
 
   useEffect(() => {
     setUser(FirebaseController.getCurrentUser());
@@ -29,14 +58,19 @@ const Profile = (props) => {
     setVisible(false);
   };
 
+  let isLoggedIn = props.isLoggedIn;
+
+
   return (
     <div>
       <PageHeader
         ghost={false}
         onBack={() => props.history.push('/')}
         title={user.displayName}
-        subTitle="0 Tweet"
-      />
+        subTitle='0 tweet'
+      >
+       
+      </PageHeader>
 
       <Row>
         <Card style={{ width: '100%' }}>
@@ -79,32 +113,27 @@ const Profile = (props) => {
       <Row>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Tweets" key="1">
-            {data.posts.map((post, idx) => {
-              const user = data.users.find((user) => user.id === post.user_id);
-              let comments = data.comments.filter(
-                (cmts) => cmts.post_id === post.id
-              );
-              comments = comments.map((cmt) => {
-                const user = data.users.find((user) => user.id === cmt.user_id);
-                return { ...cmt, author: user.name, avatar: user.avatar };
-              });
-              return (
-                <Post
-                  key={idx}
-                  content={post.content}
-                  img={post.image}
-                  user={user}
-                  comments={comments}
-                />
-              );
-            })}
+          {Posts.map((post, idx) => {
+        return (
+          <Post
+            key={idx}
+            content={post.content}
+            img={post.image}
+            date={post.date}
+            uid={post.uid}
+          // user={user}
+          // comments={post.commentID}
+          />
+        );
+      })}
           </TabPane>
           <TabPane tab="Following" key="2">
-            This is all your following here
-          </TabPane>
-          <TabPane tab="Followers" key="3">
-            This is all your followers here
-          </TabPane>
+            This is all your Following here
+         </TabPane>
+          <TabPane tab="Followed" key="3">
+            This is all your Followed here
+         </TabPane>
+
         </Tabs>
       </Row>
     </div>
