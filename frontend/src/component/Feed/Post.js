@@ -8,12 +8,7 @@ const Post = (props) => {
   const { content, img, date, uid } = props;
   const [likeBtn, setLikeBtn] = useState(<LikeOutlined />);
   const [commentVisible, setCommentVisible] = useState(false);
-  // const [currentUser, setCurrentUser] = useState();
   const { Meta } = Card;
-
-  // useEffect(() => {
-  //   setCurrentUser(FirebaseController.getCurrentUser());
-  // }, []);
 
   const menu1 = (
     <Menu>
@@ -34,11 +29,12 @@ const Post = (props) => {
     </Menu>
   );
 
-  const topOpt = (<Dropdown overlay={(true) ? menu1 : menu2} trigger={['click']}>
-    <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-      <EllipsisOutlined />
-    </a>
-  </Dropdown>
+  const topOpt = (
+    <Dropdown overlay={(props.permission) ? menu1 : menu2} trigger={['click']} style={{ float: 'right' }}>
+      <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+        <EllipsisOutlined />
+      </a>
+    </Dropdown>
   )
 
   const onLikeBtnClick = () => {
@@ -64,9 +60,9 @@ const Post = (props) => {
         ]}
         extra={topOpt}
       >
-        <Meta title={uid} avatar={<Avatar src='https://emblemsbf.com/img/77148.webp' />} />
-        <div style={{ marginTop: 20 }}>{content}</div>
-        {(img) ? <img src={img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
+        <Meta title={props.uid} avatar={<Avatar src='https://emblemsbf.com/img/77148.webp' />} />
+        <div style={{ marginTop: 20 }}>{props.content}</div>
+        {(props.img) ? <img src={props.img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
           {/* <Comments listComments={comments} /> */}
         </Modal>
