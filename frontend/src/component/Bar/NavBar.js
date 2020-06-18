@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import FirebaseController from '../../firebase.js';
 
-function NavBar(props) {
+const NavBar = (props) => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
