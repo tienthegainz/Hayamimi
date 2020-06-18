@@ -40,7 +40,8 @@ const Feed = () => {
             date={post.date}
             uid={post.uid}
           // user={user}
-          // comments={post.commentID}
+            likes={post.likes}
+            comments={post.commentID}
           />
         );
       })}
