@@ -4,7 +4,7 @@ import FirebaseController from './firebase.js';
 import Login from './component/Authenticate/Login.js';
 import Register from './component/Authenticate/Register.js';
 import Home from './component/Home/Home.js';
-import IndexProfile from './component/Profile'
+import IndexProfile from './component/Profile';
 import './App.css';
 
 
@@ -42,7 +42,7 @@ const App = () => {
       if (user) {
         callback(true);
         currentUid = user.uid;
-        
+
         // console.log(uid);
       }
 
@@ -51,16 +51,16 @@ const App = () => {
   };
 
   function handleCurrentUser(id) {
-    if(currentUid === null) setIsLoggedIn(false);
-    else if(currentUid === id) setIsCurrentUser(true);
+    if (currentUid === null) setIsLoggedIn(false);
+    else if (currentUid === id) setIsCurrentUser(true);
     else setIsCurrentUser(false)
   };
 
 
 
   return (
-    
-    
+
+
     <BrowserRouter>
       <Switch>
         <Route

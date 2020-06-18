@@ -15,7 +15,7 @@ const Feed = () => {
 
   const getPosts = async () => {
     const followingsRef = await FirebaseController.db
-      .collection('followings')
+      .collection('users')
       .get();
     const followingsSnapshot = followingsRef.docs.map((doc) => doc.id);
     const postsRef = await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
