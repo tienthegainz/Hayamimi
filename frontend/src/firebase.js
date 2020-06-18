@@ -158,6 +158,12 @@ class FirebaseController {
   }
 
   uploadComment(data){    
+    this.db
+      .collection("comments")
+      .add(data)
+      .then((ref) => {
+        console.log("Added document with ID: ", ref.id);
+      });
     let updatePost = this.db.collection("post").doc(data.post_id);
     updatePost.update({
       comments: app.firestore.FieldValue.arrayUnion(data)

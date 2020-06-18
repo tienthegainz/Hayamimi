@@ -32,7 +32,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 const Comments = (props) => {
-  const { listComments } = props;
+  const { listComments,post_id } = props;
 
   const [comments, setComments] = useState(listComments);
   const [submitting, setSubmitting] = useState(false);
@@ -47,7 +47,7 @@ const Comments = (props) => {
     setSubmitting(true);
      
     let data = {
-      post_id: "b4ZN02bZHLPC9sE0MZGAe615HmC2",
+      post_id,
       user_id: user.uid,
       content: value,
       date: new Date(),         

@@ -73,7 +73,8 @@ const Post = (props) => {
           </span>,
           <span>
             <Button type="text" icon={<CommentOutlined />} onClick={onCommentBtnClick}></Button>
-            <span className="comment-action">{comments.length}</span>
+            <span className="comment-action">{}</span>  
+            {/* comments.length */}
           </span>,
           <span>
             <Button type="text" icon={<ShareAltOutlined />}></Button>
@@ -87,7 +88,7 @@ const Post = (props) => {
         <div style={{ marginTop: 20 }}>{props.content}</div>
         {(props.img) ? <img src={props.img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
-          {/* <Comments listComments={comments} /> */}
+          <Comments listComments={comments} post_id = {uid} />
         </Modal>
       </Card>
     </Col>
