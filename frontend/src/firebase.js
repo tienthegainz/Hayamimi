@@ -61,14 +61,22 @@ class FirebaseController {
   }
 
   getAllUid(){ //Get uid by followings uid
-    let users = [];
-    this.db.collection("followings").get().then(function(querySnapshot){
+    const users = [];
+    const uidRef = this.db.collection("followings").get().then(function(querySnapshot){
       querySnapshot.forEach(function(doc){
         users.push(doc.id);
       });
     });
 
     return users;
+  }
+
+  getUserByUid(uid){
+    this.db.collection("followings").get().then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        if(doc.id === uid) return doc.data(uid);
+      });
+    });
   }
 
   getAllUserData(){

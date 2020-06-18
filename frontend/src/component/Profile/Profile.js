@@ -18,6 +18,30 @@ const Profile = (props) => {
   const [user, setUser] = useState({});
   const [visible, setVisible] = useState(false);
 
+  const [Posts, setPosts] = useState([]);
+  
+  useEffect(() => {
+    getPosts();
+  }, []);
+  const getPosts = async () => {
+    
+    const followingsRef = await FirebaseController.db
+      .collection('followings')
+      .get();
+    const followingsSnapshot = followingsRef.docs.map((doc) => doc.id);
+    const postsRef = await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
+    const postsSnapshot = postsRef.docs.map((doc) => doc.data());
+
+    const data = [];
+    postsSnapshot.forEach((snapshot) => {
+      if (followingsSnapshot.includes(snapshot.uid) && snapshot.uid === props.user.uid){
+       data.push(snapshot);
+      }
+    });
+    setPosts(data);
+  };
+
+
   useEffect(() => {
     setUser(FirebaseController.getCurrentUser());
   }, []);
@@ -43,7 +67,7 @@ const Profile = (props) => {
         ghost={false}
         onBack={() => props.history.push('/')}
         title={user.displayName}
-        subTitle="0 Tweet"
+        subTitle='0 tweet'
       >
        
       </PageHeader>
@@ -89,25 +113,19 @@ const Profile = (props) => {
       <Row>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Tweets" key="1">
-            {data.posts.map((post, idx) => {
-              const user = data.users.find((user) => user.id === post.user_id);
-              let comments = data.comments.filter(
-                (cmts) => cmts.post_id === post.id
-              );
-              comments = comments.map((cmt) => {
-                const user = data.users.find((user) => user.id === cmt.user_id);
-                return { ...cmt, author: user.name, avatar: user.avatar };
-              });
-              return (
-                <Post
-                  key={idx}
-                  content={post.content}
-                  img={post.image}
-                  user={user}
-                  comments={comments}
-                />
-              );
-            })}
+          {Posts.map((post, idx) => {
+        return (
+          <Post
+            key={idx}
+            content={post.content}
+            img={post.image}
+            date={post.date}
+            uid={post.uid}
+          // user={user}
+          // comments={post.commentID}
+          />
+        );
+      })}
           </TabPane>
           <TabPane tab="Following" key="2">
             This is all your Following here
