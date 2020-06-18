@@ -5,7 +5,7 @@ import Comments from './Comments';
 // import FirebaseController from '../../firebase.js';
 
 const Post = (props) => {
-  const { user, content, img, comments } = props;
+  const { content, img, date, uid } = props;
   const [likeBtn, setLikeBtn] = useState(<LikeOutlined />);
   const [commentVisible, setCommentVisible] = useState(false);
   // const [currentUser, setCurrentUser] = useState();
@@ -64,11 +64,11 @@ const Post = (props) => {
         ]}
         extra={topOpt}
       >
-        <Meta title={user.name} avatar={<Avatar src={user.avatar} />} />
+        <Meta title={uid} avatar={<Avatar src='https://emblemsbf.com/img/77148.webp' />} />
         <div style={{ marginTop: 20 }}>{content}</div>
-        <img src={img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' />
+        {(img) ? <img src={img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
-          <Comments listComments={comments} />
+          {/* <Comments listComments={comments} /> */}
         </Modal>
       </Card>
     </Col>
