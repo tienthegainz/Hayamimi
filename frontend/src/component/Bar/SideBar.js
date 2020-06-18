@@ -15,9 +15,6 @@ const SideBar = () => {
       </Col>
       <Col span={24}>
         <Card title="Suggestion" />
-          
-        
-        
       </Col>
     </div>
   );

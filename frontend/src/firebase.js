@@ -86,8 +86,9 @@ class FirebaseController {
         users.push(doc.data());
       });
     });
-
+    console.log(users);
     return users;
+    
 
   }
 

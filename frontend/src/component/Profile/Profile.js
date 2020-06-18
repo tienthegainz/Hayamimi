@@ -129,7 +129,6 @@ const Profile = (props) => {
           </TabPane>
           <TabPane tab="Following" key="2">
             This is all your Following here
-            <Button type="primary" onClick={FirebaseController.handleFollowing("ZgEAllAei4TloNxoYN9jmNhyvRi1")}>click</Button>
          </TabPane>
           <TabPane tab="Followed" key="3">
             This is all your Followed here
