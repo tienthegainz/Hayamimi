@@ -4,7 +4,7 @@ import { LikeOutlined, LikeTwoTone, CommentOutlined, ShareAltOutlined } from '@a
 import Comments from './Comments';
 
 const Post = (props) => {
-  const { content, img } = props;
+  const { content, img, date, uid } = props;
   const [likeBtn, setLikeBtn] = useState(<LikeOutlined />);
   const [commentVisible, setCommentVisible] = useState(false);
 
@@ -32,9 +32,9 @@ const Post = (props) => {
           <Button type="text" icon={<ShareAltOutlined />}></Button>
         ]}
       >
-        {/* <Meta title={user.name} avatar={<Avatar src={user.avatar} />} /> */}
+        <Meta title={uid} avatar={<Avatar src='https://emblemsbf.com/img/77148.webp' />} />
         <div style={{ marginTop: 20 }}>{content}</div>
-        <img src={img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img'/>
+        {(img) ? <img src={img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
           {/* <Comments listComments={comments} /> */}
         </Modal>

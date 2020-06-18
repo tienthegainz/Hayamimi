@@ -16,8 +16,7 @@ const Feed = () => {
       .collection('followings')
       .get();
     const followingsSnapshot = followingsRef.docs.map((doc) => doc.id);
-
-    const postsRef = await FirebaseController.db.collection('posts').get();
+    const postsRef = await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
     const postsSnapshot = postsRef.docs.map((doc) => doc.data());
 
     const data = [];
@@ -39,8 +38,9 @@ const Feed = () => {
             content={post.content}
             img={post.image}
             date={post.date}
-            // user={user}
-            // comments={post.commentID}
+            uid={post.uid}
+          // user={user}
+          // comments={post.commentID}
           />
         );
       })}
