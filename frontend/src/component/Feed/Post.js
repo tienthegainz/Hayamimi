@@ -60,7 +60,7 @@ const Post = (props) => {
         <div style={{ marginTop: 20 }}>{content}</div>
         {(img) ? <img src={img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
-          {/* <Comments listComments={comments} /> */}
+          <Comments listComments={comments} />
         </Modal>
       </Card>
     </Col>
