@@ -5,7 +5,7 @@ import Comments from './Comments';
 import moment from 'moment';
 
 const Post = (props) => {
-  const { content, img, date, uid,comments } = props;
+  const { user, content, img, comments, id, date, like } = props;
   const [likeBtn, setLikeBtn] = useState(<LikeOutlined />);
   const [commentVisible, setCommentVisible] = useState(false);
 
@@ -39,6 +39,7 @@ const Post = (props) => {
 
   return (
     <Col span={24}>
+      
       <Card
         actions={[
           <span>
@@ -63,6 +64,7 @@ const Post = (props) => {
           <Comments listComments={comments} />
         </Modal>
       </Card>
+      
     </Col>
   );
 };

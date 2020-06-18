@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Comment, Avatar, Form, Button, List, Input } from 'antd';
+import FirebaseController from '../../firebase.js'
+
 
 const { TextArea } = Input;
 
@@ -36,22 +38,36 @@ const Comments = (props) => {
   const [comments, setComments] = useState(listComments);
   const [submitting, setSubmitting] = useState(false);
   const [value, setValue] = useState('');
+  
+ 
+  
 
   const handleSubmit = () => {
     if (!value) {
       return;
     }
+    let user = null;
+    user = FirebaseController.getCurrentUser();
     setSubmitting(true);
+     
+    let data = {
+      post_id: "b4ZN02bZHLPC9sE0MZGAe615HmC2",
+      user_id: user.uid,
+      content: value,
+      date: new Date(),         
+    };
+      FirebaseController.uploadComment(data);
+        
 
     setTimeout(() => {
+    
       setSubmitting(false);
       setValue('');
       setComments([
         ...comments,
         {
-          author: 'Han Solo',
-          avatar:
-            'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+          author : user.displayName ,
+          avatar : user.photoURL,
           content: <p>{value}</p>
         }
       ]);
@@ -68,8 +84,6 @@ const Comments = (props) => {
       <Comment
         avatar={
           <Avatar
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="Han Solo"
           />
         }
         content={
