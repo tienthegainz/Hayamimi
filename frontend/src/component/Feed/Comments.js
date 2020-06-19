@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Comment, Avatar, Form, Button, List, Input } from 'antd';
+import FirebaseController from '../../firebase.js'
 
 const { TextArea } = Input;
 
@@ -31,7 +32,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 const Comments = (props) => {
-  const { listComments } = props;
+  const { listComments,post_id } = props;
 
   const [comments, setComments] = useState(listComments);
   const [submitting, setSubmitting] = useState(false);
@@ -41,6 +42,18 @@ const Comments = (props) => {
     if (!value) {
       return;
     }
+    let user = null;
+    user = FirebaseController.getCurrentUser();
+    setSubmitting(true);
+     
+    let data = {
+      post_id,
+      user_id: user.uid,
+      content: value,
+      date: new Date(),         
+    };
+      FirebaseController.uploadComment(data);
+      
     setSubmitting(true);
 
     setTimeout(() => {

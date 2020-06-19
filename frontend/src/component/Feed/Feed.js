@@ -52,7 +52,7 @@ const Feed = () => {
             uid={post.uid}
             permission={permission}
           // user={user}
-          // comments={post.commentID}
+          comments={post.commentID}
           />
         );
       })}
