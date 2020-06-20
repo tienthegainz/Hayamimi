@@ -58,8 +58,8 @@ const Feed = () => {
             displayName={post.displayName}
             avatar={post.avatarURL}
             permission={permission}
-          // user={user}
-          // comments={post.commentID}
+            // user={user}
+            comments={post.commentID}
           />
         );
       })}

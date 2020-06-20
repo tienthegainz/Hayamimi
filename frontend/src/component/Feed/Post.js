@@ -9,6 +9,11 @@ const Post = (props) => {
   const [commentVisible, setCommentVisible] = useState(false);
   const { Meta } = Card;
 
+  const [likesCount, setLikes] = useState(0);
+  const [commentsCount, setComments] = useState(0);
+  const [sharesCount, setshares] = useState(0);
+
+  const formatedDate = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(props.date);
   const menu1 = (
     <Menu>
       <Menu.Item key="0">
@@ -37,8 +42,15 @@ const Post = (props) => {
   )
 
   const onLikeBtnClick = () => {
-    if (likeBtn.type.render.name === 'LikeOutlined') setLikeBtn(<LikeTwoTone />);
-    else setLikeBtn(<LikeOutlined />);
+    if (likeBtn.type.render.name === 'LikeOutlined') {
+      setLikeBtn(<LikeTwoTone />);
+      setLikes(1);
+
+    }
+    else {
+      setLikeBtn(<LikeOutlined />);
+      setLikes(0);
+    }
   };
 
   const onCommentBtnClick = () => {
@@ -53,17 +65,28 @@ const Post = (props) => {
     <Col span={24}>
       <Card
         actions={[
-          <Button type="text" icon={likeBtn} onClick={onLikeBtnClick}></Button>,
-          <Button type="text" icon={<CommentOutlined />} onClick={onCommentBtnClick}></Button>,
-          <Button type="text" icon={<ShareAltOutlined />}></Button>
+          <span>
+            <Button type="text" icon={likeBtn} onClick={onLikeBtnClick}></Button>
+            <span className="comment-action">{likesCount}</span>
+          </span>,
+          <span>
+            <Button type="text" icon={<CommentOutlined />} onClick={onCommentBtnClick}></Button>
+            <span className="comment-action">{}</span>
+            {/* comments.length */}
+          </span>,
+          <span>
+            <Button type="text" icon={<ShareAltOutlined />}></Button>
+            <span className="comment-action">{sharesCount}</span>
+          </span>
         ]}
         extra={topOpt}
       >
         <Meta title={<a href="#">{props.displayName}</a>} avatar={<Avatar src={props.avatar} />} />
+        <div>{formatedDate}</div>
         <div style={{ marginTop: 20 }}>{props.content}</div>
         {(props.img) ? <img src={props.img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
-          {/* <Comments listComments={comments} /> */}
+          <Comments listComments={props.comments} post_id={props.uid} />
         </Modal>
       </Card>
     </Col>
