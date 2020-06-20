@@ -22,14 +22,10 @@ const Register = (props) => {
         values.nickname,
         values.birthday
       );
-      setSuccess(true);
-    } catch (error) {
-      alert(error.message);
-    }
-
-    if (success) {
       alert('Success');
       props.history.push('/login');
+    } catch (error) {
+      alert(error.message);
     }
   };
 

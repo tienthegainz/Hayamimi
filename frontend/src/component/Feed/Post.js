@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Col, Card, Avatar, Button, Modal, Menu, Dropdown } from 'antd';
 import { LikeOutlined, LikeTwoTone, CommentOutlined, ShareAltOutlined, EllipsisOutlined } from '@ant-design/icons';
 import Comments from './Comments';
-// import FirebaseController from '../../firebase.js';
+import FirebaseController from '../../firebase.js';
 
 const Post = (props) => {
   const [likeBtn, setLikeBtn] = useState(<LikeOutlined />);
@@ -33,13 +33,10 @@ const Post = (props) => {
     </Menu>
   );
 
-  const topOpt = (
-    <Dropdown overlay={(props.permission) ? menu1 : menu2} trigger={['click']} style={{ float: 'right' }}>
-      <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-        <EllipsisOutlined />
-      </a>
-    </Dropdown>
-  )
+  const handleDelete = () => {
+    console.log('Deleted ', props.pid);
+    FirebaseController.db.collection('posts').doc(props.pid).delete();
+  }
 
   const onLikeBtnClick = () => {
     if (likeBtn.type.render.name === 'LikeOutlined') {
@@ -79,7 +76,28 @@ const Post = (props) => {
             <span className="comment-action">{sharesCount}</span>
           </span>
         ]}
-        extra={topOpt}
+        extra={
+          <Dropdown overlay={(props.permission) ? (
+            <Menu>
+              <Menu.Item key="0">
+                Hide
+              </Menu.Item>
+              <Menu.Item key="1" onClick={handleDelete}>
+                Delete
+              </Menu.Item>
+            </Menu>
+          ) : (
+              <Menu>
+                <Menu.Item key="0">
+                  Hide
+              </Menu.Item>
+              </Menu>
+            )} trigger={['click']} style={{ float: 'right' }}>
+            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+              <EllipsisOutlined />
+            </a>
+          </Dropdown>
+        }
       >
         <Meta title={<a href="#">{props.displayName}</a>} avatar={<Avatar src={props.avatar} />} />
         <div>{formatedDate}</div>

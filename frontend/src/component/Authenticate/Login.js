@@ -8,7 +8,6 @@ const layout = { labelCol: { span: 8 }, wrapperCol: { span: 8 } };
 const tailLayout = { wrapperCol: { offset: 8, span: 8 } };
 
 const Login = (props) => {
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     if (props.isLoggedIn) props.history.push('/');
@@ -17,15 +16,12 @@ const Login = (props) => {
   const onFinish = async (values) => {
     try {
       await FirebaseController.login(values.email, values.password);
-      setSuccess(true);
+      props.login();
+      props.history.push('/');
     } catch (error) {
       alert(error.message);
     }
 
-    if (success) {
-      props.login();
-      props.history.push('/');
-    }
   };
 
   const onFinishFailed = (errorInfo) => {
