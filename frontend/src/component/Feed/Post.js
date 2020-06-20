@@ -5,7 +5,6 @@ import Comments from './Comments';
 // import FirebaseController from '../../firebase.js';
 
 const Post = (props) => {
-  const { content, img, date, uid, comments } = props;
   const [likeBtn, setLikeBtn] = useState(<LikeOutlined />);
   const [commentVisible, setCommentVisible] = useState(false);
   const { Meta } = Card;
@@ -14,7 +13,7 @@ const Post = (props) => {
   const [commentsCount, setComments] = useState(0);
   const [sharesCount, setshares] = useState(0);
 
-  const formatedDate = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(date);
+  const formatedDate = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(props.date);
   const menu1 = (
     <Menu>
       <Menu.Item key="0">
@@ -43,11 +42,10 @@ const Post = (props) => {
   )
 
   const onLikeBtnClick = () => {
-    if (likeBtn.type.render.name === 'LikeOutlined') 
-    {
+    if (likeBtn.type.render.name === 'LikeOutlined') {
       setLikeBtn(<LikeTwoTone />);
       setLikes(1);
-      
+
     }
     else {
       setLikeBtn(<LikeOutlined />);
@@ -73,7 +71,7 @@ const Post = (props) => {
           </span>,
           <span>
             <Button type="text" icon={<CommentOutlined />} onClick={onCommentBtnClick}></Button>
-            <span className="comment-action">{}</span>  
+            <span className="comment-action">{}</span>
             {/* comments.length */}
           </span>,
           <span>
@@ -83,12 +81,12 @@ const Post = (props) => {
         ]}
         extra={topOpt}
       >
-        <Meta title={props.uid} avatar={<Avatar src='https://emblemsbf.com/img/77148.webp' />} />
-        <div>{formatedDate}</div> 
+        <Meta title={<a href="#">{props.displayName}</a>} avatar={<Avatar src={props.avatar} />} />
+        <div>{formatedDate}</div>
         <div style={{ marginTop: 20 }}>{props.content}</div>
         {(props.img) ? <img src={props.img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
-          <Comments listComments={comments} post_id = {uid} />
+          <Comments listComments={props.comments} post_id={props.uid} />
         </Modal>
       </Card>
     </Col>

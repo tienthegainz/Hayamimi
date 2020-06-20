@@ -14,16 +14,21 @@ const Feed = () => {
   }, []);
 
   const getPosts = async () => {
-    const followingsRef = await FirebaseController.db
+    const usersRef = await FirebaseController.db
       .collection('users')
       .get();
-    const followingsSnapshot = followingsRef.docs.map((doc) => doc.id);
     const postsRef = await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
-    const postsSnapshot = postsRef.docs.map((doc) => doc.data());
+
+    const usersSnapshot = await usersRef.docs.map((doc) => ({ uid: doc.id, displayName: doc.data().displayName, avatarURL: doc.data().avatarURL }));
+    const postsSnapshot = await postsRef.docs.map((doc) => doc.data());
+    console.log(usersSnapshot)
+
 
     const data = [];
     postsSnapshot.forEach((snapshot) => {
-      if (followingsSnapshot.includes(snapshot.uid)) data.push(snapshot);
+      snapshot.displayName = usersSnapshot.find(e => (e.uid === snapshot.uid)).displayName;
+      snapshot.avatarURL = usersSnapshot.find(e => (e.uid === snapshot.uid)).avatarURL;
+      data.push(snapshot);
     });
     setPosts(data);
   };
@@ -50,9 +55,11 @@ const Feed = () => {
             img={post.image}
             date={post.date}
             uid={post.uid}
+            displayName={post.displayName}
+            avatar={post.avatarURL}
             permission={permission}
-          // user={user}
-          comments={post.commentID}
+            // user={user}
+            comments={post.commentID}
           />
         );
       })}
