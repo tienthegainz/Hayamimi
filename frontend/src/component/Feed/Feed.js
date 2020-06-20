@@ -20,10 +20,12 @@ const Feed = () => {
     const postsRef = await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
 
     const usersSnapshot = await usersRef.docs.map((doc) => ({ uid: doc.id, displayName: doc.data().displayName, avatarURL: doc.data().avatarURL }));
+
     const postsSnapshot = await postsRef.docs.map((doc) => ({
       pid: doc.id, uid: doc.data().uid, content: doc.data().content,
       date: doc.data().date, image: doc.data().image, like: doc.data().like, commentID: doc.data().commentID
     }));
+
 
 
     const data = [];
@@ -49,10 +51,12 @@ const Feed = () => {
             img={post.image}
             date={post.date}
             uid={post.uid}
+
             pid={post.pid}
             displayName={post.displayName}
             avatar={post.avatarURL}
             permission={permission}
+
             comments={post.commentID}
           />
         );

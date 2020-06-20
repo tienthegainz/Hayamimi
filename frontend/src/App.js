@@ -17,6 +17,7 @@ const App = () => {
     };
   });
   // control the auth
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
