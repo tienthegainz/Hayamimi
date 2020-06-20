@@ -26,13 +26,10 @@ const NavBar = (props) => {
       <Menu.Item key="sub1" icon={<HomeOutlined />} onClick={() => props.history.push("/")}>
         Home
       </Menu.Item>
-      <Menu.Item key="sub2" icon={<BellOutlined />} onClick={() => props.history.push("/notifications")}>
-        Notifications
-      </Menu.Item>
-      <Menu.Item key="sub3" icon={<UserOutlined />} onClick={() => props.history.push(`/user/${user.uid}`)}>
+      <Menu.Item key="sub2" icon={<UserOutlined />} onClick={() => props.history.push(`/user/${user.uid}`)}>
         My Profile
       </Menu.Item>
-      <Menu.Item key="sub4" icon={<LogoutOutlined />} onClick={props.logout}>
+      <Menu.Item key="sub3" icon={<LogoutOutlined />} onClick={props.logout}>
         Log Out
       </Menu.Item>
     </Menu>

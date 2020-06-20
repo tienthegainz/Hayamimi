@@ -17,13 +17,8 @@ const App = () => {
     };
   });
   // control the auth
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [isCurrentUser, setIsCurrentUser] = useState(false)
 
-  let uids = [];
-  let currentUid = null;
-  uids = FirebaseController.getAllUid();
-  // console.log(uids);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
   const handleLoggedIn = () => {
@@ -41,19 +36,10 @@ const App = () => {
     return FirebaseController.auth.onAuthStateChanged((user) => {
       if (user) {
         callback(true);
-        currentUid = user.uid;
-
-        // console.log(uid);
       }
 
       else callback(false);
     });
-  };
-
-  function handleCurrentUser(id) {
-    if (currentUid === null) setIsLoggedIn(false);
-    else if (currentUid === id) setIsCurrentUser(true);
-    else setIsCurrentUser(false)
   };
 
 

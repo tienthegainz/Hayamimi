@@ -13,12 +13,27 @@ class FirebaseController {
     this.storage = app.storage();
   }
 
-  login(email, password) {
-    return this.auth.signInWithEmailAndPassword(email, password);
+  async login(email, password) {
+    await this.auth.signInWithEmailAndPassword(email, password);
+    this.auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        localStorage.setItem('isLoggedIn', true);
+        // This will return one result
+        const userDoc = await this.db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        localStorage.setItem('uid', userData.uid);
+        localStorage.setItem('dislayName', userData.displayName);
+        localStorage.setItem('avatar', userData.avatarURL);
+        localStorage.setItem('background', userData.backgroundURL);
+        localStorage.setItem('following', userData.following);
+      }
+    });
   }
 
-  logout() {
-    return this.auth.signOut();
+  async logout() {
+    localStorage.clear();
+    localStorage.setItem('isLoggedIn', false);
+    await this.auth.signOut();
   }
 
   async register(email, password, nickName) {
@@ -157,7 +172,7 @@ class FirebaseController {
     return url;
   }
 
-  uploadComment(data){    
+  uploadComment(data) {
     this.db
       .collection("comments")
       .add(data)
@@ -169,8 +184,8 @@ class FirebaseController {
       comments: app.firestore.FieldValue.arrayUnion(data)
     });
   }
-  updateLike(data){
-    
+  updateLike(data) {
+
   }
 }
 

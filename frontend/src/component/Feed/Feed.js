@@ -6,11 +6,11 @@ import FirebaseController from '../../firebase.js';
 
 const Feed = () => {
   const [Posts, setPosts] = useState([]);
-  const [currentUID, setCurrentUID] = useState(null);
+  const currentUID = localStorage.getItem('uid');
 
   useEffect(() => {
     getPosts();
-    getCurrentUID();
+
   }, []);
 
   const getPosts = async () => {
@@ -20,8 +20,12 @@ const Feed = () => {
     const postsRef = await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
 
     const usersSnapshot = await usersRef.docs.map((doc) => ({ uid: doc.id, displayName: doc.data().displayName, avatarURL: doc.data().avatarURL }));
-    const postsSnapshot = await postsRef.docs.map((doc) => doc.data());
-    console.log(usersSnapshot)
+
+    const postsSnapshot = await postsRef.docs.map((doc) => ({
+      pid: doc.id, uid: doc.data().uid, content: doc.data().content,
+      date: doc.data().date, image: doc.data().image, like: doc.data().like, commentID: doc.data().commentID
+    }));
+
 
 
     const data = [];
@@ -31,14 +35,6 @@ const Feed = () => {
       data.push(snapshot);
     });
     setPosts(data);
-  };
-
-  const getCurrentUID = async () => {
-    FirebaseController.auth.onAuthStateChanged((user) => {
-      if (user) {
-        setCurrentUID(user.uid);
-      }
-    });
   };
 
   return (
@@ -55,10 +51,12 @@ const Feed = () => {
             img={post.image}
             date={post.date}
             uid={post.uid}
+
+            pid={post.pid}
             displayName={post.displayName}
             avatar={post.avatarURL}
             permission={permission}
-            // user={user}
+
             comments={post.commentID}
           />
         );
