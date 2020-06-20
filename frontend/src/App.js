@@ -23,7 +23,7 @@ const App = () => {
   let uids = [];
   let currentUid = null;
   uids = FirebaseController.getAllUid();
-  console.log(uids);
+  // console.log(uids);
 
 
   const handleLoggedIn = () => {
