@@ -10,7 +10,6 @@ import './App.css';
 
 const App = () => {
 
-
   return (
 
 
@@ -35,14 +34,14 @@ const App = () => {
             <Home />
           )}
         />
-        {/* <Route
+        <Route
           exact
-          path="/user/:currentUid"
+          path="/user/:uid"
 
           render={() => (
-            <IndexProfile isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
+            <Home />
           )}
-        /> */}
+        />
       </Switch>
     </BrowserRouter>
   );

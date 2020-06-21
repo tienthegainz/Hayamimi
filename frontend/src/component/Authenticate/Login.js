@@ -16,7 +16,6 @@ const Login = (props) => {
   const onFinish = async (values) => {
     try {
       await FirebaseController.login(values.email, values.password);
-      props.login();
       props.history.push('/');
     } catch (error) {
       alert(error.message);
@@ -54,10 +53,6 @@ const Login = (props) => {
         >
           <Input.Password />
         </Form.Item>
-
-        {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item> */}
 
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">

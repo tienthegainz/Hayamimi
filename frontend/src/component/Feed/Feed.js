@@ -4,13 +4,12 @@ import UploadPost from './UploadPost';
 import Post from './Post';
 import FirebaseController from '../../firebase.js';
 
-const Feed = () => {
+const Feed = (props) => {
   const [Posts, setPosts] = useState([]);
   const currentUID = localStorage.getItem('uid');
 
   useEffect(() => {
     getPosts();
-
   }, []);
 
   const getPosts = async () => {
@@ -25,8 +24,6 @@ const Feed = () => {
       pid: doc.id, uid: doc.data().uid, content: doc.data().content,
       date: doc.data().date, image: doc.data().image, like: doc.data().like, commentID: doc.data().commentID
     }));
-
-
 
     const data = [];
     postsSnapshot.forEach((snapshot) => {
@@ -51,12 +48,10 @@ const Feed = () => {
             img={post.image}
             date={post.date}
             uid={post.uid}
-
             pid={post.pid}
             displayName={post.displayName}
             avatar={post.avatarURL}
             permission={permission}
-
             comments={post.commentID}
           />
         );

@@ -1,50 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import Post from "../Feed/Post.js";
-import data from "../../fake_data.json";
 import { Modal, Tabs, PageHeader, Row, Card, Avatar, Input, Button } from 'antd';
-import {
-  ScheduleOutlined,
-  MailOutlined
-} from '@ant-design/icons';
-// import { withRouter } from 'react-router-dom';
-import FirebaseController from '../../firebase.js'
 
+import FirebaseController from '../../firebase.js';
+import Feed from "../Feed/Feed.js";
 import SetupProfile from './SetupProfile.js';
 import './Profile.css';
 
 const { TabPane } = Tabs;
 
 const Profile = (props) => {
-  const [user, setUser] = useState({});
+  const displayName = localStorage.getItem('displayName');
+  const avatar = localStorage.getItem('avatar');
+  const background = localStorage.getItem('background');
   const [visible, setVisible] = useState(false);
-
   const [Posts, setPosts] = useState([]);
-  
-  useEffect(() => {
-    getPosts();
-  }, []);
-  const getPosts = async () => {
-    
-    const followingsRef = await FirebaseController.db
-      .collection('followings')
-      .get();
-    const followingsSnapshot = followingsRef.docs.map((doc) => doc.id);
-    const postsRef = await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
-    const postsSnapshot = postsRef.docs.map((doc) => doc.data());
 
-    const data = [];
-    postsSnapshot.forEach((snapshot) => {
-      if (followingsSnapshot.includes(snapshot.uid) && snapshot.uid === props.user.uid){
-       data.push(snapshot);
-      }
-    });
-    setPosts(data);
-  };
-
-
-  useEffect(() => {
-    setUser(FirebaseController.getCurrentUser());
-  }, []);
+  console.log(props.match.params.uid);
 
   const showModal = () => {
     if (!visible) setVisible(true);
@@ -58,26 +29,25 @@ const Profile = (props) => {
     setVisible(false);
   };
 
-  let isLoggedIn = props.isLoggedIn;
-
 
   return (
     <div>
+      Profile
       <PageHeader
         ghost={false}
         onBack={() => props.history.push('/')}
-        title={user.displayName}
+        title={displayName}
         subTitle='0 tweet'
       >
-       
+
       </PageHeader>
 
       <Row>
         <Card style={{ width: '100%' }}>
           <div className="setup-avatar">
-            <div className="background-image"></div>
+            <div className="background-image"> <img src={background} /> </div>
             <div className="avatar-image">
-              <Avatar size={150} src={user.photoURL} />
+              <Avatar size={150} src={avatar} />
             </div>
 
             <Button
@@ -95,16 +65,10 @@ const Profile = (props) => {
               onOk={handleOk}
               onCancel={handleCancel}
             >
-              <SetupProfile user={user} />
+              <SetupProfile />
             </Modal>
             <div className="information">
-              <div className="my-name">{user.displayName}</div>
-              <div>
-                <MailOutlined /> {user.email}
-              </div>
-              <div>
-                <ScheduleOutlined /> Joined January 2020
-              </div>
+              <div className="my-name">{displayName}</div>
             </div>
           </div>
         </Card>
@@ -113,19 +77,7 @@ const Profile = (props) => {
       <Row>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Tweets" key="1">
-          {Posts.map((post, idx) => {
-        return (
-          <Post
-            key={idx}
-            content={post.content}
-            img={post.image}
-            date={post.date}
-            uid={post.uid}
-          // user={user}
-          // comments={post.commentID}
-          />
-        );
-      })}
+            < Feed />
           </TabPane>
           <TabPane tab="Following" key="2">
             This is all your Following here

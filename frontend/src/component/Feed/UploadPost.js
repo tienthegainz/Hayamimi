@@ -22,7 +22,7 @@ const UploadPost = () => {
 
       uploadTask.on(
         'state_changed',
-        (snapshot) => {},
+        (snapshot) => { },
         (error) => {
           // error function ....
           console.log('Error: ', error);
@@ -84,7 +84,7 @@ const UploadPost = () => {
 
   return (
     <div>
-      <Card title="Home">
+      <Card title="Status">
         <TextArea
           placeholder="What's happening?"
           value={status}
