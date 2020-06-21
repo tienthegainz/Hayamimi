@@ -58,6 +58,7 @@ const Feed = (props) => {
             key={idx}
             content={post.content}
             img={post.image}
+            likes={post.likes}
             date={date}
             uid={post.uid}
             pid={post.pid}
