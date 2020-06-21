@@ -9,19 +9,21 @@ const Feed = (props) => {
   const currentUID = localStorage.getItem('uid');
   const type = props.type;
   const urlUid = props.uid;
-  // console.log(props);
+  
+  
 
 
   useEffect(() => {
     getPosts();
-  });
+  }, []);
 
   const getPosts = async () => {
+    console.log("Get Feed");
     const usersRef = await FirebaseController.db
       .collection('users')
       .get();
 
-    const postsRef = (type == 'profile') ? await FirebaseController.db.collection('posts').where('uid', '==', urlUid).get() :
+    const postsRef = (type == 'profile') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').get() :
       (type == 'search') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').get() :
         await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
 
@@ -35,6 +37,7 @@ const Feed = (props) => {
 
     const data = [];
     postsSnapshot.forEach((snapshot) => {
+      if (type == 'profile' && snapshot.uid !== urlUid) return;
       snapshot.displayName = usersSnapshot.find(e => (e.uid === snapshot.uid)).displayName;
       snapshot.avatarURL = usersSnapshot.find(e => (e.uid === snapshot.uid)).avatarURL;
       data.push(snapshot);

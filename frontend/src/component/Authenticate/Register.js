@@ -9,9 +9,8 @@ const tailLayout = { wrapperCol: { offset: 8, span: 8 } };
 
 const Register = (props) => {
 
-  useEffect(() => {
-    if (localStorage.getItem('isLoggedIn') == 'true') props.history.push('/');
-  });
+  if (localStorage.getItem('isLoggedIn') == 'true') props.history.push('/');
+
 
   const onFinish = async (values) => {
     try {
