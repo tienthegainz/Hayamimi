@@ -18,7 +18,7 @@ const Feed = (props) => {
   }, []);
 
   const getPosts = async () => {
-    console.log("Get Feed");
+    // console.log("Get Feed");
     const usersRef = await FirebaseController.db
       .collection('users')
       .get();
@@ -68,7 +68,7 @@ const Feed = (props) => {
             displayName={post.displayName}
             avatar={post.avatarURL}
             permission={permission}
-            comments={post.commentID}
+            commentsID={post.commentID}
           />
         );
       })}

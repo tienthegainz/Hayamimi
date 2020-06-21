@@ -15,8 +15,6 @@ const Post = (props) => {
 
   const [likes, setLikes] = useState(props.likes);
   const [likesCount, setLikesCount] = useState(props.likes.length);
-  const [commentsCount, setComments] = useState(0);
-  const [sharesCount, setshares] = useState(0);
 
   const link = '/user/' + props.uid;
   const formatedDate = props.date;
@@ -116,7 +114,7 @@ const Post = (props) => {
         <div style={{ marginTop: 20 }}>{props.content}</div>
         {(props.img) ? <img src={props.img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
         <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
-          <Comments listComments={props.comments} post_id={props.uid} />
+          <Comments commentsID={props.commentsID} pid={props.pid} />
         </Modal>
       </Card>
     </Col>
