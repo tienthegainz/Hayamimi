@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Card, Avatar, Button, Modal, Menu, Dropdown } from 'antd';
 import { LikeOutlined, LikeTwoTone, CommentOutlined, ShareAltOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { withRouter } from 'react-router-dom';
+
 import Comments from './Comments';
 import FirebaseController from '../../firebase.js';
 
@@ -13,7 +15,10 @@ const Post = (props) => {
   const [commentsCount, setComments] = useState(0);
   const [sharesCount, setshares] = useState(0);
 
-  const formatedDate = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(props.date);
+  const link = '/user/' + props.uid;
+  const formatedDate = props.date;
+
+
   const menu1 = (
     <Menu>
       <Menu.Item key="0">
@@ -99,7 +104,7 @@ const Post = (props) => {
           </Dropdown>
         }
       >
-        <Meta title={<a href="#">{props.displayName}</a>} avatar={<Avatar src={props.avatar} />} />
+        <Meta title={<a href={link}>{props.displayName}</a>} avatar={<Avatar src={props.avatar} />} />
         <div>{formatedDate}</div>
         <div style={{ marginTop: 20 }}>{props.content}</div>
         {(props.img) ? <img src={props.img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
@@ -111,4 +116,4 @@ const Post = (props) => {
   );
 };
 
-export default Post;
+export default withRouter(Post);
