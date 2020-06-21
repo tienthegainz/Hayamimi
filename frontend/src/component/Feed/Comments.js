@@ -38,12 +38,13 @@ const Comments = (props) => {
   const [submitting, setSubmitting] = useState(false);
   const [value, setValue] = useState('');
 
+  let user = null;
+  user = FirebaseController.getCurrentUser();
   const handleSubmit = () => {
     if (!value) {
       return;
     }
-    let user = null;
-    user = FirebaseController.getCurrentUser();
+    
     setSubmitting(true);
      
     let data = {
@@ -62,9 +63,8 @@ const Comments = (props) => {
       setComments([
         ...comments,
         {
-          author: 'Han Solo',
-          avatar:
-            'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+          author: user.displayName,
+          avatar: user.avatarURL,
           content: <p>{value}</p>
         }
       ]);
@@ -81,8 +81,7 @@ const Comments = (props) => {
       <Comment
         avatar={
           <Avatar
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="Han Solo"
+            src={user.avatarURL}
           />
         }
         content={
