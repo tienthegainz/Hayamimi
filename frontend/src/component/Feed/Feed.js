@@ -29,7 +29,7 @@ const Feed = (props) => {
 
     const postsSnapshot = await postsRef.docs.map((doc) => ({
       pid: doc.id, uid: doc.data().uid, content: doc.data().content,
-      date: doc.data().date, image: doc.data().image, like: doc.data().like, commentID: doc.data().commentID
+      date: doc.data().date.toDate(), image: doc.data().image, like: doc.data().like, commentID: doc.data().commentID
     }));
 
 
@@ -49,12 +49,16 @@ const Feed = (props) => {
       </Col>
       {Posts.map((post, idx) => {
         const permission = (post.uid === currentUID) ? true : false;
+        const date = new Intl.DateTimeFormat('en-US', {
+          year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit'
+        }).format(post.date);
         return (
           <Post
             key={idx}
             content={post.content}
             img={post.image}
-            date={post.date}
+            date={date}
             uid={post.uid}
             pid={post.pid}
             displayName={post.displayName}
