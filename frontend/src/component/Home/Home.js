@@ -13,7 +13,6 @@ const Home = (props) => {
   useEffect(() => {
     if (localStorage.getItem('isLoggedIn') == 'false') props.history.push('/login');
   });
-
   const { Content, Sider } = Layout;
 
   return (

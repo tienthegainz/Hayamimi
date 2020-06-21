@@ -12,6 +12,8 @@ const Profile = (props) => {
   const [displayName, setDisplayName] = useState();
   const [avatar, setAvatar] = useState();
   const [background, setBackground] = useState();
+  const [email, setEmail] = useState();
+  const [dateJoined, setDateJoined] = useState();
   const [visible, setVisible] = useState(false);
   const [Posts, setPosts] = useState([]);
   const isCurrentUser = (props.match.params.uid === localStorage.getItem('uid')) ? true : false;
@@ -29,8 +31,9 @@ const Profile = (props) => {
     setDisplayName(userSnapshot[0].displayName);
     setAvatar(userSnapshot[0].avatarURL);
     setBackground(userSnapshot[0].backgroundURL);
+    setEmail(userSnapshot[0].email);
+    setDateJoined(userSnapshot[0].dateJoined);
   }
-
   const showModal = () => {
     if (!visible) setVisible(true);
   };
@@ -78,14 +81,18 @@ const Profile = (props) => {
                     onOk={handleOk}
                     onCancel={handleCancel}
                   >
-                    {/* <SetupProfile /> */}
-                  Setup here
+                  <SetupProfile /> 
+                  
                 </Modal></div> :
                 <div></div>
             }
 
             <div className="information">
               <div className="my-name">{displayName}</div>
+              <div>
+                {email}
+                
+              </div>
             </div>
           </div>
         </Card>
@@ -94,7 +101,7 @@ const Profile = (props) => {
       <Row>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Tweets" key="1">
-            < Feed type='profile' uid={props.match.params.uid} />
+            <Feed type='profile' uid={props.match.params.uid} />
           </TabPane>
           <TabPane tab="Following" key="2">
             On development

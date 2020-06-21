@@ -26,6 +26,9 @@ class FirebaseController {
         localStorage.setItem('avatar', userData.avatarURL);
         localStorage.setItem('background', userData.backgroundURL);
         localStorage.setItem('following', userData.following);
+        localStorage.setItem('email', userData.email);
+        localStorage.setItem('isAdmin', userData.isAdmin);
+        localStorage.setItem('dateJoined', user.dateJoined);
       }
     });
   }
@@ -44,6 +47,9 @@ class FirebaseController {
       backgroundURL: "https://giaysg.com/wp-content/uploads/2017/06/grey-background.png",
       displayName: nickName,
       uid: this.auth.currentUser.uid,
+      isAdmin: false,
+      email: this.auth.currentUser.email,
+      dateJoined: new Date(),
     })
     return this.auth.currentUser.updateProfile({
       displayName: nickName
@@ -84,28 +90,6 @@ class FirebaseController {
     return users;
   }
 
-  getUserByUid(uid) {
-    this.db.collection("users").get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        if (doc.id === uid) return doc.data(uid);
-      });
-    });
-  }
-
-  getAllUserData() {
-    let users = [];
-    this.db.collection("users").get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        users.push(doc.data());
-      });
-    });
-    console.log(users);
-    return users;
-
-
-  }
-
-
   isInitialized() {
     return new Promise((resolve) => {
       this.auth.onAuthStateChanged(resolve);
@@ -121,8 +105,6 @@ class FirebaseController {
       displayName: newName
     })
   }
-
-
 
   handleFollowing(otherID) {
     this.db.collection("users").doc(this.auth.currentUser.uid)
