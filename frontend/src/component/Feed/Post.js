@@ -39,10 +39,11 @@ const Post = (props) => {
   }
 
   const onLikeBtnClick = () => {
-    if (likeBtn.type.render.name === 'LikeOutlined') {
+    if (likeBtn.type.render.name === 'LikeOutlined') 
+    {
       setLikeBtn(<LikeTwoTone />);
       setLikes(1);
-
+      
     }
     else {
       setLikeBtn(<LikeOutlined />);
