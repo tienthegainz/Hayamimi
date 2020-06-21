@@ -45,7 +45,7 @@ const Feed = (props) => {
   return (
     <Row gutter={[0, 24]}>
       <Col span={24}>
-        {(currentUID === urlUid) ? <UploadPost /> : <div></div>}
+        {(type == 'home' || (currentUID === urlUid)) ? <UploadPost /> : <div></div>}
       </Col>
       {Posts.map((post, idx) => {
         const permission = (post.uid === currentUID) ? true : false;
