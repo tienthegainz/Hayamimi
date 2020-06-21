@@ -9,8 +9,9 @@ import Profile from '../Profile/Profile';
 import './Home.css';
 
 const Home = (props) => {
+
   useEffect(() => {
-    if (!props.isLoggedIn) props.history.replace('/login');
+    if (localStorage.getItem('isLoggedIn') == 'false') props.history.push('/login');
   });
 
   const { Content, Sider } = Layout;

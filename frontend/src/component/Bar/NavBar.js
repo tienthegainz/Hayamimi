@@ -16,6 +16,11 @@ const NavBar = (props) => {
     setUser(FirebaseController.getCurrentUser());
   }, []);
 
+  const handleLogOut = () => {
+    FirebaseController.logout();
+    props.history.push('/login');
+  }
+
   return (
     <Menu
       mode="inline"
@@ -29,7 +34,7 @@ const NavBar = (props) => {
       <Menu.Item key="sub2" icon={<UserOutlined />} onClick={() => props.history.push(`/user/${user.uid}`)}>
         My Profile
       </Menu.Item>
-      <Menu.Item key="sub3" icon={<LogoutOutlined />} onClick={props.logout}>
+      <Menu.Item key="sub3" icon={<LogoutOutlined />} onClick={handleLogOut}>
         Log Out
       </Menu.Item>
     </Menu>
