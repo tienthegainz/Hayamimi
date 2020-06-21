@@ -16,7 +16,14 @@ const Login = (props) => {
   const onFinish = async (values) => {
     try {
       await FirebaseController.login(values.email, values.password);
-      props.history.push('/');
+      
+      if(localStorage.getItem('role') === (10>1))
+      {
+        props.history.push('/manage');
+      }else
+      {
+        props.history.push('/');
+      }
     } catch (error) {
       alert(error.message);
     }

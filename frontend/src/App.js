@@ -6,6 +6,7 @@ import Register from './component/Authenticate/Register.js';
 import Home from './component/Home/Home.js';
 import IndexProfile from './component/Profile';
 import './App.css';
+import Manage from './component/Manage/Manage.js';
 
 
 const App = () => {
@@ -40,6 +41,14 @@ const App = () => {
 
           render={() => (
             <Home />
+          )}
+        />
+        <Route
+          exact
+          path="/manage"
+
+          render={() => (
+            <Manage />
           )}
         />
       </Switch>

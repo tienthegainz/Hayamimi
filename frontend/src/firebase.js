@@ -26,6 +26,7 @@ class FirebaseController {
         localStorage.setItem('avatar', userData.avatarURL);
         localStorage.setItem('background', userData.backgroundURL);
         localStorage.setItem('following', userData.following);
+        localStorage.setItem('role', userData.role);             
       }
     });
   }
@@ -44,6 +45,7 @@ class FirebaseController {
       backgroundURL: "https://giaysg.com/wp-content/uploads/2017/06/grey-background.png",
       displayName: nickName,
       uid: this.auth.currentUser.uid,
+      role: false
     })
     return this.auth.currentUser.updateProfile({
       displayName: nickName
