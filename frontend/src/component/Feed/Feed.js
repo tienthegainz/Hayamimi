@@ -9,14 +9,16 @@ const Feed = (props) => {
   const currentUID = localStorage.getItem('uid');
   const type = props.type;
   const urlUid = props.uid;
-  // console.log(props);
+  
+  
 
 
   useEffect(() => {
     getPosts();
-  });
+  }, []);
 
   const getPosts = async () => {
+    console.log("Get Feed");
     const usersRef = await FirebaseController.db
       .collection('users')
       .get();

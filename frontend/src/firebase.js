@@ -184,9 +184,6 @@ class FirebaseController {
       comments: app.firestore.FieldValue.arrayUnion(data)
     });
   }
-  updateLike(data) {
-
-  }
 }
 
 

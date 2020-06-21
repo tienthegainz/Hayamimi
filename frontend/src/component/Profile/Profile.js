@@ -19,7 +19,7 @@ const Profile = (props) => {
 
   useEffect(() => {
     getUserInfo();
-  });
+  }, []);
 
   const getUserInfo = async () => {
     const urlUid = props.match.params.uid;
