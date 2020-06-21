@@ -174,7 +174,7 @@ class FirebaseController {
     return url;
   }
 
-  uploadComment(data) {
+  uploadComment(data){    
     this.db
       .collection("comments")
       .add(data)
@@ -185,6 +185,9 @@ class FirebaseController {
     updatePost.update({
       comments: app.firestore.FieldValue.arrayUnion(data)
     });
+  }
+  updateLike(data){
+    
   }
 }
 
