@@ -43,7 +43,7 @@ const Comments = (props) => {
       return;
     }
     let user = null;
-    user = FirebaseController.getCurrentUser();
+    user = localStorage.getItem("");
     setSubmitting(true);
      
     let data = {

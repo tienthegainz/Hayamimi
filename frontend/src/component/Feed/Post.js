@@ -86,10 +86,6 @@ const Post = (props) => {
             <Button type="text" icon={<CommentOutlined />} onClick={onCommentBtnClick}></Button>
             <span className="comment-action">{}</span>
             {/* comments.length */}
-          </span>,
-          <span>
-            <Button type="text" icon={<ShareAltOutlined />}></Button>
-            <span className="comment-action">{sharesCount}</span>
           </span>
         ]}
         extra={
