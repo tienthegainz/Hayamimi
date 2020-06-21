@@ -116,38 +116,6 @@ class SetupProfile extends Component {
       </div>
     );
 
-    // const steps = [
-    //   {
-    //     title: 'Pick a profile picture',
-    //     content: (
-    //       <div>
-    //         Have a favorite selfie? Upload now.
-    //         <div>
-    //           <Upload
-    //             name="avatar"
-    //             listType="picture-card"
-    //             className="avatar-upload"
-    //             showUploadList={false}
-    //             action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-    //             beforeUpload={beforeUpload}
-    //             onChange={this.handleChange}
-    //           >
-    //             {imageUrl ? (
-    //               <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-    //             ) : (
-    //               uploadButton
-    //             )}
-    //           </Upload>
-
-    //           {FirebaseController.setupProfile(
-    //             this.state.displayName,
-    //             imageUrl
-    //           )}
-    //         </div>
-    //       </div>
-    //     )
-    //   }
-    // ]
       const { imageUrl, backgroundUrl } = this.state;
       const { current } = this.state;
 
@@ -181,28 +149,6 @@ class SetupProfile extends Component {
       <div>
           People who visit your Tweet will see it. Show your Style.
           <div className = "background-image">
-          {/* <Upload 
-==
-          </div>
-        )
-      },
-      {
-        title: 'Pick a Header',
-        content: (
-          <div>
-            People who visit your Tweet will see it. Show your Style.
-            <div className="background-image">
-              {/* <Upload 
->>>>>>> 73b6cb0b75420830562aeadb1bec221bdc188db5
-            name="background"
-            listType="picture"
-            className="background-upload"
-            showUploadList={false}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            beforeUpload={beforeUpload}
-            onChange={this.handleChange}
-        >{backgroundUrl ? <img src={backgroundUrl} alt="avatar" style={{width: '100%'}} /> : uploadButton}
-        </Upload> */}
             </div>
             <div className="avatar-image-header">
               <Avatar size={150} src={imageUrl} />

@@ -9,8 +9,9 @@ import Profile from '../Profile/Profile';
 import './Home.css';
 
 const Home = (props) => {
+
   useEffect(() => {
-    if (!props.isLoggedIn) props.history.replace('/login');
+    if (localStorage.getItem('isLoggedIn') == 'false') props.history.push('/login');
   });
 
   const { Content, Sider } = Layout;
@@ -33,16 +34,9 @@ const Home = (props) => {
         <Row gutter={[24, 24]}>
           <Col span={16}>
             <Switch>
-              <Route exact path="/" component={Feed} />
-              <Route exact path="/notifications" component={Feed} />
-              <Route exact path="/profile/:uid" component={Profile} />
+              <Route exact path="/" render={() => <Feed type='home' />} />
+              <Route exact path="/user/:uid" component={Profile} />
             </Switch>
-          </Col>
-
-          <Col span={8}>
-            <Row gutter={[0, 24]}>
-              <SideBar />
-            </Row>
           </Col>
         </Row>
       </Content>

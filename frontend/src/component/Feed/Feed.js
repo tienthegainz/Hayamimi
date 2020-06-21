@@ -4,20 +4,26 @@ import UploadPost from './UploadPost';
 import Post from './Post';
 import FirebaseController from '../../firebase.js';
 
-const Feed = () => {
+const Feed = (props) => {
   const [Posts, setPosts] = useState([]);
   const currentUID = localStorage.getItem('uid');
+  const type = props.type;
+  const urlUid = props.uid;
+  // console.log(props);
+
 
   useEffect(() => {
     getPosts();
-
-  }, []);
+  });
 
   const getPosts = async () => {
     const usersRef = await FirebaseController.db
       .collection('users')
       .get();
-    const postsRef = await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
+
+    const postsRef = (type == 'profile') ? await FirebaseController.db.collection('posts').where('uid', '==', urlUid).get() :
+      (type == 'search') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').get() :
+        await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
 
     const usersSnapshot = await usersRef.docs.map((doc) => ({ uid: doc.id, displayName: doc.data().displayName, avatarURL: doc.data().avatarURL }));
 
@@ -25,7 +31,6 @@ const Feed = () => {
       pid: doc.id, uid: doc.data().uid, content: doc.data().content,
       date: doc.data().date, image: doc.data().image, like: doc.data().like, commentID: doc.data().commentID
     }));
-
 
 
     const data = [];
@@ -40,7 +45,7 @@ const Feed = () => {
   return (
     <Row gutter={[0, 24]}>
       <Col span={24}>
-        <UploadPost />
+        {(currentUID === urlUid) ? <UploadPost /> : <div></div>}
       </Col>
       {Posts.map((post, idx) => {
         const permission = (post.uid === currentUID) ? true : false;
@@ -51,12 +56,10 @@ const Feed = () => {
             img={post.image}
             date={post.date}
             uid={post.uid}
-
             pid={post.pid}
             displayName={post.displayName}
             avatar={post.avatarURL}
             permission={permission}
-
             comments={post.commentID}
           />
         );

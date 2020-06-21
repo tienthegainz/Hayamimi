@@ -10,11 +10,13 @@ import {
 import FirebaseController from '../../firebase.js';
 
 const NavBar = (props) => {
-  const [user, setUser] = useState({});
+  const uid = localStorage.getItem('uid');
+  const displayName = localStorage.getItem('displayName');
 
-  useEffect(() => {
-    setUser(FirebaseController.getCurrentUser());
-  }, []);
+  const handleLogOut = () => {
+    FirebaseController.logout();
+    props.history.push('/login');
+  }
 
   return (
     <Menu
@@ -26,10 +28,10 @@ const NavBar = (props) => {
       <Menu.Item key="sub1" icon={<HomeOutlined />} onClick={() => props.history.push("/")}>
         Home
       </Menu.Item>
-      <Menu.Item key="sub2" icon={<UserOutlined />} onClick={() => props.history.push(`/user/${user.uid}`)}>
-        My Profile
+      <Menu.Item key="sub2" icon={<UserOutlined />} onClick={() => props.history.push(`/user/${uid}`)}>
+        {displayName}
       </Menu.Item>
-      <Menu.Item key="sub3" icon={<LogoutOutlined />} onClick={props.logout}>
+      <Menu.Item key="sub3" icon={<LogoutOutlined />} onClick={handleLogOut}>
         Log Out
       </Menu.Item>
     </Menu>

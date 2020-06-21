@@ -22,7 +22,7 @@ class FirebaseController {
         const userDoc = await this.db.collection('users').doc(user.uid).get();
         const userData = userDoc.data();
         localStorage.setItem('uid', userData.uid);
-        localStorage.setItem('dislayName', userData.displayName);
+        localStorage.setItem('displayName', userData.displayName);
         localStorage.setItem('avatar', userData.avatarURL);
         localStorage.setItem('background', userData.backgroundURL);
         localStorage.setItem('following', userData.following);

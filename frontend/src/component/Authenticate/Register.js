@@ -11,7 +11,7 @@ const Register = (props) => {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (props.isLoggedIn) props.history.push('/');
+    if (localStorage.getItem('isLoggedIn') == 'true') props.history.push('/');
   });
 
   const onFinish = async (values) => {

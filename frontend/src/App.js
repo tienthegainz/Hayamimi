@@ -10,40 +10,6 @@ import './App.css';
 
 const App = () => {
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChange(setIsLoggedIn);
-    return () => {
-      unsubscribe();
-    };
-  });
-  // control the auth
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-
-  const handleLoggedIn = () => {
-    if (!isLoggedIn) setIsLoggedIn(true);
-  };
-
-  const handleLoggedOut = () => {
-    if (isLoggedIn) {
-      FirebaseController.logout();
-      setIsLoggedIn(false);
-    }
-  };
-
-  const onAuthStateChange = (callback) => {
-    return FirebaseController.auth.onAuthStateChanged((user) => {
-      if (user) {
-        callback(true);
-      }
-
-      else callback(false);
-    });
-  };
-
-
-
   return (
 
 
@@ -53,34 +19,27 @@ const App = () => {
           exact
           path="/login"
           render={() => (
-            <Login isLoggedIn={isLoggedIn} login={handleLoggedIn} />
+            <Login />
           )}
         />
         <Route
           exact
           path="/register"
-          render={() => <Register isLoggedIn={isLoggedIn} />}
+          render={() => <Register />}
         />
         <Route
           exact
           path="/"
           render={() => (
-            <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
+            <Home />
           )}
         />
         <Route
           exact
-          path="/notifications"
-          render={() => (
-            <Home isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
-          )}
-        />
-        <Route
-          exact
-          path="/user/:currentUid"
+          path="/user/:uid"
 
           render={() => (
-            <IndexProfile isLoggedIn={isLoggedIn} logout={handleLoggedOut} />
+            <Home />
           )}
         />
       </Switch>

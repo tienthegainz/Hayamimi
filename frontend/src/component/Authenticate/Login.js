@@ -10,13 +10,12 @@ const tailLayout = { wrapperCol: { offset: 8, span: 8 } };
 const Login = (props) => {
 
   useEffect(() => {
-    if (props.isLoggedIn) props.history.push('/');
+    if (localStorage.getItem('isLoggedIn') == 'true') props.history.push('/');
   });
 
   const onFinish = async (values) => {
     try {
       await FirebaseController.login(values.email, values.password);
-      props.login();
       props.history.push('/');
     } catch (error) {
       alert(error.message);
@@ -54,10 +53,6 @@ const Login = (props) => {
         >
           <Input.Password />
         </Form.Item>
-
-        {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item> */}
 
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
