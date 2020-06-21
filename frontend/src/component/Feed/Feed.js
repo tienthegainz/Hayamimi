@@ -29,7 +29,7 @@ const Feed = (props) => {
 
     const postsSnapshot = await postsRef.docs.map((doc) => ({
       pid: doc.id, uid: doc.data().uid, content: doc.data().content,
-      date: doc.data().date.toDate(), image: doc.data().image, likes: doc.data().like, commentID: doc.data().commentID
+      date: doc.data().date.toDate(), image: doc.data().image, like: doc.data().like, commentID: doc.data().commentID
     }));
 
 
