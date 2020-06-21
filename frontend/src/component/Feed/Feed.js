@@ -11,20 +11,18 @@ const Feed = (props) => {
   const urlUid = props.uid;
 
 
-
-
   useEffect(() => {
     getPosts();
   }, []);
 
   const getPosts = async () => {
-    // console.log("Get Feed");
     const usersRef = await FirebaseController.db
       .collection('users')
       .get();
 
-    const postsRef = (type === 'profile') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').get() :
-      (type === 'search') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').where.get() :
+
+   const postsRef = (type == 'profile') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').get() :
+      (type == 'search') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').get() :
         await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
 
     const usersSnapshot = await usersRef.docs.map((doc) => ({ uid: doc.id, displayName: doc.data().displayName, avatarURL: doc.data().avatarURL }));

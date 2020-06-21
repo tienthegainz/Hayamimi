@@ -12,7 +12,6 @@ const Home = (props) => {
 
   if (localStorage.getItem('isLoggedIn') === 'false' || localStorage.getItem('isLoggedIn') === null) props.history.push('/login');
 
-
   const { Content, Sider } = Layout;
 
   return (
