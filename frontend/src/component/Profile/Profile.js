@@ -9,13 +9,27 @@ import './Profile.css';
 const { TabPane } = Tabs;
 
 const Profile = (props) => {
-  const displayName = localStorage.getItem('displayName');
-  const avatar = localStorage.getItem('avatar');
-  const background = localStorage.getItem('background');
+  const [displayName, setDisplayName] = useState();
+  const [avatar, setAvatar] = useState();
+  const [background, setBackground] = useState();
   const [visible, setVisible] = useState(false);
   const [Posts, setPosts] = useState([]);
+  const isCurrentUser = (props.match.params.uid === localStorage.getItem('uid')) ? true : false;
 
-  console.log(props.match.params.uid);
+
+  useEffect(() => {
+    getUserInfo();
+  });
+
+  const getUserInfo = async () => {
+    const urlUid = props.match.params.uid;
+    const userRef = await FirebaseController.db.collection('users').where('uid', '==', urlUid).limit(1).get();
+    const userSnapshot = await userRef.docs.map((doc) => (doc.data()));
+    // console.log(userSnapshot);
+    setDisplayName(userSnapshot[0].displayName);
+    setAvatar(userSnapshot[0].avatarURL);
+    setBackground(userSnapshot[0].backgroundURL);
+  }
 
   const showModal = () => {
     if (!visible) setVisible(true);
@@ -32,12 +46,10 @@ const Profile = (props) => {
 
   return (
     <div>
-      Profile
       <PageHeader
         ghost={false}
         onBack={() => props.history.push('/')}
         title={displayName}
-        subTitle='0 tweet'
       >
 
       </PageHeader>
@@ -49,24 +61,29 @@ const Profile = (props) => {
             <div className="avatar-image">
               <Avatar size={150} src={avatar} />
             </div>
+            {
+              (isCurrentUser) ?
+                <div><Button
+                  type="primary"
+                  shape="round"
+                  className="setup-profile"
+                  size="large"
+                  onClick={showModal}
+                >
+                  Set Up Profile
+                </Button>
+                  <Modal
+                    title="SetupProfile"
+                    visible={visible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                  >
+                    {/* <SetupProfile /> */}
+                  Setup here
+                </Modal></div> :
+                <div></div>
+            }
 
-            <Button
-              type="primary"
-              shape="round"
-              className="setup-profile"
-              size="large"
-              onClick={showModal}
-            >
-              Set Up Profile
-            </Button>
-            <Modal
-              title="SetupProfile"
-              visible={visible}
-              onOk={handleOk}
-              onCancel={handleCancel}
-            >
-              <SetupProfile />
-            </Modal>
             <div className="information">
               <div className="my-name">{displayName}</div>
             </div>
@@ -77,13 +94,13 @@ const Profile = (props) => {
       <Row>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Tweets" key="1">
-            < Feed />
+            < Feed type='profile' uid={props.match.params.uid} />
           </TabPane>
           <TabPane tab="Following" key="2">
-            This is all your Following here
+            On development
          </TabPane>
           <TabPane tab="Followed" key="3">
-            This is all your Followed here
+            On development
          </TabPane>
 
         </Tabs>
