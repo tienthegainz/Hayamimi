@@ -7,11 +7,14 @@ import Comments from './Comments';
 import FirebaseController from '../../firebase.js';
 
 const Post = (props) => {
-  const [likeBtn, setLikeBtn] = useState(<LikeOutlined />);
+  const currentUID = localStorage.getItem('uid');
+
+  const [likeBtn, setLikeBtn] = useState((props.likes.includes(currentUID)) ? <LikeTwoTone /> : <LikeOutlined />);
   const [commentVisible, setCommentVisible] = useState(false);
   const { Meta } = Card;
 
-  const [likesCount, setLikes] = useState(0);
+  const [likes, setLikes] = useState(props.likes);
+  const [likesCount, setLikesCount] = useState(props.likes.length);
   const [commentsCount, setComments] = useState(0);
   const [sharesCount, setshares] = useState(0);
 
@@ -46,13 +49,21 @@ const Post = (props) => {
   const onLikeBtnClick = () => {
     if (likeBtn.type.render.name === 'LikeOutlined') {
       setLikeBtn(<LikeTwoTone />);
-      setLikes(1);
-
+      setLikesCount(likesCount + 1);
+      if (!likes.includes(currentUID)) setLikes(likes.push(currentUID));
     }
     else {
       setLikeBtn(<LikeOutlined />);
-      setLikes(0);
+      setLikesCount(likesCount - 1);
+      if (likes.includes(currentUID)) {
+        let index = likes.indexOf(currentUID);
+        setLikes(likes.splice(index, 1));
+      }
     }
+    // console.log(likes);
+    FirebaseController.db.collection('posts').doc(props.pid).update({
+      like: likes
+    })
   };
 
   const onCommentBtnClick = () => {

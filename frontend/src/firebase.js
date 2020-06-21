@@ -21,11 +21,11 @@ class FirebaseController {
         // This will return one result
         const userDoc = await this.db.collection('users').doc(user.uid).get();
         const userData = userDoc.data();
-        localStorage.setItem('uid', userData.uid);
-        localStorage.setItem('displayName', userData.displayName);
-        localStorage.setItem('avatar', userData.avatarURL);
-        localStorage.setItem('background', userData.backgroundURL);
-        localStorage.setItem('following', userData.following);
+        await localStorage.setItem('uid', userData.uid);
+        await localStorage.setItem('displayName', userData.displayName);
+        await localStorage.setItem('avatar', userData.avatarURL);
+        await localStorage.setItem('background', userData.backgroundURL);
+        await localStorage.setItem('following', userData.following);
       }
     });
   }

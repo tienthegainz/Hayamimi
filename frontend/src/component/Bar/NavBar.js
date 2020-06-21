@@ -10,8 +10,8 @@ import {
 import FirebaseController from '../../firebase.js';
 
 const NavBar = (props) => {
-  const uid = localStorage.getItem('uid');
-  const displayName = localStorage.getItem('displayName');
+  const uid = props.uid;
+  const displayName = props.displayName;
 
   const handleLogOut = () => {
     FirebaseController.logout();
