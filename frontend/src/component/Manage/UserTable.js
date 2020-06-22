@@ -1,62 +1,68 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Row, Col, Table, Radio, Divider, Button } from "antd";
+import { Layout, Row, Col, Table, Radio, Divider, Button, Space } from "antd";
 import FirebaseController from "../../firebase.js";
 import { withRouter } from "react-router-dom";
 
+const { Column } = Table;
+const columns = [
+  {
+    title: "Name",
+    dataIndex: "displayName",
+  },
+  {
+    title: "ID",
+    dataIndex: "uid",
+  },
+  {
+    title: "Delete",
+    key: "uid",
+    dataIndex: "uid",
+    render: (tags) => (
+      <>
+        {[tags].map((uid) => {
+          return (
+            <Space size="middle">
+              <a
+                onClick={() => {
+                  FirebaseController.db
+                    .collection("users")
+                    .doc(uid)
+                    .delete()
+                    .then(function () {
+                      console.log(uid);
+                    })
+                    .catch(function (error) {
+                      console.error("Error removing document: ", error);
+                    });
+                }}
+              >
+                Delete
+              </a>
+            </Space>
+          );
+        })}
+      </>
+    ),
+  },
+];
+
 const UserTable = (props) => {
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
-    {
-      title: "email",
-      dataIndex: "email",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-    },
-  ];
+  const [data, setData] = useState([]);
 
-  // const usersRef = FirebaseController.db.collection('users').get();
+  const getAllUserData = async () => {
+    let users = [];
+    const userRef = await FirebaseController.db.collection("users").get();
+    userRef.forEach(function (doc) {
+      users.push(doc.data());
+    });
+    console.log(users);
+    setData(users);
+  };
+  useEffect(() => {
+    getAllUserData();
+  }, []);
 
-  // let userData = FirebaseController.getAllUserData();
-  // const data = userData;
-  // data.push(
-  //   {
-  //     name: "name",
-  //     email: "mail",
-  //     isAdmin: "false",
-  //   }
-  // )
-  // for (let i = 0; i < userData.length; i++) {
-  //   data.push({
-  //     name: userData[i].displayName,
-  //     email: userData[i].avatarURL,
-  //     isAdmin: userData[i].isAdmin,
-  //   });
-  // }
-
-  // const start = () => {
-  //   this.setState({ loading: true });
-  // setTimeout(() => {
-  //   this.setState({
-  //     selectedRowKeys: [],
-  //     loading: false,
-  //   });
-  // }, 1000);
-  // };
-  // const onSelectChange = selectedRowKeys => {
-  //   this.setState({ selectedRowKeys });
-  // };
-  // const { loading, selectedRowKeys } = this.state;
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: this.onSelectChange,
-  // };
-  // const hasSelected = selectedRowKeys.length > 0;
-
+  
   return (
     <Col span={24}>
       <div>
@@ -65,7 +71,17 @@ const UserTable = (props) => {
             {/* {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''} */}
           </span>
         </div>
-        {/* <Table columns={columns} dataSource={data} bordered /> */}
+        <Table columns={columns} dataSource={data} bordered pagination={"true"}>
+          <Column
+            title="Action"
+            key="action"
+            render={(text, record) => (
+              <Space size="middle">
+                <a>Delete</a>
+              </Space>
+            )}
+          />
+        </Table>
       </div>
     </Col>
   );
