@@ -9,6 +9,7 @@ const Feed = (props) => {
   const currentUID = localStorage.getItem("uid");
   const type = props.type;
   const urlUid = props.uid;
+  const isAdmin = localStorage.getItem("isAdmin");
 
   useEffect(() => {
     getPosts();
@@ -43,6 +44,7 @@ const Feed = (props) => {
     }));
 
     const usersOnPost = postsRef.docs.map((doc) => doc.data().uid);
+    if (usersOnPost === undefined || usersOnPost.length == 0) return;
 
     const usersRef = await FirebaseController.db
       .collection("users")
@@ -55,6 +57,8 @@ const Feed = (props) => {
       avatarURL: doc.data().avatarURL,
     }));
 
+    console.log("user: ", usersSnapshot);
+    console.log("posts: ", postsSnapshot);    
 
     const data = [];
     postsSnapshot.forEach((snapshot) => {
@@ -79,7 +83,7 @@ const Feed = (props) => {
         )}
       </Col>
       {Posts.map((post, idx) => {
-        const permission = post.uid === currentUID ? true : false;
+        const permission = post.uid === currentUID || isAdmin ? true : false;
         const date = new Intl.DateTimeFormat("en-US", {
           year: "numeric",
           month: "2-digit",

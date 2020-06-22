@@ -1,44 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Layout, Row, Col, Table, Radio, Divider} from 'antd';
-import { Switch, Route, withRouter } from 'react-router-dom';
-import NavBar from '../Bar/NavBar';
-import SideBar from '../Bar/SideBar';
-import Feed from '../Feed/Feed';
-import './Manage.css';
-import UserTable from '../Manage/UserTable';
+import React, { useState, useEffect } from "react";
+import { Tabs, Row } from "antd";
+import Feed from "../Feed/Feed";
+import UserTable from "./UserTable";
+import { withRouter } from "react-router-dom";
+
+const { TabPane } = Tabs;
 
 const Manage = (props) => {
-
-  useEffect(() => {
-    if (localStorage.getItem('isLoggedIn') == 'false') props.history.push('/login');
-  });
-
-  const { Content, Sider } = Layout;
+  if (localStorage.getItem("isLoggedIn") === "true") {
+    if (localStorage.getItem("isAdmin") === "false") props.history.push("/");
+  } else props.history.push("/login");
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider
-        width={200}
-        style={{
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0
-        }}
-      >
-        <NavBar logout={props.logout} />
-      </Sider>
-
-      <Content style={{ margin: '24px 24px 0 224px' }}>
-        <Row gutter={[24, 24]}>
-          <Col span={16}>
-            <Switch>
-              <UserTable></UserTable>
-            </Switch>
-          </Col>
-        </Row>
-      </Content>
-    </Layout>
+    <Row>
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="Users" key="1">
+          <UserTable />
+        </TabPane>
+        <TabPane tab="Posts" key="2">
+          <Feed type="manage" />
+        </TabPane>
+        <TabPane tab="Analytics" key="3">
+          On development
+        </TabPane>
+      </Tabs>
+    </Row>
   );
 };
 
