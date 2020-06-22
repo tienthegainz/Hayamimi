@@ -9,6 +9,7 @@ const Feed = (props) => {
   const currentUID = localStorage.getItem("uid");
   const type = props.type;
   const urlUid = props.uid;
+  const isAdmin = localStorage.getItem("isAdmin");
 
   useEffect(() => {
     getPosts();
@@ -79,7 +80,7 @@ const Feed = (props) => {
         )}
       </Col>
       {Posts.map((post, idx) => {
-        const permission = post.uid === currentUID ? true : false;
+        const permission = post.uid === currentUID || isAdmin ? true : false;
         const date = new Intl.DateTimeFormat("en-US", {
           year: "numeric",
           month: "2-digit",

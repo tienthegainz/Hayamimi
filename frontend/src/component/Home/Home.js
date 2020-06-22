@@ -7,7 +7,7 @@ import Feed from "../Feed/Feed";
 import Profile from "../Profile/Profile";
 
 import "./Home.css";
-import UserTable from "../Manage/UserTable";
+import Manage from "../Manage/Manage";
 
 const Home = (props) => {
   if (
@@ -38,7 +38,7 @@ const Home = (props) => {
             <Switch>
               <Route exact path="/" render={() => <Feed type="home" />} />
               <Route exact path="/user/:uid" component={Profile} />
-              <Route exact path="/manage" render={() => <UserTable />} />
+              <Route exact path="/manage" render={() => <Manage />} />
             </Switch>
           </Col>
         </Row>
