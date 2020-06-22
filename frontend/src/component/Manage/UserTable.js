@@ -4,10 +4,6 @@ import FirebaseController from "../../firebase.js";
 import { withRouter } from "react-router-dom";
 
 const UserTable = (props) => {
-  if (localStorage.getItem("isLoggedIn") === "true") {
-    if (localStorage.getItem("isAdmin") === "false") props.history.push("/");
-  } else props.history.push("/login");
-
   const columns = [
     {
       title: "Name",
@@ -75,4 +71,4 @@ const UserTable = (props) => {
   );
 };
 
-export default withRouter(UserTable);
+export default UserTable;
