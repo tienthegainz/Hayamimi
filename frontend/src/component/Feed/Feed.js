@@ -15,8 +15,6 @@ const Feed = (props) => {
   }, []);
 
   const getPosts = async () => {
-    const usersRef = await FirebaseController.db.collection("users").get();
-
     const postsRef =
       type == "profile"
         ? await FirebaseController.db
@@ -34,13 +32,7 @@ const Feed = (props) => {
             .orderBy("date", "desc")
             .get();
 
-    const usersSnapshot = await usersRef.docs.map((doc) => ({
-      uid: doc.id,
-      displayName: doc.data().displayName,
-      avatarURL: doc.data().avatarURL,
-    }));
-
-    const postsSnapshot = await postsRef.docs.map((doc) => ({
+    const postsSnapshot = postsRef.docs.map((doc) => ({
       pid: doc.id,
       uid: doc.data().uid,
       content: doc.data().content,
@@ -50,9 +42,23 @@ const Feed = (props) => {
       commentID: doc.data().commentID,
     }));
 
+    const usersOnPost = postsRef.docs.map((doc) => doc.data().uid);
+
+    const usersRef = await FirebaseController.db
+      .collection("users")
+      .where("uid", "in", usersOnPost)
+      .get();
+
+    const usersSnapshot = usersRef.docs.map((doc) => ({
+      uid: doc.id,
+      displayName: doc.data().displayName,
+      avatarURL: doc.data().avatarURL,
+    }));
+
+    // console.log("Posts: ", usersSnapshot);
+
     const data = [];
     postsSnapshot.forEach((snapshot) => {
-      // if (type === "profile" && snapshot.uid !== urlUid) return;
       snapshot.displayName = usersSnapshot.find(
         (e) => e.uid === snapshot.uid
       ).displayName;
