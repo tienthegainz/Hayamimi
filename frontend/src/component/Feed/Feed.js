@@ -43,6 +43,7 @@ const Feed = (props) => {
     }));
 
     const usersOnPost = postsRef.docs.map((doc) => doc.data().uid);
+    if (usersOnPost === undefined || usersOnPost.length == 0) return;
 
     const usersRef = await FirebaseController.db
       .collection("users")
@@ -54,7 +55,6 @@ const Feed = (props) => {
       displayName: doc.data().displayName,
       avatarURL: doc.data().avatarURL,
     }));
-
 
     const data = [];
     postsSnapshot.forEach((snapshot) => {
