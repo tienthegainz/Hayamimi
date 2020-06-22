@@ -9,8 +9,6 @@ const Feed = (props) => {
   const currentUID = localStorage.getItem('uid');
   const type = props.type;
   const urlUid = props.uid;
-  
-  
 
 
   useEffect(() => {
@@ -18,12 +16,12 @@ const Feed = (props) => {
   }, []);
 
   const getPosts = async () => {
-    console.log("Get Feed");
     const usersRef = await FirebaseController.db
       .collection('users')
       .get();
 
-    const postsRef = (type == 'profile') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').get() :
+
+   const postsRef = (type == 'profile') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').get() :
       (type == 'search') ? await FirebaseController.db.collection('posts').orderBy('date', 'desc').get() :
         await FirebaseController.db.collection('posts').orderBy('date', 'desc').get();
 
@@ -37,7 +35,7 @@ const Feed = (props) => {
 
     const data = [];
     postsSnapshot.forEach((snapshot) => {
-      if (type == 'profile' && snapshot.uid !== urlUid) return;
+      if (type === 'profile' && snapshot.uid !== urlUid) return;
       snapshot.displayName = usersSnapshot.find(e => (e.uid === snapshot.uid)).displayName;
       snapshot.avatarURL = usersSnapshot.find(e => (e.uid === snapshot.uid)).avatarURL;
       data.push(snapshot);
@@ -48,7 +46,7 @@ const Feed = (props) => {
   return (
     <Row gutter={[0, 24]}>
       <Col span={24}>
-        {(type == 'home' || (currentUID === urlUid)) ? <UploadPost /> : <div></div>}
+        {(type === 'home' || (currentUID === urlUid)) ? <UploadPost /> : <div></div>}
       </Col>
       {Posts.map((post, idx) => {
         const permission = (post.uid === currentUID) ? true : false;
@@ -68,7 +66,7 @@ const Feed = (props) => {
             displayName={post.displayName}
             avatar={post.avatarURL}
             permission={permission}
-            comments={post.commentID}
+            commentsID={post.commentID}
           />
         );
       })}
