@@ -23,8 +23,6 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 const Comments = (props) => {
-  console.log(props);
-
   const pid = props.pid;
   const [commentsID, setCommentsID] = useState(props.commentsID);
   const [comments, setComments] = useState([]);
@@ -57,20 +55,11 @@ const Comments = (props) => {
   }, [commentsID]);
 
   const getComment = async () => {
-    console.log("Get Comment of ", pid);
-    const usersRef = await FirebaseController.db.collection("users").get();
-
     const commentsRef = await FirebaseController.db
       .collection("comments")
       .where("pid", "==", props.pid)
       .orderBy("date", "asc")
       .get();
-
-    const usersSnapshot = await usersRef.docs.map((doc) => ({
-      uid: doc.data().uid,
-      displayName: doc.data().displayName,
-      avatarURL: doc.data().avatarURL,
-    }));
 
     const commentsSnapshot = commentsRef.docs.map((doc) => ({
       pid: doc.id,
@@ -84,7 +73,21 @@ const Comments = (props) => {
         minute: "2-digit",
       }).format(doc.data().date.toDate()),
     }));
-    console.log("CmtSnap:", commentsSnapshot);
+
+    const usersOnCmt = commentsRef.docs.map((doc) => doc.data().uid);
+
+    const usersRef = await FirebaseController.db
+      .collection("users")
+      .where("uid", "in", usersOnCmt)
+      .get();
+    const usersSnapshot = await usersRef.docs.map((doc) => ({
+      uid: doc.data().uid,
+      displayName: doc.data().displayName,
+      avatarURL: doc.data().avatarURL,
+    }));
+
+    // console.log("Cmt: ", usersSnapshot);
+
     let data = [];
 
     commentsSnapshot.forEach((snapshot) => {
@@ -95,7 +98,7 @@ const Comments = (props) => {
         (e) => e.uid === snapshot.uid
       ).avatarURL;
       data.push(snapshot);
-      console.log(data);
+      // console.log(data);
     });
     setComments(data);
   };
@@ -117,7 +120,7 @@ const Comments = (props) => {
       .collection("comments")
       .add(push_data)
       .then((ref) => {
-        console.log("Added document with ID: ", ref.id);
+        console.log("Added comment with ID: ", ref.id);
         setCommentsID([...commentsID, ref.id]);
         FirebaseController.db
           .collection("posts")
