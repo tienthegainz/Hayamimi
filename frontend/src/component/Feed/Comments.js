@@ -76,10 +76,12 @@ const Comments = (props) => {
 
     const usersOnCmt = commentsRef.docs.map((doc) => doc.data().uid);
 
+    if (usersOnCmt.length === 0) return;
     const usersRef = await FirebaseController.db
       .collection("users")
       .where("uid", "in", usersOnCmt)
       .get();
+
     const usersSnapshot = await usersRef.docs.map((doc) => ({
       uid: doc.data().uid,
       displayName: doc.data().displayName,
