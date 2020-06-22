@@ -17,19 +17,13 @@ const NavBar = (props) => {
     FirebaseController.logout();
     props.history.push('/login');
   }
-
-  useEffect(() => {
-    FirebaseController.auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        setUID(user.uid);
-        const userDoc = await FirebaseController.db.collection('users').doc(user.uid).get();
-        const userData = userDoc.data();
-        setDisplayName(userData.displayName);
-      }
+  FirebaseController.auth.onAuthStateChanged(function (user) {
+    if (user) {
+      setUID(user.uid);
+      setDisplayName(user.displayName);
     }
-    )
-  }, []);
-
+  });
+  
   return (
     <Menu
       mode="inline"

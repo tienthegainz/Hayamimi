@@ -5,6 +5,10 @@ import FirebaseController from '../../firebase.js';
 import Feed from "../Feed/Feed.js";
 import SetupProfile from './SetupProfile.js';
 import './Profile.css';
+import {
+  MailOutlined,
+  CalendarOutlined
+} from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
@@ -12,11 +16,9 @@ const Profile = (props) => {
   const [displayName, setDisplayName] = useState();
   const [avatar, setAvatar] = useState();
   const [background, setBackground] = useState();
+  const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState();
   const [dateJoined, setDateJoined] = useState();
-  const [visible, setVisible] = useState(false);
-  const [Posts, setPosts] = useState([]);
-  const isCurrentUser = (props.match.params.uid === localStorage.getItem('uid')) ? true : false;
 
 
   useEffect(() => {
@@ -31,8 +33,8 @@ const Profile = (props) => {
     setDisplayName(userSnapshot[0].displayName);
     setAvatar(userSnapshot[0].avatarURL);
     setBackground(userSnapshot[0].backgroundURL);
-    setEmail(userSnapshot[0].email);
     setDateJoined(userSnapshot[0].dateJoined);
+    setEmail(userSnapshot[0].email);
   }
   const showModal = () => {
     if (!visible) setVisible(true);
@@ -45,6 +47,29 @@ const Profile = (props) => {
   const handleCancel = (e) => {
     setVisible(false);
   };
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [currentUid, setCurrentUid] = useState();
+  function handleLoggedIn() {
+    if (!isLoggedIn) {
+      setIsLoggedIn(true);
+    }
+  }
+
+  function handleLoggedOut() {
+    if (isLoggedIn) {
+      FirebaseController.logout()
+      setIsLoggedIn(false);
+    }
+  }
+  FirebaseController.auth.onAuthStateChanged(function (user) {
+    if (user) {
+      setIsLoggedIn(true);
+      setCurrentUid(user.uid);
+    }
+  });
+
+  const isCurrentUser = (props.match.params.uid === currentUid) ? true : false;
 
 
   return (
@@ -81,8 +106,7 @@ const Profile = (props) => {
                     onOk={handleOk}
                     onCancel={handleCancel}
                   >
-                  <SetupProfile /> 
-                  
+                   <SetupProfile avatar={avatar} displayName={displayName} background={background} email={email} dateJoined={dateJoined} /> 
                 </Modal></div> :
                 <div></div>
             }
@@ -90,8 +114,9 @@ const Profile = (props) => {
             <div className="information">
               <div className="my-name">{displayName}</div>
               <div>
-                {email}
-                
+              <MailOutlined /> {email}
+              <br />
+              <CalendarOutlined /> 
               </div>
             </div>
           </div>

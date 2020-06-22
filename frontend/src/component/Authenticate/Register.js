@@ -8,7 +8,6 @@ const layout = { labelCol: { span: 8 }, wrapperCol: { span: 8 } };
 const tailLayout = { wrapperCol: { offset: 8, span: 8 } };
 
 const Register = (props) => {
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('isLoggedIn') == 'true') props.history.push('/');

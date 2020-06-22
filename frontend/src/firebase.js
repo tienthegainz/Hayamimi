@@ -104,6 +104,9 @@ class FirebaseController {
     this.db.collection("users").doc(this.auth.currentUser.uid).update({
       displayName: newName
     })
+    this.auth.currentUser.updateProfile({
+      displayName: newName
+    })
   }
 
   handleFollowing(otherID) {
