@@ -57,7 +57,6 @@ const Feed = (props) => {
       avatarURL: doc.data().avatarURL,
     }));
 
-
     const data = [];
     postsSnapshot.forEach((snapshot) => {
       snapshot.displayName = usersSnapshot.find(
