@@ -55,7 +55,6 @@ const Feed = (props) => {
       avatarURL: doc.data().avatarURL,
     }));
 
-    // console.log("Posts: ", usersSnapshot);
 
     const data = [];
     postsSnapshot.forEach((snapshot) => {

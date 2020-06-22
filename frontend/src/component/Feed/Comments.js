@@ -23,8 +23,6 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 const Comments = (props) => {
-  // console.log(props);
-
   const pid = props.pid;
   const [commentsID, setCommentsID] = useState(props.commentsID);
   const [comments, setComments] = useState([]);
@@ -57,8 +55,6 @@ const Comments = (props) => {
   }, [commentsID]);
 
   const getComment = async () => {
-    // console.log("Get Comment of ", pid);
-
     const commentsRef = await FirebaseController.db
       .collection("comments")
       .where("pid", "==", props.pid)
