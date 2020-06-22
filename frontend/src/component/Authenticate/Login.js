@@ -1,37 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Input, Button } from 'antd';
-import { withRouter } from 'react-router-dom';
-import FirebaseController from '../../firebase.js';
+import React, { useState, useEffect } from "react";
+import { Form, Input, Button } from "antd";
+import { withRouter } from "react-router-dom";
+import FirebaseController from "../../firebase.js";
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 8 } };
 
 const tailLayout = { wrapperCol: { offset: 8, span: 8 } };
 
 const Login = (props) => {
-
-
-  if (localStorage.getItem('isLoggedIn') === 'true') props.history.push('/');
-
+  if (localStorage.getItem("isLoggedIn") === "true") props.history.push("/");
 
   const onFinish = async (values) => {
     try {
       await FirebaseController.login(values.email, values.password);
-      
-      if(localStorage.getItem('role') === (10>1))
-      {
-        props.history.push('/manage');
-      }else
-      {
-        props.history.push('/');
-      }
+      props.history.push("/");
     } catch (error) {
       alert(error.message);
     }
-
   };
 
   const onFinishFailed = (errorInfo) => {
-    alert('Something went wrong. Try again');
+    alert("Something went wrong. Try again");
   };
 
   return (
@@ -48,7 +37,7 @@ const Login = (props) => {
         <Form.Item
           label="Email"
           name="email"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[{ required: true, message: "Please input your username!" }]}
         >
           <Input />
         </Form.Item>
@@ -56,7 +45,7 @@ const Login = (props) => {
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input.Password />
         </Form.Item>
