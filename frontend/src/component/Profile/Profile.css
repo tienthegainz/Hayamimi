@@ -40,3 +40,8 @@
   font-weight: bold;
   font-size: 25px;
 }
+
+.ant-tabs-nav-wrap {
+  display: flex;
+  justify-content: center;
+}

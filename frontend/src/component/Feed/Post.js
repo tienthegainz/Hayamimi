@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Col, Card, Avatar, Button, Modal, Menu, Dropdown } from "antd";
 import {
   LikeOutlined,
   LikeTwoTone,
   CommentOutlined,
-  ShareAltOutlined,
   EllipsisOutlined,
 } from "@ant-design/icons";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import Comments from "./Comments";
 import FirebaseController from "../../firebase.js";
@@ -25,7 +24,6 @@ const Post = (props) => {
   const [likesCount, setLikesCount] = useState(props.likes.length);
   const [likeMutex, setLikeMutex] = useState(true);
 
-  const link = "/user/" + props.uid;
   const formatedDate = props.date;
 
   const menu1 = (
@@ -131,7 +129,7 @@ const Post = (props) => {
         }
       >
         <Meta
-          title={<a href={link}>{props.displayName}</a>}
+          title={<Link to={`/user/${props.uid}`}>{props.displayName}</Link>}
           avatar={<Avatar src={props.avatar} />}
         />
         <div>{formatedDate}</div>

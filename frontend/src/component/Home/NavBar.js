@@ -3,9 +3,10 @@ import { withRouter } from "react-router-dom";
 import { Menu } from "antd";
 import {
   HomeOutlined,
+  SearchOutlined,
   TeamOutlined,
   LogoutOutlined,
-  UserOutlined,
+  UserOutlined
 } from "@ant-design/icons";
 import FirebaseController from "../../firebase.js";
 
@@ -48,20 +49,24 @@ const NavBar = (props) => {
         Home
       </Menu.Item>
       <Menu.Item
+        icon={<SearchOutlined />}
+        onClick={() => props.history.push("/explore")}
+      >
+        Explore
+      </Menu.Item>
+      <Menu.Item
         icon={<UserOutlined />}
         onClick={() => props.history.push(`/user/${uid}`)}
       >
         {displayName}
       </Menu.Item>
-      {isAdmin ? (
+      {isAdmin && (
         <Menu.Item
           icon={<TeamOutlined />}
           onClick={() => props.history.push(`/manage`)}
         >
           Manage
         </Menu.Item>
-      ) : (
-        <div></div>
       )}
       <Menu.Item icon={<LogoutOutlined />} onClick={handleLogOut}>
         Log Out
