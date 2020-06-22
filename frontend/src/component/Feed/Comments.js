@@ -142,6 +142,7 @@ const Comments = (props) => {
           <Avatar
             src={avatar}
             alt={displayName}
+
           />
         }
         content={
