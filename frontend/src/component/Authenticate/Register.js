@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Input, Button } from 'antd';
-import { withRouter } from 'react-router-dom';
-import FirebaseController from '../../firebase.js';
+import React, { useState, useEffect } from "react";
+import { Form, Input, Button } from "antd";
+import { withRouter } from "react-router-dom";
+import FirebaseController from "../../firebase.js";
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 8 } };
 
 const tailLayout = { wrapperCol: { offset: 8, span: 8 } };
 
 const Register = (props) => {
-
-  useEffect(() => {
-    if (localStorage.getItem('isLoggedIn') == 'true') props.history.push('/');
-  });
+  if (localStorage.getItem("isLoggedIn") === "true") props.history.push("/");
 
   const onFinish = async (values) => {
     try {
@@ -21,15 +18,15 @@ const Register = (props) => {
         values.nickname,
         values.birthday
       );
-      alert('Success');
-      props.history.push('/login');
+      alert("Success");
+      props.history.push("/login");
     } catch (error) {
       alert(error.message);
     }
   };
 
   const onFinishFailed = (errorInfo) => {
-    alert('Something went wrong. Try again');
+    alert("Something went wrong. Try again");
     // console.log("Failed:", errorInfo);
   };
 
@@ -47,7 +44,7 @@ const Register = (props) => {
         <Form.Item
           label="Email"
           name="email"
-          rules={[{ required: true, message: 'Please input your email!' }]}
+          rules={[{ required: true, message: "Please input your email!" }]}
         >
           <Input />
         </Form.Item>
@@ -55,7 +52,7 @@ const Register = (props) => {
         <Form.Item
           label="Nickname"
           name="nickname"
-          rules={[{ required: true, message: 'Please input your nickname!' }]}
+          rules={[{ required: true, message: "Please input your nickname!" }]}
         >
           <Input />
         </Form.Item>
@@ -63,7 +60,7 @@ const Register = (props) => {
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input.Password />
         </Form.Item>

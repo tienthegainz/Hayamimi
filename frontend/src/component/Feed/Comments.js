@@ -1,17 +1,8 @@
-import React, { useState } from 'react';
-import { Comment, Avatar, Form, Button, List, Input } from 'antd';
-import FirebaseController from '../../firebase.js'
+import React, { useState, useEffect } from "react";
+import { Comment, Avatar, Form, Button, List, Input } from "antd";
+import FirebaseController from "../../firebase.js";
 
 const { TextArea } = Input;
-
-const CommentList = ({ comments }) => (
-  <List
-    dataSource={comments}
-    header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
-    itemLayout="horizontal"
-    renderItem={(props) => <Comment {...props} />}
-  />
-);
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <>
@@ -32,42 +23,136 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 const Comments = (props) => {
-  const { listComments,post_id } = props;
-
-  const [comments, setComments] = useState(listComments);
+  const pid = props.pid;
+  const [commentsID, setCommentsID] = useState(props.commentsID);
+  const [comments, setComments] = useState([]);
   const [submitting, setSubmitting] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
+  const avatar = localStorage.getItem("avatar");
+  const displayName = localStorage.getItem("displayName");
+  const uid = localStorage.getItem("uid");
 
-  const handleSubmit = () => {
+  const CommentList = (
+    <List
+      className="comment-list"
+      itemLayout="horizontal"
+      dataSource={comments}
+      renderItem={(item) => (
+        <li>
+          <Comment
+            author={item.displayName}
+            avatar={item.avatarURL}
+            content={item.content}
+            datetime={item.date}
+          />
+        </li>
+      )}
+    />
+  );
+
+  useEffect(() => {
+    getComment();
+  }, [commentsID]);
+
+  const getComment = async () => {
+    const commentsRef = await FirebaseController.db
+      .collection("comments")
+      .where("pid", "==", props.pid)
+      .orderBy("date", "asc")
+      .get();
+
+    const commentsSnapshot = commentsRef.docs.map((doc) => ({
+      pid: doc.id,
+      uid: doc.data().uid,
+      content: doc.data().content,
+      date: new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(doc.data().date.toDate()),
+    }));
+
+    const usersOnCmt = commentsRef.docs.map((doc) => doc.data().uid);
+
+    if (usersOnCmt.length === 0) return;
+    const usersRef = await FirebaseController.db
+      .collection("users")
+      .where("uid", "in", usersOnCmt)
+      .get();
+
+    const usersSnapshot = await usersRef.docs.map((doc) => ({
+      uid: doc.data().uid,
+      displayName: doc.data().displayName,
+      avatarURL: doc.data().avatarURL,
+    }));
+
+    // console.log("Cmt: ", usersSnapshot);
+
+    let data = [];
+
+    commentsSnapshot.forEach((snapshot) => {
+      snapshot.displayName = usersSnapshot.find(
+        (e) => e.uid === snapshot.uid
+      ).displayName;
+      snapshot.avatarURL = usersSnapshot.find(
+        (e) => e.uid === snapshot.uid
+      ).avatarURL;
+      data.push(snapshot);
+      // console.log(data);
+    });
+    setComments(data);
+  };
+
+  const handleSubmit = async () => {
     if (!value) {
       return;
     }
-    let user = null;
-    user = FirebaseController.getCurrentUser();
-    setSubmitting(true);
-     
-    let data = {
-      post_id,
-      user_id: user.uid,
+    const date = new Date();
+    let push_data = {
+      pid: pid,
+      uid: uid,
       content: value,
-      date: new Date(),         
+      date: date,
     };
-      FirebaseController.uploadComment(data);
-      
-    setSubmitting(true);
 
+    // Add comments
+    FirebaseController.db
+      .collection("comments")
+      .add(push_data)
+      .then((ref) => {
+        console.log("Added comment with ID: ", ref.id);
+        setCommentsID([...commentsID, ref.id]);
+        FirebaseController.db
+          .collection("posts")
+          .doc(pid)
+          .update({
+            commentID: [...commentsID, ref.id],
+          });
+      });
+
+    let comment_data = {
+      pid: pid,
+      uid: uid,
+      content: value,
+      date: new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(date),
+      displayName: displayName,
+      avatarURL: avatar,
+    };
+
+    setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
-      setValue('');
-      setComments([
-        ...comments,
-        {
-          author: 'Han Solo',
-          avatar:
-            'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-          content: <p>{value}</p>
-        }
-      ]);
+      setValue("");
+
+      setComments([...comments, comment_data]);
     }, 1000);
   };
 
@@ -77,14 +162,9 @@ const Comments = (props) => {
 
   return (
     <>
-      {comments.length > 0 && <CommentList comments={comments} />}
+      {commentsID.length > 0 ? CommentList : <div></div>}
       <Comment
-        avatar={
-          <Avatar
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="Han Solo"
-          />
-        }
+        avatar={<Avatar src={avatar} alt={displayName} />}
         content={
           <Editor
             onChange={handleChange}

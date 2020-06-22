@@ -1,69 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { Col, Card, Avatar, Button, Modal, Menu, Dropdown } from 'antd';
-import { LikeOutlined, LikeTwoTone, CommentOutlined, ShareAltOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { withRouter } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Col, Card, Avatar, Button, Modal, Menu, Dropdown } from "antd";
+import {
+  LikeOutlined,
+  LikeTwoTone,
+  CommentOutlined,
+  ShareAltOutlined,
+  EllipsisOutlined,
+} from "@ant-design/icons";
+import { withRouter } from "react-router-dom";
 
-import Comments from './Comments';
-import FirebaseController from '../../firebase.js';
+import Comments from "./Comments";
+import FirebaseController from "../../firebase.js";
 
 const Post = (props) => {
-  const currentUID = localStorage.getItem('uid');
+  const currentUID = localStorage.getItem("uid");
 
-  const [likeBtn, setLikeBtn] = useState((props.likes.includes(currentUID)) ? <LikeTwoTone /> : <LikeOutlined />);
+  const [liked, setLiked] = useState(
+    props.likes.includes(currentUID) ? true : false
+  );
   const [commentVisible, setCommentVisible] = useState(false);
   const { Meta } = Card;
 
   const [likes, setLikes] = useState(props.likes);
   const [likesCount, setLikesCount] = useState(props.likes.length);
-  const [commentsCount, setComments] = useState(0);
-  const [sharesCount, setshares] = useState(0);
+  const [likeMutex, setLikeMutex] = useState(true);
 
-  const link = '/user/' + props.uid;
+  const link = "/user/" + props.uid;
   const formatedDate = props.date;
-
 
   const menu1 = (
     <Menu>
-      <Menu.Item key="0">
-        Hide
-      </Menu.Item>
-      <Menu.Item key="1">
-        Delete
-      </Menu.Item>
+      <Menu.Item key="0">Hide</Menu.Item>
+      <Menu.Item key="1">Delete</Menu.Item>
     </Menu>
   );
 
   const menu2 = (
     <Menu>
-      <Menu.Item key="0">
-        Hide
-      </Menu.Item>
+      <Menu.Item key="0">Hide</Menu.Item>
     </Menu>
   );
 
   const handleDelete = () => {
-    console.log('Deleted ', props.pid);
-    FirebaseController.db.collection('posts').doc(props.pid).delete();
-  }
+    console.log("Deleted ", props.pid);
+    FirebaseController.db.collection("posts").doc(props.pid).delete();
+  };
 
-  const onLikeBtnClick = () => {
-    if (likeBtn.type.render.name === 'LikeOutlined') {
-      setLikeBtn(<LikeTwoTone />);
+  const onLikeBtnClick = async () => {
+    // if (likeMutex === false) return;
+    // setLikeMutex(false);
+    if (!liked) {
+      setLiked(true);
       setLikesCount(likesCount + 1);
-      if (!likes.includes(currentUID)) setLikes(likes.push(currentUID));
-    }
-    else {
-      setLikeBtn(<LikeOutlined />);
+      console.log("Likes: ", likes);
+      let new_likes = likes;
+      new_likes.push(currentUID);
+      if (!likes.includes(currentUID)) setLikes(new_likes);
+    } else {
+      setLiked(false);
       setLikesCount(likesCount - 1);
-      if (likes.includes(currentUID)) {
-        let index = likes.indexOf(currentUID);
-        setLikes(likes.splice(index, 1));
-      }
+      if (likes.length > 0)
+        if (likes.includes(currentUID)) {
+          const index = likes.indexOf(currentUID);
+          let new_likes = likes;
+          new_likes.splice(index, 1);
+          setLikes(new_likes);
+        }
     }
-    // console.log(likes);
-    FirebaseController.db.collection('posts').doc(props.pid).update({
-      like: likes
-    })
+    await FirebaseController.db.collection("posts").doc(props.pid).update({
+      like: likes,
+    });
   };
 
   const onCommentBtnClick = () => {
@@ -79,48 +85,73 @@ const Post = (props) => {
       <Card
         actions={[
           <span>
-            <Button type="text" icon={likeBtn} onClick={onLikeBtnClick}></Button>
+            <Button
+              type="text"
+              icon={liked ? <LikeTwoTone /> : <LikeOutlined />}
+              onClick={onLikeBtnClick}
+            ></Button>
             <span className="comment-action">{likesCount}</span>
           </span>,
           <span>
-            <Button type="text" icon={<CommentOutlined />} onClick={onCommentBtnClick}></Button>
+            <Button
+              type="text"
+              icon={<CommentOutlined />}
+              onClick={onCommentBtnClick}
+            ></Button>
             <span className="comment-action">{}</span>
             {/* comments.length */}
           </span>,
-          <span>
-            <Button type="text" icon={<ShareAltOutlined />}></Button>
-            <span className="comment-action">{sharesCount}</span>
-          </span>
         ]}
         extra={
-          <Dropdown overlay={(props.permission) ? (
-            <Menu>
-              <Menu.Item key="0">
-                Hide
-              </Menu.Item>
-              <Menu.Item key="1" onClick={handleDelete}>
-                Delete
-              </Menu.Item>
-            </Menu>
-          ) : (
-              <Menu>
-                <Menu.Item key="0">
-                  Hide
-              </Menu.Item>
-              </Menu>
-            )} trigger={['click']} style={{ float: 'right' }}>
-            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+          <Dropdown
+            overlay={
+              props.permission ? (
+                <Menu>
+                  <Menu.Item key="0">Hide</Menu.Item>
+                  <Menu.Item key="1" onClick={handleDelete}>
+                    Delete
+                  </Menu.Item>
+                </Menu>
+              ) : (
+                <Menu>
+                  <Menu.Item key="0">Hide</Menu.Item>
+                </Menu>
+              )
+            }
+            trigger={["click"]}
+            style={{ float: "right" }}
+          >
+            <a
+              className="ant-dropdown-link"
+              onClick={(e) => e.preventDefault()}
+            >
               <EllipsisOutlined />
             </a>
           </Dropdown>
         }
       >
-        <Meta title={<a href={link}>{props.displayName}</a>} avatar={<Avatar src={props.avatar} />} />
+        <Meta
+          title={<a href={link}>{props.displayName}</a>}
+          avatar={<Avatar src={props.avatar} />}
+        />
         <div>{formatedDate}</div>
         <div style={{ marginTop: 20 }}>{props.content}</div>
-        {(props.img) ? <img src={props.img} style={{ display: 'block', margin: 'auto', maxWidth: '100%' }} alt='img' /> : <></>}
-        <Modal title="Comment" visible={commentVisible} onCancel={handleCancel} footer={null}>
-          <Comments listComments={props.comments} post_id={props.uid} />
+        {props.img ? (
+          <img
+            src={props.img}
+            style={{ display: "block", margin: "auto", maxWidth: "100%" }}
+            alt="img"
+          />
+        ) : (
+          <></>
+        )}
+        <Modal
+          title="Comment"
+          visible={commentVisible}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <Comments commentsID={props.commentsID} pid={props.pid} />
         </Modal>
       </Card>
     </Col>
