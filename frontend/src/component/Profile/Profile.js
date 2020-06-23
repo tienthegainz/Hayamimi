@@ -128,7 +128,7 @@ const Profile = (props) => {
             <div>
               <MailOutlined /> {email}
               <br />
-              <CalendarOutlined />  {dateJoined}
+              <CalendarOutlined />  {"Joined since " + dateJoined}
             </div>
           </div>
         </div>
