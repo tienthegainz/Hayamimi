@@ -33,7 +33,12 @@ const Profile = (props) => {
     setDisplayName(userSnapshot[0].displayName);
     setAvatar(userSnapshot[0].avatarURL);
     setBackground(userSnapshot[0].backgroundURL);
-    setDateJoined(userSnapshot[0].dateJoined);
+    let date = userSnapshot[0].dateJoined.toDate()
+    setDateJoined(new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date));
     setEmail(userSnapshot[0].email);
   };
   const showModal = () => {
@@ -115,15 +120,15 @@ const Profile = (props) => {
               </Modal>
             </div>
           ) : (
-            <div></div>
-          )}
+              <div></div>
+            )}
 
           <div className="information">
             <div className="my-name">{displayName}</div>
             <div>
               <MailOutlined /> {email}
               <br />
-              <CalendarOutlined />
+              <CalendarOutlined />  {dateJoined}
             </div>
           </div>
         </div>
