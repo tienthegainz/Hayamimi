@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Layout, Row, Col } from "antd";
 import { Switch, Route, withRouter } from "react-router-dom";
-import NavBar from "../Bar/NavBar";
-import SideBar from "../Bar/SideBar";
+import NavBar from "./NavBar";
+import Explore from "../Explore/Explore";
 import Feed from "../Feed/Feed";
 import Profile from "../Profile/Profile";
 
@@ -26,7 +26,7 @@ const Home = (props) => {
           overflow: "auto",
           height: "100vh",
           position: "fixed",
-          left: 0,
+          left: 0
         }}
       >
         <NavBar />
@@ -34,11 +34,12 @@ const Home = (props) => {
 
       <Content style={{ margin: "24px 24px 0 224px" }}>
         <Row gutter={[24, 24]}>
-          <Col span={16}>
+          <Col span={24}>
             <Switch>
               <Route exact path="/" render={() => <Feed type="home" />} />
               <Route exact path="/user/:uid" component={Profile} />
               <Route exact path="/manage" render={() => <Manage />} />
+              <Route exact path="/explore" component={Explore} />
             </Switch>
           </Col>
         </Row>
