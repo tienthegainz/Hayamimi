@@ -137,18 +137,7 @@ const Profile = (props) => {
           </div>
         </div>
       </Card>
-
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="Tweets" key="1">
-          <Feed type="profile" uid={props.match.params.uid} />
-        </TabPane>
-        <TabPane tab="Following" key="2">
-          On development
-        </TabPane>
-        <TabPane tab="Followed" key="3">
-          On development
-        </TabPane>
-      </Tabs>
+      <Feed type="profile" uid={props.match.params.uid} />
     </div>
   );
 };

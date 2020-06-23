@@ -28,7 +28,6 @@ class FirebaseController {
         localStorage.setItem('following', JSON.stringify(userData.following));
         localStorage.setItem('email', userData.email);
         localStorage.setItem('isAdmin', userData.isAdmin);
-        localStorage.setItem('dateJoined', user.dateJoined);
 
       }
     });
