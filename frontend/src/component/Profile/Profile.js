@@ -16,6 +16,9 @@ const Profile = (props) => {
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState();
   const [dateJoined, setDateJoined] = useState();
+  const [follow, setFollow] = useState((localStorage.getItem("following").includes(props.match.params.uid)) ? true : false)
+  const currentUid = localStorage.getItem("uid");
+  const isCurrentUser = props.match.params.uid === currentUid ? true : false;
 
   useEffect(() => {
     getUserInfo();
@@ -53,28 +56,21 @@ const Profile = (props) => {
     setVisible(false);
   };
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUid, setCurrentUid] = useState();
-  function handleLoggedIn() {
-    if (!isLoggedIn) {
-      setIsLoggedIn(true);
+  const handleFollow = async () => {
+    let new_following = JSON.parse(localStorage.getItem("following"));
+    if (!follow) {
+      new_following.push(props.match.params.uid);
+      setFollow(true);
     }
+    else {
+      new_following = new_following.filter((value) => (value !== props.match.params.uid));
+      setFollow(false);
+    }
+    localStorage.setItem('following', JSON.stringify(new_following));
+    await FirebaseController.db.collection("users").doc(currentUid).update({
+      following: new_following
+    })
   }
-
-  function handleLoggedOut() {
-    if (isLoggedIn) {
-      FirebaseController.logout();
-      setIsLoggedIn(false);
-    }
-  }
-  FirebaseController.auth.onAuthStateChanged(function (user) {
-    if (user) {
-      setIsLoggedIn(true);
-      setCurrentUid(user.uid);
-    }
-  });
-
-  const isCurrentUser = props.match.params.uid === currentUid ? true : false;
 
   return (
     <div>
@@ -120,7 +116,15 @@ const Profile = (props) => {
               </Modal>
             </div>
           ) : (
-              <div></div>
+              <Button
+                type={(follow) ? "ghost" : "primary"}
+                shape="round"
+                className="setup-profile"
+                size="large"
+                onClick={handleFollow}
+              >
+                {(follow) ? "Following" : "Follow"}
+              </Button>
             )}
 
           <div className="information">

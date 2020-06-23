@@ -14,6 +14,7 @@ const Feed = (props) => {
   }, []);
 
   const getPosts = async () => {
+    const following = JSON.parse(localStorage.getItem("following"));
     const postsRef =
       props.type === "profile"
         ? await FirebaseController.db
@@ -36,12 +37,12 @@ const Feed = (props) => {
       commentID: doc.data().commentID
     }));
 
-    const usersOnPost = postsRef.docs.map((doc) => doc.data().uid);
-    if (usersOnPost === undefined || usersOnPost.length === 0) return;
+    // const usersOnPost = postsRef.docs.map((doc) => doc.data().uid);
+    // if (usersOnPost === undefined || usersOnPost.length === 0) return;
 
     const usersRef = await FirebaseController.db
       .collection("users")
-      .where("uid", "in", usersOnPost)
+      .where("uid", "in", following)
       .get();
 
     const usersSnapshot = usersRef.docs.map((doc) => ({
