@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Login from "./component/Authenticate/Login.js";
 import Register from "./component/Authenticate/Register.js";
@@ -14,6 +14,7 @@ const App = () => {
         <Route exact path="/" render={() => <Home />} />
         <Route exact path="/user/:uid" render={() => <Home />} />
         <Route exact path="/manage" render={() => <Home />} />
+        <Route exact path="/explore" render={() => <Home />} />
       </Switch>
     </BrowserRouter>
   );
