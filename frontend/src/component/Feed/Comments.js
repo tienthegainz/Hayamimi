@@ -61,7 +61,7 @@ const Comments = (props) => {
       .orderBy("date", "asc")
       .get();
 
-    const commentsSnapshot = commentsRef.docs.map((doc) => ({
+    let commentsSnapshot = commentsRef.docs.map((doc) => ({
       pid: doc.id,
       uid: doc.data().uid,
       content: doc.data().content,
@@ -87,6 +87,9 @@ const Comments = (props) => {
       displayName: doc.data().displayName,
       avatarURL: doc.data().avatarURL,
     }));
+
+    const usersUID = usersRef.docs.map((doc) => (doc.id))
+    commentsSnapshot = commentsSnapshot.filter((cmt) => usersUID.includes(cmt.uid))
 
     // console.log("Cmt: ", usersSnapshot);
 
