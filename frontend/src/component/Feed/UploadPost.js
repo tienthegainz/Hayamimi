@@ -7,7 +7,7 @@ import { confirmAlert } from "react-confirm-alert";
 const UploadPost = () => {
   const { TextArea } = Input;
   const [status, setStatus] = useState("");
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(null);
   const [imageList, setImageList] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
