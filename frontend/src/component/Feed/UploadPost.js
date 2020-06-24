@@ -32,60 +32,34 @@ const UploadPost = () => {
         ],
       });
     }
-    if (!status && image === null) {
-      return;
-    }
-    setSubmitting(true);
-    if (image) {
-      const random_name =
-        (Math.random().toString(36) + '00000000000000000').slice(2, 10) +
-        '.' +
-        image.name.split('.').slice(-1);
-      // console.log(random_name)
-      const uploadTask = FirebaseController.storage
-        .ref(`images/${random_name}`)
-        .put(image.originFileObj);
-
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => { },
-        (error) => {
-          // error function ....
-          console.log('Error: ', error);
-        },
-        () => {
-          // complete function ....
-          FirebaseController.storage
-            .ref('images')
-            .child(random_name)
-            .getDownloadURL()
-            .then((url) => {
-              uploadPosttoFireStore(url);
-            });
-        }
-      );
-    } else {
+    else {
+      // console.log(status);
+      if (!status && image === null) {
+        return;
+      }
+      console.log(status)
+      setSubmitting(true);
       if (image) {
         const random_name =
-          (Math.random().toString(36) + "00000000000000000").slice(2, 10) +
-          "." +
-          image.name.split(".").slice(-1);
+          (Math.random().toString(36) + '00000000000000000').slice(2, 10) +
+          '.' +
+          image.name.split('.').slice(-1);
         // console.log(random_name)
         const uploadTask = FirebaseController.storage
           .ref(`images/${random_name}`)
           .put(image.originFileObj);
 
         uploadTask.on(
-          "state_changed",
+          'state_changed',
           (snapshot) => { },
           (error) => {
             // error function ....
-            console.log("Error: ", error);
+            console.log('Error: ', error);
           },
           () => {
             // complete function ....
             FirebaseController.storage
-              .ref("images")
+              .ref('images')
               .child(random_name)
               .getDownloadURL()
               .then((url) => {
@@ -94,7 +68,37 @@ const UploadPost = () => {
           }
         );
       } else {
-        uploadPosttoFireStore(null);
+        if (image) {
+          const random_name =
+            (Math.random().toString(36) + "00000000000000000").slice(2, 10) +
+            "." +
+            image.name.split(".").slice(-1);
+          // console.log(random_name)
+          const uploadTask = FirebaseController.storage
+            .ref(`images/${random_name}`)
+            .put(image.originFileObj);
+
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => { },
+            (error) => {
+              // error function ....
+              console.log("Error: ", error);
+            },
+            () => {
+              // complete function ....
+              FirebaseController.storage
+                .ref("images")
+                .child(random_name)
+                .getDownloadURL()
+                .then((url) => {
+                  uploadPosttoFireStore(url);
+                });
+            }
+          );
+        } else {
+          uploadPosttoFireStore(null);
+        }
       }
     }
   };
