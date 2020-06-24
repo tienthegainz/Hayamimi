@@ -8,8 +8,13 @@ const UploadPost = () => {
   const [status, setStatus] = useState('');
   const [image, setImage] = useState();
   const [imageList, setImageList] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   const uploadPost = async () => {
+    if (!status && image === null) {
+      return;
+    }
+    setSubmitting(true);
     if (image) {
       const random_name =
         (Math.random().toString(36) + '00000000000000000').slice(2, 10) +
@@ -51,11 +56,14 @@ const UploadPost = () => {
       image: url,
       uid: FirebaseController.getCurrentUser().uid
     };
-    console.log(data);
+    // console.log(data);
     FirebaseController.uploadPost(data);
-    setStatus('');
-    setImage(null);
-    setImageList([]);
+    setTimeout(() => {
+      setSubmitting(false);
+      setStatus('');
+      setImage(null);
+      setImageList([]);
+    }, 1000);
   };
 
   const handleChange = (event) => {
@@ -108,9 +116,11 @@ const UploadPost = () => {
             </Button>
           </Upload>
           <Button
+            htmlType="submit"
             type="primary"
             style={{ float: 'right', marginTop: 15 }}
             onClick={uploadPost}
+            loading={submitting}
           >
             Upload
           </Button>

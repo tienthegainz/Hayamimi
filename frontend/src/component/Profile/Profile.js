@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Tabs, PageHeader, Card, Avatar, Button } from "antd";
+import { Modal, PageHeader, Card, Avatar, Button } from "antd";
 
 import FirebaseController from "../../firebase.js";
 import Feed from "../Feed/Feed.js";
 import SetupProfile from "./SetupProfile.js";
 import "./Profile.css";
 import { MailOutlined, CalendarOutlined } from "@ant-design/icons";
-
-const { TabPane } = Tabs;
 
 const Profile = (props) => {
   const [displayName, setDisplayName] = useState();

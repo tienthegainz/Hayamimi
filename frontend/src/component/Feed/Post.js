@@ -7,6 +7,8 @@ import {
   EllipsisOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 import Comments from "./Comments";
 import FirebaseController from "../../firebase.js";
@@ -22,31 +24,30 @@ const Post = (props) => {
 
   const [likes, setLikes] = useState(props.likes);
   const [likesCount, setLikesCount] = useState(props.likes.length);
-  const [likeMutex, setLikeMutex] = useState(true);
 
   const formatedDate = props.date;
 
-  const menu1 = (
-    <Menu>
-      <Menu.Item key="0">Hide</Menu.Item>
-      <Menu.Item key="1">Delete</Menu.Item>
-    </Menu>
-  );
-
-  const menu2 = (
-    <Menu>
-      <Menu.Item key="0">Hide</Menu.Item>
-    </Menu>
-  );
-
   const handleDelete = () => {
-    console.log("Deleted ", props.pid);
-    FirebaseController.db.collection("posts").doc(props.pid).delete();
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure to delete this post?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {
+            console.log("Deleted ", props.pid);
+            FirebaseController.db.collection("posts").doc(props.pid).delete();
+          }
+        },
+        {
+          label: 'No',
+          onClick: () => { return; }
+        }
+      ]
+    });
   };
 
   const onLikeBtnClick = async () => {
-    // if (likeMutex === false) return;
-    // setLikeMutex(false);
     if (!liked) {
       setLiked(true);
       setLikesCount(likesCount + 1);
@@ -111,10 +112,10 @@ const Post = (props) => {
                   </Menu.Item>
                 </Menu>
               ) : (
-                <Menu>
-                  <Menu.Item key="0">Hide</Menu.Item>
-                </Menu>
-              )
+                  <Menu>
+                    <Menu.Item key="0">Hide</Menu.Item>
+                  </Menu>
+                )
             }
             trigger={["click"]}
             style={{ float: "right" }}
@@ -141,8 +142,8 @@ const Post = (props) => {
             alt="img"
           />
         ) : (
-          <></>
-        )}
+            <></>
+          )}
         <Modal
           title="Comment"
           visible={commentVisible}

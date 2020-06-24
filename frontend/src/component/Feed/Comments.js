@@ -112,6 +112,7 @@ const Comments = (props) => {
     if (!value) {
       return;
     }
+    setSubmitting(true);
     const date = new Date();
     let push_data = {
       pid: pid,
@@ -150,7 +151,6 @@ const Comments = (props) => {
       avatarURL: avatar,
     };
 
-    setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
       setValue("");
