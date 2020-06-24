@@ -28,7 +28,7 @@ class FirebaseController {
         localStorage.setItem('following', JSON.stringify(userData.following));
         localStorage.setItem('email', userData.email);
         localStorage.setItem('isAdmin', userData.isAdmin);
-
+        localStorage.setItem('isBlocked',userData.isBlocked);
       }
     });
   }
@@ -48,6 +48,7 @@ class FirebaseController {
       displayName: nickName,
       uid: this.auth.currentUser.uid,
       isAdmin: false,
+      isBlocked: false,
       email: this.auth.currentUser.email,
       dateJoined: new Date(),
     })
