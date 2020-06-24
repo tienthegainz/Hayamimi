@@ -8,12 +8,22 @@ const Feed = (props) => {
   const [Posts, setPosts] = useState([]);
   const currentUID = localStorage.getItem("uid");
   const isAdmin = localStorage.getItem("isAdmin");
-
   useEffect(() => {
-    getPosts();
-  }, []);
+    FirebaseController.auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const userDoc = await FirebaseController.db
+          .collection("users")
+          .doc(user.uid)
+          .get();
+        const userData = userDoc.data();
+        getPosts(userData.following);
+      }
+    });
 
-  const getPosts = async () => {
+  }, [localStorage]);
+
+  const getPosts = async (following) => {
+
     const postsRef =
       props.type === "profile"
         ? await FirebaseController.db
@@ -21,10 +31,16 @@ const Feed = (props) => {
           .where("uid", "==", props.uid)
           .orderBy("date", "desc")
           .get()
-        : await FirebaseController.db
-          .collection("posts")
-          .orderBy("date", "desc")
-          .get();
+        : props.type === "home"
+          ? await FirebaseController.db
+            .collection("posts")
+            .where("uid", "in", following)
+            .orderBy("date", "desc")
+            .get() :
+          await FirebaseController.db
+            .collection("posts")
+            .orderBy("date", "desc")
+            .get();
 
     let postsSnapshot = postsRef.docs.map((doc) => ({
       pid: doc.id,

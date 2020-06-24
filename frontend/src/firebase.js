@@ -25,7 +25,7 @@ class FirebaseController {
         localStorage.setItem('displayName', userData.displayName);
         localStorage.setItem('avatar', userData.avatarURL);
         localStorage.setItem('background', userData.backgroundURL);
-        localStorage.setItem('following', userData.following);
+        localStorage.setItem('following', JSON.stringify(userData.following));
         localStorage.setItem('email', userData.email);
         localStorage.setItem('isAdmin', userData.isAdmin);
         localStorage.setItem('dateJoined', user.dateJoined);
@@ -169,7 +169,7 @@ class FirebaseController {
       .put(image.originFileObj);
     await uploadTask.on(
       "state_changed",
-      (snapshot) => {},
+      (snapshot) => { },
       (error) => {
         // error function ....
         console.log("Error: ", error);
