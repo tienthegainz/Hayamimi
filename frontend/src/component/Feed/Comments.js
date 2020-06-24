@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Comment, Avatar, Form, Button, List, Input } from "antd";
 import FirebaseController from "../../firebase.js";
+import { confirmAlert } from "react-confirm-alert";
 
 const { TextArea } = Input;
 
@@ -31,6 +32,7 @@ const Comments = (props) => {
   const avatar = localStorage.getItem("avatar");
   const displayName = localStorage.getItem("displayName");
   const uid = localStorage.getItem("uid");
+  const isBlocked = localStorage.getItem("isBlocked");
 
   const CommentList = (
     <List
@@ -88,8 +90,10 @@ const Comments = (props) => {
       avatarURL: doc.data().avatarURL,
     }));
 
-    const usersUID = usersRef.docs.map((doc) => (doc.id))
-    commentsSnapshot = commentsSnapshot.filter((cmt) => usersUID.includes(cmt.uid))
+    const usersUID = usersRef.docs.map((doc) => doc.id);
+    commentsSnapshot = commentsSnapshot.filter((cmt) =>
+      usersUID.includes(cmt.uid)
+    );
 
     // console.log("Cmt: ", usersSnapshot);
 
@@ -109,54 +113,70 @@ const Comments = (props) => {
   };
 
   const handleSubmit = async () => {
-    if (!value) {
-      return;
-    }
-    const date = new Date();
-    let push_data = {
-      pid: pid,
-      uid: uid,
-      content: value,
-      date: date,
-    };
-
-    // Add comments
-    FirebaseController.db
-      .collection("comments")
-      .add(push_data)
-      .then((ref) => {
-        console.log("Added comment with ID: ", ref.id);
-        setCommentsID([...commentsID, ref.id]);
-        FirebaseController.db
-          .collection("posts")
-          .doc(pid)
-          .update({
-            commentID: [...commentsID, ref.id],
-          });
+    console.log(isBlocked);
+    if (isBlocked == "true") {
+      return confirmAlert({
+        title: "Alert",
+        message: "You have been blocked from upload post and comment",
+        buttons: [
+          {
+            label: "I understand",
+            onClick: () => {
+              return;
+            },
+          },
+        ],
       });
+    } else {
+      if (!value) {
+        return;
+      }
+      const date = new Date();
+      let push_data = {
+        pid: pid,
+        uid: uid,
+        content: value,
+        date: date,
+      };
 
-    let comment_data = {
-      pid: pid,
-      uid: uid,
-      content: value,
-      date: new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date),
-      displayName: displayName,
-      avatarURL: avatar,
-    };
+      // Add comments
+      FirebaseController.db
+        .collection("comments")
+        .add(push_data)
+        .then((ref) => {
+          console.log("Added comment with ID: ", ref.id);
+          setCommentsID([...commentsID, ref.id]);
+          FirebaseController.db
+            .collection("posts")
+            .doc(pid)
+            .update({
+              commentID: [...commentsID, ref.id],
+            });
+        });
 
-    setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setValue("");
+      let comment_data = {
+        pid: pid,
+        uid: uid,
+        content: value,
+        date: new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(date),
+        displayName: displayName,
+        avatarURL: avatar,
+      };
 
-      setComments([...comments, comment_data]);
-    }, 1000);
+      setSubmitting(true);
+      setTimeout(() => {
+        setSubmitting(false);
+        setValue("");
+
+        setComments([...comments, comment_data]);
+      }, 1000);
+    }
   };
 
   const handleChange = (e) => {
