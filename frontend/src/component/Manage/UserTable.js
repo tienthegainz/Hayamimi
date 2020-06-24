@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Row, Col, Table, Radio, Divider, Button, Space } from "antd";
 import FirebaseController from "../../firebase.js";
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 const { Column } = Table;
 
@@ -23,6 +23,60 @@ const UserTable = (props) => {
       dataIndex: "email",
     },
     {
+      title: "Block",
+      key: "uid",
+      dataIndex: "uid",
+      render: (tags) => (
+        <>
+          {[tags].map((uid) => {
+            return (
+              <Space size="middle">
+                <a
+                  onClick={() => {
+                    confirmAlert({
+                      title: "Confirm to block ",
+                      message: "Are you sure to block user " + uid,
+                      buttons: [
+                        {
+                          label: "Yes",
+                          onClick: () => {
+                            FirebaseController.db
+                              .collection("users")
+                              .doc(uid)
+                              .update({
+                                isBlocked: true,
+                              })
+                              .then(function () {
+                                console.log("Document successfully updated!");
+                              })
+                              .catch(function (error) {
+                                // The document probably doesn't exist.
+                                console.error(
+                                  "Error updating document: ",
+                                  error
+                                );
+                              });
+                          },
+                        },
+                        {
+                          label: "No",
+                          onClick: () => {
+                            return;
+                          },
+                        },
+                      ],
+                    });
+                  }}
+                >
+                  Block
+                </a>
+              </Space>
+            );
+          })}
+        </>
+      ),
+    },
+    {
       title: "Delete",
       key: "uid",
       dataIndex: "uid",
@@ -34,20 +88,25 @@ const UserTable = (props) => {
                 <a
                   onClick={() => {
                     confirmAlert({
-                      title: 'Confirm to delete',
-                      message: 'Are you sure to delete user ' + uid,
+                      title: "Confirm to delete",
+                      message: "Are you sure to delete user " + uid,
                       buttons: [
                         {
-                          label: 'Yes',
+                          label: "Yes",
                           onClick: () => {
                             FirebaseController.db
                               .collection("users")
                               .doc(uid)
                               .delete()
                               .then(() => {
-                                let new_data = data.filter((user) => user.uid !== uid);
+                                let new_data = data.filter(
+                                  (user) => user.uid !== uid
+                                );
                                 setData(new_data);
-                                FirebaseController.db.collection('post').where('uid', '==', uid).get()
+                                FirebaseController.db
+                                  .collection("post")
+                                  .where("uid", "==", uid)
+                                  .get()
                                   .then((querySnapshot) => {
                                     // Once we get the results, begin a batch
                                     var batch = FirebaseController.db.batch();
@@ -60,10 +119,14 @@ const UserTable = (props) => {
                                     });
                                     // Commit the batch
                                     return batch.commit();
-                                  }).then(() => {
+                                  })
+                                  .then(() => {
                                     // console.log("Delete all", uid, "s posts");
                                   });
-                                FirebaseController.db.collection('comment').where('uid', '==', uid).get()
+                                FirebaseController.db
+                                  .collection("comment")
+                                  .where("uid", "==", uid)
+                                  .get()
                                   .then((querySnapshot) => {
                                     // Once we get the results, begin a batch
                                     var batch = FirebaseController.db.batch();
@@ -74,20 +137,26 @@ const UserTable = (props) => {
                                     });
                                     // Commit the batch
                                     return batch.commit();
-                                  }).then(() => {
+                                  })
+                                  .then(() => {
                                     // console.log("Delete all", uid, "s comments");
                                   });
                               })
                               .catch((error) => {
-                                console.error("Error removing document: ", error);
+                                console.error(
+                                  "Error removing document: ",
+                                  error
+                                );
                               });
-                          }
+                          },
                         },
                         {
-                          label: 'No',
-                          onClick: () => { return; }
-                        }
-                      ]
+                          label: "No",
+                          onClick: () => {
+                            return;
+                          },
+                        },
+                      ],
                     });
                   }}
                 >
@@ -114,7 +183,6 @@ const UserTable = (props) => {
   useEffect(() => {
     getAllUserData();
   }, []);
-
 
   return (
     <Col span={24}>
