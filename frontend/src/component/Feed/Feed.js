@@ -19,8 +19,7 @@ const Feed = (props) => {
         getPosts(userData.following);
       }
     });
-
-  }, [localStorage]);
+  }, []);
 
   const getPosts = async (following) => {
 
@@ -52,12 +51,8 @@ const Feed = (props) => {
       commentID: doc.data().commentID
     }));
 
-    const usersOnPost = postsRef.docs.map((doc) => doc.data().uid);
-    if (usersOnPost === undefined || usersOnPost.length === 0) return;
-
     const usersRef = await FirebaseController.db
       .collection("users")
-      .where("uid", "in", usersOnPost)
       .get();
 
     const usersSnapshot = usersRef.docs.map((doc) => ({
@@ -92,7 +87,8 @@ const Feed = (props) => {
 
       {Posts.filter((post) => post.content.indexOf(props.search || '') > -1).map(
         (post, idx) => {
-          const permission = post.uid === currentUID || isAdmin ? true : false;
+          // console.log((post.uid === currentUID), ' -- ', isAdmin === true));
+          const permission = ((post.uid === currentUID) || (isAdmin === "true")) ? true : false;
           const date = new Intl.DateTimeFormat("en-US", {
             year: "numeric",
             month: "2-digit",

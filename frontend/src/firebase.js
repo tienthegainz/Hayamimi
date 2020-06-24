@@ -89,25 +89,6 @@ class FirebaseController {
       });
   }
 
-  getAllUid() {
-    //Get uid by followings uid
-    const users = [];
-    const uidRef = this.db
-      .collection("users")
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          users.push(doc.id);
-        });
-      });
-
-    return users;
-  }
-  isInitialized() {
-    return new Promise((resolve) => {
-      this.auth.onAuthStateChanged(resolve);
-    });
-  }
 
   getCurrentUser() {
     return this.auth.currentUser;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Tabs, Row } from "antd";
 import Feed from "../Feed/Feed";
 import UserTable from "./UserTable";

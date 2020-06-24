@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
   Button,
@@ -13,7 +13,6 @@ import { withRouter } from 'react-router-dom';
 import './SetupProfile.css';
 
 import {
-  CameraOutlined,
   MailOutlined,
   CalendarOutlined,
   InfoOutlined,
@@ -27,11 +26,10 @@ const SetupProfile = (props) => {
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
   const [image, setImage] = useState('');
-  const [status, setStatus] =useState('');
-  const [ newAvatar, setNewAvatar ] = useState();
-  const [ newBackground, setNewBackground ] = useState();
+  const [newAvatar, setNewAvatar] = useState();
+  const [newBackground, setNewBackground] = useState();
   const uid = FirebaseController.auth.currentUser.uid;
-    
+
   var metadata = {
     contentType: 'image/jpeg'
   }
@@ -67,20 +65,20 @@ const SetupProfile = (props) => {
   const handleCancel3 = (e) => {
     setVisible3(false);
   };
- 
+
   const uploadAvatar = () => {
-    if(image){
-    FirebaseController.storage
-      .ref(`avatar/users/${uid}`)
-      .put(image.originFileObj, metadata)
-      .then(snap => {
-        snap.ref.getDownloadURL().then(downloadURL => {
-          setNewAvatar(downloadURL);
-          handleChangeAvatar(downloadURL);
+    if (image) {
+      FirebaseController.storage
+        .ref(`avatar/users/${uid}`)
+        .put(image.originFileObj, metadata)
+        .then(snap => {
+          snap.ref.getDownloadURL().then(downloadURL => {
+            setNewAvatar(downloadURL);
+            handleChangeAvatar(downloadURL);
+          })
         })
-      })
     }
-  } 
+  }
 
   const handleChangeAvatar = async (url) => {
     FirebaseController.db.collection("users").doc(uid).update({
@@ -89,7 +87,7 @@ const SetupProfile = (props) => {
   }
 
   const uploadBackground = () => {
-    if(image){
+    if (image) {
       FirebaseController.storage
         .ref(`background/users/${uid}`)
         .put(image.originFileObj, metadata)
@@ -109,10 +107,6 @@ const SetupProfile = (props) => {
   }
 
 
-  const handleChange = (event) => {
-    setStatus(event.target.value);
-  };
-
   const dummyRequest = ({ file, onSuccess }) => {
     setTimeout(() => {
       onSuccess('ok');
@@ -120,7 +114,7 @@ const SetupProfile = (props) => {
   };
 
   const onChange = (e) => {
-    if(e.file){
+    if (e.file) {
       setImage(e.file);
     }
   };
@@ -133,106 +127,106 @@ const SetupProfile = (props) => {
   return (
     <div>
       <div>
-      Have a favorite Selfie? Upload and set avatar now!
+        Have a favorite Selfie? Upload and set avatar now!
       <Button
-        type="link"
-        onClick={showModal1}
-      >
-        upload
+          type="link"
+          onClick={showModal1}
+        >
+          upload
       </Button>
         <Modal
           title="Upload your avatar"
           visible={visible1}
           onOk={handleOkAvatar}
           onCancel={handleCancel1}
-          style={{ height: '500px'}}
+          style={{ height: '500px' }}
         >
-      <div className="avatar-image-header">
-        
-        
-        <Upload
-          customRequest={dummyRequest}
-          onChange={onChange}
-          onRemove={onRemove}
-        >
-          <Button type="primary">
-            <UploadOutlined /> Add avatar
+          <div className="avatar-image-header">
+
+
+            <Upload
+              customRequest={dummyRequest}
+              onChange={onChange}
+              onRemove={onRemove}
+            >
+              <Button type="primary">
+                <UploadOutlined /> Add avatar
           </Button>
-        </Upload>
-        <Avatar size={150} src={newAvatar} />
+            </Upload>
+            <Avatar size={150} src={newAvatar} />
+          </div>
+        </Modal>
+        <div className="avatar-image-header">
+          <Avatar size={150} src={avatar} />
+
+        </div>
       </div>
-      </Modal>
-      <div className="avatar-image-header">
-        <Avatar size={150} src ={avatar} />
-        
-      </div>
-    </div>
-    <div>
-      Upload and change your background now!
+      <div>
+        Upload and change your background now!
       <Button
-        type="link"
-        onClick={showModal2}
-      >
-        upload
+          type="link"
+          onClick={showModal2}
+        >
+          upload
       </Button>
         <Modal
           title="Upload your background"
           visible={visible2}
           onOk={handleOkBackground}
           onCancel={handleCancel2}
-          
-        >
-      <Upload
-          customRequest={dummyRequest}
-          onChange={onChange}
-          onRemove={onRemove}
-        >
-          <Button type="primary">
-            <UploadOutlined /> Add background
-          </Button>
-        </Upload>
-        <img src={newBackground} />
 
-      </Modal>
-      <div className="background-image">
-        <img src={background} />
+        >
+          <Upload
+            customRequest={dummyRequest}
+            onChange={onChange}
+            onRemove={onRemove}
+          >
+            <Button type="primary">
+              <UploadOutlined /> Add background
+          </Button>
+          </Upload>
+          <img src={newBackground} />
+
+        </Modal>
+        <div className="background-image">
+          <img src={background} />
+        </div>
       </div>
-    </div>
-    
-    <div>
-      Want to edit your information? Let check it now!
+
+      <div>
+        Want to edit your information? Let check it now!
       <Button
-        type="link"
-        onClick={showModal3}
-      >
-        upload
+          type="link"
+          onClick={showModal3}
+        >
+          upload
       </Button>
-      <Modal
+        <Modal
           title="Change you information"
           visible={visible3}
           onOk={handleOkInfo}
           onCancel={handleCancel3}
-      >
-        <Input 
-          onChange={(e)=>
-            FirebaseController.handleChangeName(e.target.value)
+        >
+          <Input
+            onChange={(e) =>
+              FirebaseController.handleChangeName(e.target.value)
             }
-          placeholder="Enter your new Name"
-          prefix={<UserOutlined />}
-          suffix={
-            <Tooltip title="Name must be under 25 characters">
-              <InfoOutlined />
-            </Tooltip>
-          } />
-      </Modal>
-      <div className="information2">
-        <div className="my-name">{displayName}</div>
-        <div><MailOutlined /> {email}
-              <br />
-              <CalendarOutlined /> 
+            placeholder="Enter your new Name"
+            prefix={<UserOutlined />}
+            suffix={
+              <Tooltip title="Name must be under 25 characters">
+                <InfoOutlined />
+              </Tooltip>
+            } />
+        </Modal>
+        <div className="information2">
+          <div className="my-name">{displayName}</div>
+          <div><MailOutlined /> {email}
+            <br />
+            <CalendarOutlined />
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Card, Input, Tabs } from "antd";
 import Feed from "../Feed/Feed";
 import Users from "./Users";
@@ -27,7 +27,7 @@ const Explore = () => {
 
       <Tabs defaultActiveKey="1">
         <TabPane tab="Posts" key="1">
-          <Feed search={query} />
+          <Feed type="search" search={query} />
         </TabPane>
         <TabPane tab="Users" key="2">
           <Users search={query} />
