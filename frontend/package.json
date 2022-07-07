@@ -10,7 +10,7 @@
     "@testing-library/user-event": "^7.1.2",
     "antd": "^4.3.3",
     "firebase": "^7.15.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "react": "^16.13.1",
     "react-confirm-alert": "^2.6.1",
     "react-dom": "^16.13.1",
